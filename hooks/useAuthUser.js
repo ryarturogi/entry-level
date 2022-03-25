@@ -1,9 +1,9 @@
 import { useEffect, useState, createContext, useContext } from 'react'
-import { supabase } from '../utils/initSupabase'
+import { provider } from '@/utils/initDatabase'
 import { useRouter } from 'next/router'
 
 export const SignOut = async () => {
-  await supabase.auth.signOut()
+  await provider.auth.signOut()
 }
 
 export const RequireAuth = () => {
@@ -12,7 +12,7 @@ export const RequireAuth = () => {
 
   useEffect(() => {
     if (!user) {
-      router.push('/auth')
+      router.push('/login')
     }
   }, [user, router])
 }
@@ -35,10 +35,10 @@ export const UserContextProvider = (props) => {
   const [user, setUser] = useState(false)
 
   useEffect(() => {
-    const session = supabase.auth.session()
+    const session = provider.auth.session()
     setSession(session)
     setUser(session?.user ?? false)
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: authListener } = provider.auth.onAuthStateChange(async (event, session) => {
       setSession(session)
       setUser(session?.user ?? false)
     })
