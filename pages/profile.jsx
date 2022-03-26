@@ -1,8 +1,8 @@
 import { Fragment, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { useUser, RequireAuth } from '@/hooks/useAuthUser'
-
 import Header from '@/components/Header'
+import Avatar from '@/components/UI/Avatar'
 import { CheckCircleIcon } from '@heroicons/react/solid'
 
 export default function Profile() {
@@ -50,11 +50,8 @@ export default function Profile() {
               <Tab.Panel>
                 <section className="py-5 space-y-5 text-gray-800">
                   <div className="flex items-end">
-                    <img
-                      className="inline-block w-20 h-20 rounded-full ring-2 ring-green-500"
-                      src={user.user_metadata.avatar_url}
-                      alt={user.full_name}
-                    />
+                    <Avatar avatar={user.user_metadata.avatar_url} size="sm" rounded />
+
                     {user.user_metadata.certified && (
                       <div className="relative top right-5" title="Certified account">
                         <CheckCircleIcon className="w-4 h-4 text-green-500 bg-white rounded-full" />
@@ -62,7 +59,7 @@ export default function Profile() {
                     )}
                   </div>
                   <div>
-                    <h1>you're signed in</h1>
+                    <h1>you&apos;re signed in</h1>
                     <h2 strong>Email: {user.email}</h2>
                     <h3 type="success">User data:</h3>
 
