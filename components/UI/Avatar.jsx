@@ -1,8 +1,8 @@
 const Avatar = ({ avatar }) => {
   return (
-    <div className="flex items-center justify-center w-20 h-20">
+    <div className="flex items-center justify-center w-24 h-24">
       <img
-        className="inline-block object-cover object-center w-full h-full rounded-lg shadow-inner ring-2 ring-gray-300"
+        className="inline-block object-contain object-center w-full h-full px-2 rounded-lg shadow-inner ring-2 ring-gray-300"
         src={avatar}
         alt="avatar"
       />
