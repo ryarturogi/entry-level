@@ -68,7 +68,7 @@ body {
   @apply text-gray-800 hover:border-accent-800 checked:bg-accent-100 !important;
 }
 
-// Loader icon
+/*  Loader icon */
 .loading {
   display: flex;
   flex-direction: column;
