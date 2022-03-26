@@ -33,7 +33,7 @@ const JobCard = ({ job }) => {
             {job.hasCompanyLogo && (
               <Link href={`jobs/${job.id}`}>
                 <a>
-                  <Avatar avatar={job.companyLogo} />
+                  <Avatar avatar={job.companyLogo} size={'md'} />
                 </a>
               </Link>
             )}
