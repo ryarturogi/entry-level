@@ -1,6 +1,14 @@
-import { createClient } from '@supabase/supabase-js'
+import Repository from 'repositories';
+import Supabase from 'repositories/SupabaseRepo';
 
-export const provider = createClient(
-  process.env.NEXT_PUBLIC_PROVIDER_URL,
-  process.env.NEXT_PUBLIC_PROVIDER_KEY
-)
+const Provider = (providerName) => {
+  switch (providerName) {
+    case 'supabase':
+      // init using Supabase service
+      return Repository.init(new Supabase());
+    default:
+      return Repository.init(new Supabase());
+  }
+};
+
+export default Provider();
