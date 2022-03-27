@@ -1,6 +1,6 @@
-import Image from 'next/image'
+import Image from 'next/image';
 
-const Avatar = ({ avatar, rounded, size }) => {
+function Avatar({ avatar, rounded, size }) {
   return (
     <div
       className={`relative flex items-center justify-center overflow-hidden ring-2 ring-gray-100 px-2 ${
@@ -16,17 +16,17 @@ const Avatar = ({ avatar, rounded, size }) => {
       } ${rounded ? 'rounded-full' : 'rounded-sm'}`}
     >
       {rounded ? (
-        <Image className="object-contain object-center" src={avatar} alt="avatar" layout="fill" />
+        <Image alt="avatar" className="object-contain object-center" layout="fill" src={avatar} />
       ) : (
         <Image
-          className="object-contain object-center"
-          src={avatar}
           alt="avatar"
-          width={'100%'}
-          height={'100%'}
+          className="object-contain object-center"
+          height="100%"
+          src={avatar}
+          width="100%"
         />
       )}
     </div>
-  )
+  );
 }
-export default Avatar
+export default Avatar;

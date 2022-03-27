@@ -1,18 +1,19 @@
-import Link from 'next/link'
+import Link from "next/link";
 
-const Button = (props) => {
-  const { href, action, classes, children, ...rest } = props
+function Button(props) {
+  const { href, action, classes, children, ...rest } = props;
+
   return href ? (
-    <Link href={href ? href : '/'}>
+    <Link href={href ? href : "/"} passHref>
       <button className={classes} {...rest}>
         {children}
       </button>
     </Link>
   ) : (
-    <button onClick={action} className={classes} {...rest}>
+    <button className={classes} onClick={action} {...rest}>
       {children}
     </button>
-  )
+  );
 }
 
-export default Button
+export default Button;

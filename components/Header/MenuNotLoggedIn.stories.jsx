@@ -1,13 +1,15 @@
-import MenuNotLoggedIn from './MenuNotLoggedIn'
+import MenuNotLoggedIn from "./MenuNotLoggedIn";
 
-export default {
-  title: 'Header/MenuNotLoggedIn',
+export default menu = {
   component: MenuNotLoggedIn,
+  title: "Header/MenuNotLoggedIn"
+};
+
+function Template(arguments_) {
+  return <MenuNotLoggedIn {...arguments_} />;
 }
 
-const Template = (arguments_) => <MenuNotLoggedIn {...arguments_} />
-
-export const MenuNotLoggedInComponent = Template.bind({})
+export const MenuNotLoggedInComponent = Template.bind({});
 MenuNotLoggedInComponent.args = {
-  classes: '',
-}
+  classes: ""
+};

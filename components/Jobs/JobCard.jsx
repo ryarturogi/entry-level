@@ -1,31 +1,31 @@
-import Link from 'next/link'
-import Avatar from '@/components/UI/Avatar'
-import Button from '@/components/UI/Button'
-import JobTags from '@/components/Jobs/JobTags'
-import { timeSince, formatDate, isToday } from '@/utils/formatDate'
+import { BookmarkIcon } from "@heroicons/react/outline";
+import { ArrowRightIcon } from "@heroicons/react/solid";
+import Link from "next/link";
 
-import { ArrowRightIcon } from '@heroicons/react/solid'
-import { BookmarkIcon } from '@heroicons/react/outline'
+import JobTags from "@/components/Jobs/JobTags";
+import Avatar from "@/components/UI/Avatar";
+import Button from "@/components/UI/Button";
+import { formatDate, isToday, timeSince } from "@/utils/formatDate";
 
-const JobCard = ({ job }) => {
+function JobCard({ job }) {
   return (
     <li
-      style={{
-        backgroundColor: job.hasCompanyColor.isActive ? job.hasCompanyColor.color : '#fff',
-        color: job.hasCompanyColor.isActive ? '#fff' : '#000',
-        border: job.hasCompanyColor.isActive ? 'none' : '',
-      }}
       className={` max-w-4xl mx-auto relative flex flex-col justify-center w-full px-5 py-3.5 bg-white rounded-2xl sm:rounded-3xl shadow-md shadow-slate-300 ${
         job.isGuaranteed
-          ? 'border-b-[2rem] sm:border-b-0 sm:border-l-[4rem] border-accent-100'
+          ? "border-b-[2rem] sm:border-b-0 sm:border-l-[4rem] border-accent-100"
           : job.isFeatured
-          ? 'border-l-[4.5rem] border-accent-800'
-          : ''
+          ? "border-l-[4.5rem] border-accent-800"
+          : ""
       }`}
+      style={{
+        backgroundColor: job.hasCompanyColor.isActive ? job.hasCompanyColor.color : "#fff",
+        border: job.hasCompanyColor.isActive ? "none" : "",
+        color: job.hasCompanyColor.isActive ? "#fff" : "#000"
+      }}
     >
       <div
         className={`lg:flex items-center space-x-5 ${
-          (job.isFeatured || job.isGuaranteed) && !job.hasCompanyColor.isActive ? '-ml-14' : 'ml-2'
+          (job.isFeatured || job.isGuaranteed) && !job.hasCompanyColor.isActive ? "-ml-14" : "ml-2"
         }`}
       >
         <div className="flex flex-col items-center justify-start w-full space-x-5 space-y-3 lg:justify-between sm:space-y-0 sm:items-start lg:items-start sm:flex-row">
@@ -33,7 +33,7 @@ const JobCard = ({ job }) => {
             {job.hasCompanyLogo && (
               <Link href={`jobs/${job.id}`}>
                 <a>
-                  <Avatar avatar={job.companyLogo} size={'md'} />
+                  <Avatar avatar={job.companyLogo} size="md" />
                 </a>
               </Link>
             )}
@@ -64,7 +64,7 @@ const JobCard = ({ job }) => {
                 {job.jobTags && (
                   <JobTags
                     tags={job.jobTags}
-                    theme={job.hasCompanyColor.isActive ? 'light' : 'dark'}
+                    theme={job.hasCompanyColor.isActive ? "light" : "dark"}
                   />
                 )}
               </section>
@@ -80,7 +80,7 @@ const JobCard = ({ job }) => {
 
             <hr
               className={`w-full h-1 lg:w-1 lg:h-[6rem] rounded-xl ${
-                job.hasCompanyColor.isActive ? 'bg-white' : 'bg-gray-100'
+                job.hasCompanyColor.isActive ? "bg-white" : "bg-gray-100"
               }`}
             />
 
@@ -99,7 +99,7 @@ const JobCard = ({ job }) => {
         </div>
       </div>
     </li>
-  )
+  );
 }
 
-export default JobCard
+export default JobCard;

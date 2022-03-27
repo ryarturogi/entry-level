@@ -1,11 +1,11 @@
-import { AuthRedirect } from '@/hooks/useAuthUser'
-import { provider } from '@/utils/initDatabase'
-import { Auth } from '@supabase/ui'
+import { Auth } from '@supabase/ui';
 
-import Header from '@/components/Header'
+import Header from '@/components/Header';
+import { AuthRedirect } from '@/hooks/useAuthUser';
+import Provider from '@/utils/initDatabase';
 
-const AuthPage = () => {
-  AuthRedirect()
+function AuthPage() {
+  AuthRedirect();
 
   return (
     <>
@@ -17,17 +17,17 @@ const AuthPage = () => {
 
           <div>
             <Auth
-              supabaseClient={provider}
               providers={['google', 'github']}
-              view={'sign_in'}
-              socialLayout="horizontal"
               socialButtonSize="large"
+              socialLayout="horizontal"
+              supabaseClient={Provider}
+              view="sign_in"
             />
           </div>
         </section>
       </main>
     </>
-  )
+  );
 }
 
-export default AuthPage
+export default AuthPage;

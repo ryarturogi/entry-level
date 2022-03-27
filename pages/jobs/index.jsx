@@ -1,4 +1,4 @@
-import Header from '@/components/Header'
+import Header from "@/components/Header";
 
 export default function Jobs() {
   return (
@@ -8,5 +8,5 @@ export default function Jobs() {
         <section className="">Jobs</section>
       </main>
     </>
-  )
+  );
 }

@@ -1,7 +1,6 @@
-const Loader = ({ text = 'Loading...' }) => {
+function Loader({ text = "Loading..." }) {
   return (
-    <>
-      <div className="loading">
+    <div className="loading">
         <div className="loading-blocks">
           <div className="block" />
           <div className="block" />
@@ -9,8 +8,7 @@ const Loader = ({ text = 'Loading...' }) => {
         </div>
         <div className="loading-blocks__text">{text}</div>
       </div>
-    </>
-  )
+  );
 }
 
-export default Loader
+export default Loader;
