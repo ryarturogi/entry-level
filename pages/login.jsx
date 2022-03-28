@@ -1,6 +1,6 @@
 import { Auth } from '@supabase/ui';
 
-import Header from '@/components/Header';
+import Head from '@/components/partials/Head';
 import { AuthRedirect } from '@/hooks/useAuthUser';
 import Provider from '@/utils/initDatabase';
 
@@ -9,9 +9,9 @@ function AuthPage() {
 
   return (
     <>
-      <Header pageTitle="Login" />
+      <Head title="Login" />
 
-      <main className="authcontainer">
+      <div className="authcontainer">
         <section className="space-y-5">
           <h1 className="text-3xl mb-3.5 font-bold text-gray-800">Welcome</h1>
 
@@ -25,7 +25,7 @@ function AuthPage() {
             />
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 }
