@@ -1,6 +1,6 @@
-import Button from '@/components/UI/Button'
+import Button from '@/components/UI/Button';
 
-const Hero = () => {
+function Hero() {
   return (
     <section className="flex flex-col items-center justify-center min-w-screen h-[255px] bg-hero-pattern bg-center bg-no-repeat bg-cover max-w-hero rounded-b-3xl mx-auto w-[96%]">
       <div className="flex flex-col items-center text-white">
@@ -10,14 +10,14 @@ const Hero = () => {
           ELDs is the #1 destination to find and list incredible remote jobs.
         </h2>
         <Button
-          href="/jobs/new-job"
           classes="bg-notice-danger-100 py-2.5 px-4 text-white font-bold text-sm rounded-md hover:bg-accent-100 transition-all duration-100 ease-in-out"
+          href="/jobs/new-job"
         >
           Post a Job for $1.00
         </Button>
       </div>
     </section>
-  )
+  );
 }
 
-export default Hero
+export default Hero;

@@ -1,13 +1,13 @@
-import Header from '@/components/Header'
+import Head from '@/components/partials/Head';
 
 export default function Careers() {
   return (
     <>
-      <Header pageTitle="Careers" />
+      <Head title="Careers" />
 
       <main role="main">
         <section className="">Careers</section>
       </main>
     </>
-  )
+  );
 }

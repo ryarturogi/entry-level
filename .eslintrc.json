@@ -1,3 +1,97 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "eslint:all",
+    "plugin:react/all",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "env": {
+    "browser": true,
+    "es2020": true,
+    "node": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "indent": 0,
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "sort-imports": 0,
+    "linebreak-style": 0,
+    "multiline-ternary": 0,
+    "require-await": 0,
+    "func-style": 0,
+    "class-methods-use-this": 0,
+    "sort-keys-fix/sort-keys-fix": "warn",
+    "max-len": 0,
+    "no-magic-numbers": 0,
+    "react/forbid-component-props": 0,
+    "react/jsx-wrap-multilines": 0,
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "no-ternary": 0,
+    "max-lines-per-function": 0,
+    "import/no-unresolved": 0,
+    "default-param-last": 0,
+    "comma-dangle": 0 ,
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "function-call-argument-newline": 0,
+    "padded-blocks": 0,
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
+      {
+        "blankLine": "any",
+        "prev": ["const", "let", "var"],
+        "next": ["const", "let", "var"]
+      }
+    ],
+    "object-curly-spacing": ["error", "always"],
+    "one-var": ["error", "never"],
+    "quote-props": 0,
+    "react/prop-types": 0,
+    "react/jsx-indent": 0,
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-filename-extension": 0,
+    "react/react-in-jsx-scope": 0,
+    "react/jsx-no-literals": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "react/jsx-max-depth": 0,
+    "react/jsx-newline": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-closing-tag-location": 0,
+    "react/no-multi-comp": 0,
+    "array-element-newline": 0,
+    "react/jsx-max-props-per-line": 0,
+    "no-extra-parens": 0,
+    "object-property-newline": 0,
+    "react/jsx-no-bind": 0,
+    "new-cap": 0,
+    "react/style-prop-object": 0,
+    "dot-location": 0,
+    "no-trailing-spaces": 0
+  },
+  "plugins": [
+    "sort-keys-fix", 
+    "simple-import-sort"
+  ],
+  "settings": {
+    "import/resolver": "webpack"
+  },
+  "ignorePatterns": ["node_modules/", ".next/"]
 }

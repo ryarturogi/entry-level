@@ -1,33 +1,33 @@
-import { AuthRedirect } from '@/hooks/useAuthUser'
-import { provider } from '@/utils/initDatabase'
-import { Auth } from '@supabase/ui'
+import { Auth } from '@supabase/ui';
 
-import Header from '@/components/Header'
+import Head from '@/components/partials/Head';
+import { AuthRedirect } from '@/hooks/useAuthUser';
+import Provider from '@/utils/initDatabase';
 
-const AuthPage = () => {
-  AuthRedirect()
+function AuthPage() {
+  AuthRedirect();
 
   return (
     <>
-      <Header pageTitle="Login" />
+      <Head title="Login" />
 
-      <main className="authcontainer">
+      <div className="authcontainer">
         <section className="space-y-5">
           <h1 className="text-3xl mb-3.5 font-bold text-gray-800">Welcome</h1>
 
           <div>
             <Auth
-              supabaseClient={provider}
               providers={['google', 'github']}
-              view={'sign_in'}
-              socialLayout="horizontal"
               socialButtonSize="large"
+              socialLayout="horizontal"
+              supabaseClient={Provider}
+              view="sign_in"
             />
           </div>
         </section>
-      </main>
+      </div>
     </>
-  )
+  );
 }
 
-export default AuthPage
+export default AuthPage;

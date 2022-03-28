@@ -1,27 +1,34 @@
-import Link from 'next/link'
-import Avatar from '@/components/UI/Avatar'
-import Button from '@/components/UI/Button'
-import JobTags from '@/components/Jobs/JobTags'
-import { timeSince, formatDate, isToday } from '@/utils/formatDate'
+import { BookmarkIcon } from '@heroicons/react/outline';
+import { ArrowRightIcon } from '@heroicons/react/solid';
+import Link from 'next/link';
 
-import { ArrowRightIcon } from '@heroicons/react/solid'
-import { BookmarkIcon } from '@heroicons/react/outline'
+import JobTags from '@/components/Jobs/JobTags';
+import Avatar from '@/components/UI/Avatar';
+import Button from '@/components/UI/Button';
+import { formatDate, isToday, timeSince } from '@/utils/formatDate';
 
-const JobCard = ({ job }) => {
+const jobStatus = (job) => {
+  switch (true) {
+    case job.isGuaranteed:
+      return 'border-b-[2rem] sm:border-b-0 sm:border-l-[4rem] border-accent-100';
+    case job.isFeatured:
+      return 'border-l-[4.5rem] border-accent-800';
+    default:
+      return '';
+  }
+};
+
+function JobCard({ job }) {
   return (
     <li
+      className={`
+        max-w-4xl mx-auto relative flex flex-col justify-center w-full px-5 py-3.5 bg-white rounded-2xl sm:rounded-3xl shadow-md shadow-slate-300
+      ${jobStatus(job)}`}
       style={{
         backgroundColor: job.hasCompanyColor.isActive ? job.hasCompanyColor.color : '#fff',
-        color: job.hasCompanyColor.isActive ? '#fff' : '#000',
         border: job.hasCompanyColor.isActive ? 'none' : '',
+        color: job.hasCompanyColor.isActive ? '#fff' : '#000',
       }}
-      className={` max-w-4xl mx-auto relative flex flex-col justify-center w-full px-5 py-3.5 bg-white rounded-2xl sm:rounded-3xl shadow-md shadow-slate-300 ${
-        job.isGuaranteed
-          ? 'border-b-[2rem] sm:border-b-0 sm:border-l-[4rem] border-accent-100'
-          : job.isFeatured
-          ? 'border-l-[4.5rem] border-accent-800'
-          : ''
-      }`}
     >
       <div
         className={`lg:flex items-center space-x-5 ${
@@ -31,9 +38,9 @@ const JobCard = ({ job }) => {
         <div className="flex flex-col items-center justify-start w-full space-x-5 space-y-3 lg:justify-between sm:space-y-0 sm:items-start lg:items-start sm:flex-row">
           <div className="self-center">
             {job.hasCompanyLogo && (
-              <Link href={`jobs/${job.id}`}>
+              <Link href={`job/${job.id}`}>
                 <a>
-                  <Avatar avatar={job.companyLogo} size={'md'} />
+                  <Avatar avatar={job.companyLogo} size="md" />
                 </a>
               </Link>
             )}
@@ -49,7 +56,7 @@ const JobCard = ({ job }) => {
                   <small className="text-xs font-medium capitalize">Guaranteed</small>
                 )}
 
-                <Link href={`/jobs/${job.id}`}>
+                <Link href={`/job/${job.id}`}>
                   <a className="">
                     <div className="text-sm font-light leading-snug hover:text-accent-500">
                       {job.companyName}
@@ -89,7 +96,7 @@ const JobCard = ({ job }) => {
                 <BookmarkIcon />
               </Button>
 
-              <Link href={`jobs/${job.id}`}>
+              <Link href={`job/${job.id}`}>
                 <a className="p-2 text-white rounded-full w-9 h-9 bg-notice-danger-100 hover:bg-green-500">
                   <ArrowRightIcon />
                 </a>
@@ -99,7 +106,7 @@ const JobCard = ({ job }) => {
         </div>
       </div>
     </li>
-  )
+  );
 }
 
-export default JobCard
+export default JobCard;
