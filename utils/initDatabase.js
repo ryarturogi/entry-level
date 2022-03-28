@@ -1,14 +1,14 @@
 import Repository from 'repositories';
 import Supabase from 'repositories/SupabaseRepo';
 
-const Provider = (providerName) => {
+const Client = (providerName) => {
   switch (providerName) {
     case 'supabase':
-      // init using Supabase service
-      return Repository.init(new Supabase());
+      // Init using Supabase service
+      return Repository.init(Supabase());
     default:
-      return Repository.init(new Supabase());
+      return Repository.init(Supabase());
   }
 };
 
-export default Provider();
+export default Client();
