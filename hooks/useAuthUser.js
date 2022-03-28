@@ -1,9 +1,24 @@
-import { useEffect, useState, createContext, useContext } from 'react';
-import Provider from '@/utils/initDatabase';
 import { useRouter } from 'next/router';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-export const SignOut = async () => {
-  await Provider.auth.signOut();
+import Client from '@/utils/initDatabase';
+
+export const UserContext = createContext();
+
+export const useUser = () => {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error('useUser must be used within a UserContextClient.');
+  }
+
+  return context;
+};
+
+const AuthUser = () => {
+  const { user } = useUser();
+
+  return user;
 };
 
 export const RequireAuth = () => {
@@ -28,19 +43,22 @@ export const AuthRedirect = () => {
   }, [user, router]);
 };
 
-export const UserContext = createContext();
+export const SignOut = async () => {
+  await Client.auth.signOut();
+};
 
-export const UserContextProvider = (props) => {
+export function UserContextProvider(props) {
   const [session, setSession] = useState(false);
   const [user, setUser] = useState(false);
 
   useEffect(() => {
-    const session = Provider.auth.session();
-    setSession(session);
-    setUser(session?.user ?? false);
-    const { data: authListener } = Provider.auth.onAuthStateChange(async (event, session) => {
-      setSession(session);
-      setUser(session?.user ?? false);
+    const currSession = Client.auth.session();
+
+    setSession(currSession);
+    setUser(currSession?.user ?? false);
+    const { data: authListener } = Client.auth.onAuthStateChange(async (event, authSession) => {
+      setSession(authSession);
+      setUser(authSession?.user ?? false);
     });
 
     return () => {
@@ -48,24 +66,13 @@ export const UserContextProvider = (props) => {
     };
   }, []);
 
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
   const value = {
     session,
     user,
   };
+
   return <UserContext.Provider value={value} {...props} />;
-};
-
-export const useUser = () => {
-  const context = useContext(UserContext);
-  if (context === undefined) {
-    throw new Error(`useUser must be used within a UserContextProvider.`);
-  }
-  return context;
-};
-
-const AuthUser = () => {
-  const { user } = useUser();
-  return user;
-};
+}
 
 export default AuthUser;
