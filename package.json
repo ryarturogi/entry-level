@@ -24,6 +24,7 @@
     "eslint-import-resolver-webpack": "^0.13.2",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
+    "firebase": "^9.6.10",
     "next": "12.1.1",
     "next-redux-wrapper": "^7.0.5",
     "react": "17.0.2",
