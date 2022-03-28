@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getJobs } from '@/store/actions/jobAction';
 
 import Loader from '@/components/UI/Loader';
+import { getJobs } from '@/store/actions/jobAction';
+
 import JobCard from './JobCard';
 
 function JobsList() {
@@ -17,15 +18,13 @@ function JobsList() {
   return (
     <section className="flex flex-col items-center justify-center mx-auto w-[96%]">
       <ul className="w-full space-y-5 max-w-hero">
-        {loading ? (
+        {error && error.message}
+        {(loading && !error && (
           <li className="flex items-center justify-center w-full ">
             <Loader />
           </li>
-        ) : error ? (
-          error.message
-        ) : (
-          jobs.map((job) => <JobCard job={job} key={job.id} />)
-        )}
+        )) ||
+          jobs.map((job) => <JobCard job={job} key={job.id} />)}
       </ul>
     </section>
   );
