@@ -1,32 +1,35 @@
-import { GET_JOBS, JOBS_ERROR } from '../types';
 import Provider from '@/utils/initDatabase';
+
+import { GET_JOB, GET_JOBS, JOB_ERROR, JOBS_ERROR } from '../types';
 
 export const getJobs = () => async (dispatch) => {
   try {
-    let Jobs = await Provider.getJobs();
+    const Jobs = await Provider.getJobs();
+
     dispatch({
-      type: GET_JOBS,
       payload: Jobs,
+      type: GET_JOBS,
     });
   } catch (error) {
     dispatch({
-      type: JOBS_ERROR,
       payload: error,
+      type: JOBS_ERROR,
     });
   }
 };
 
 export const getJob = (jobId) => async (dispatch) => {
   try {
-    let Job = await Provider.getJob(jobId);
+    const Job = await Provider.getJob(jobId);
+
     dispatch({
-      type: GET_JOBS,
       payload: Job,
+      type: GET_JOB,
     });
   } catch (error) {
     dispatch({
-      type: JOBS_ERROR,
       payload: error,
+      type: JOB_ERROR,
     });
   }
 };
