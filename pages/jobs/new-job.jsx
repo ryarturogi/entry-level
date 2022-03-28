@@ -1,9 +1,9 @@
-import Header from "@/components/Header";
+import Head from '@/components/partials/Head';
 
 export default function NewJob() {
   return (
     <>
-      <Header pageTitle="Post a new job" />
+      <Head title="Post a new job" />
 
       <main role="main">
         <section className="">New Job</section>

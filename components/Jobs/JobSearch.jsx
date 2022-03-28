@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 function JobSearch() {
   return (
     <section className="flex flex-col items-center justify-center py-14">

@@ -21,7 +21,7 @@
   },
   "rules": {
     "indent": 0,
-    "quotes": ["error", "double"],
+    "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "sort-imports": 0,
     "linebreak-style": 0,
@@ -38,6 +38,9 @@
     "simple-import-sort/exports": "error",
     "no-ternary": 0,
     "max-lines-per-function": 0,
+    "import/no-unresolved": 0,
+    "default-param-last": 0,
+    "comma-dangle": 0 ,
     "space-before-function-paren": [
       "error",
       {
@@ -87,5 +90,8 @@
     "sort-keys-fix", 
     "simple-import-sort"
   ],
+  "settings": {
+    "import/resolver": "webpack"
+  },
   "ignorePatterns": ["node_modules/", ".next/"]
 }
