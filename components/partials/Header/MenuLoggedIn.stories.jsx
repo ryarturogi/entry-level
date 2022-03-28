@@ -1,8 +1,8 @@
-import MenuLoggedIn from "./MenuLoggedIn";
+import MenuLoggedIn from './MenuLoggedIn';
 
-export default menu = {
+const Menu = {
   component: MenuLoggedIn,
-  title: "Header/MenuLoggedIn"
+  title: 'Header/MenuLoggedIn',
 };
 
 function Template(arguments_) {
@@ -11,5 +11,7 @@ function Template(arguments_) {
 
 export const MenuLoggedInComponent = Template.bind({});
 MenuLoggedInComponent.args = {
-  classes: ""
+  classes: '',
 };
+
+export default Menu;
