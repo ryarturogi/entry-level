@@ -1,16 +1,19 @@
-import "@/styles/globals.css";
+import '@/styles/globals.css';
 
-import React from "react";
-import { Provider } from "react-redux";
+import React from 'react';
+import { Provider } from 'react-redux';
 
-import { UserContextProvider } from "@/hooks/useAuthUser";
-import { store, wrapper } from "@/store/store";
+import Layout from '@/components/Layout';
+import { UserContextProvider } from '@/hooks/useAuthUser';
+import { store, wrapper } from '@/store/store';
 
 function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <UserContextProvider>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </UserContextProvider>
     </Provider>
   );
