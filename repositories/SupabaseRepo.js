@@ -1,15 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
+
 import { slugify } from '@/utils/slugify';
 
-const Supabase = function () {
-  // init using Supabase service
-  this.client = createClient(
+const Supabase = () => {
+  // Init using Supabase service
+  const Client = createClient(
     process.env.NEXT_PUBLIC_PROVIDER_URL,
     process.env.NEXT_PUBLIC_PROVIDER_KEY
   );
 
   // Auth
-  this.auth = this.client.auth;
+  const { auth } = Client;
   // Jobs
 
   /**
@@ -17,10 +18,12 @@ const Supabase = function () {
    * @returns {Promise<Array>}
    * @memberof Supabase
    * @example
-   * const jobs = this.client.getJobs()
-   **/
-  this.getJobs = async () => {
-    let { data: Jobs } = await this.client.from('Jobs').select('*');
+   * const jobs = Client.getJobs()
+   *
+   */
+  const getJobs = async () => {
+    const { data: Jobs } = await Client.from('Jobs').select('*');
+
     return Jobs;
   };
 
@@ -30,10 +33,12 @@ const Supabase = function () {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const job = this.client.getJob('jobId')
-   **/
-  this.getJob = async (jobId) => {
-    let { data: Job } = await this.client.from('Jobs').select('*').eq('id', jobId);
+   * const job = Client.getJob('jobId')
+   *
+   */
+  const getJob = async (jobId) => {
+    const { data: Job } = await Client.from('Jobs').select('*').eq('id', jobId);
+
     return Job;
   };
 
@@ -43,10 +48,12 @@ const Supabase = function () {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const job = this.client.createJob('jobSlug')
-   **/
-  this.createJob = async (job) => {
-    let { data: Job } = await this.client.from('messages').upsert(job);
+   * const job = Client.createJob('jobSlug')
+   *
+   */
+  const createJob = async (job) => {
+    const { data: Job } = await Client.from('messages').upsert(job);
+
     return Job;
   };
 
@@ -57,10 +64,12 @@ const Supabase = function () {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const newJob = this.client.updateJob(jobId, job)
-   **/
-  this.updateJob = async (jobId, job) => {
-    let { data: Job } = await this.client.from('Jobs').update(job).match({ id: jobId });
+   * const newJob = Client.updateJob(jobId, job)
+   *
+   */
+  const updateJob = async (jobId, job) => {
+    const { data: Job } = await Client.from('Jobs').update(job).match({ id: jobId });
+
     return Job;
   };
 
@@ -70,10 +79,12 @@ const Supabase = function () {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const removedJob = this.client.removeJob('jobId')
-   **/
-  this.removeJob = async (jobId) => {
-    let { data: Job } = await this.client.from('Jobs').delete().match({ id: jobId });
+   * const removedJob = Client.removeJob('jobId')
+   *
+   */
+  const removeJob = async (jobId) => {
+    const { data: Job } = await Client.from('Jobs').delete().match({ id: jobId });
+
     return Job;
   };
 
@@ -83,15 +94,17 @@ const Supabase = function () {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const job = this.client.uploadLogo(company, file)
-   **/
-  this.uploadLogo = async (company, file) => {
-    let { data: Logo } = await this.client.storage
+   * const job = Client.uploadLogo(company, file)
+   *
+   */
+  const uploadLogo = async (company, file) => {
+    const { data: Logo } = await Client.storage
       .from('company-logos')
       .upload(`public/img/logos/${slugify(company)}.png`, file, {
         cacheControl: '3600',
         upsert: true,
       });
+
     return Logo;
   };
 
@@ -101,10 +114,11 @@ const Supabase = function () {
    * @returns {Promise<Array>}
    * @memberof Supabase
    * @example
-   * const companies = this.client.getCompanies()
-   **/
-  this.getCompanies = async () => {
-    let { data: Companies } = await this.client.from('Jobs').select(`id,
+   * const companies = Client.getCompanies()
+   *
+   */
+  const getCompanies = async () => {
+    const { data: Companies } = await Client.from('Jobs').select(`id,
     userId,
     companyLogo,
     companyName,
@@ -122,20 +136,20 @@ const Supabase = function () {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const company = this.client.getCompany('companyId')
-   **/
-  this.getCompany = async (companyId) => {
-    let { data: Company } = await this.client
-      .from('Jobs')
+   * const company = Client.getCompany('companyId')
+   *
+   */
+  const getCompany = async (companyId) => {
+    const { data: Company } = await Client.from('Jobs')
       .select(
         `id,
-    userId,
-    companyLogo,
-    companyName,
-    companyDescription,
-    companyWebsite,
-    companySlug,
-    createdAt`
+        userId,
+        companyLogo,
+        companyName,
+        companyDescription,
+        companyWebsite,
+        companySlug,
+        createdAt`
       )
       .eq('id', companyId);
 
@@ -148,10 +162,12 @@ const Supabase = function () {
    * @returns {Promise<Array>}
    * @memberof Supabase
    * @example
-   * const categories = this.client.getCategories()
-   **/
-  this.getCategories = async () => {
-    let { data: Categories } = await this.client.from('Categories').select('*');
+   * const categories = Client.getCategories()
+   *
+   */
+  const getCategories = async () => {
+    const { data: Categories } = await Client.from('Categories').select('*');
+
     return Categories;
   };
 
@@ -161,10 +177,12 @@ const Supabase = function () {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const category = this.client.getCategory('categoryId')
-   **/
-  this.getCategory = async (categoryId) => {
-    let { data: Category } = await this.client.from('Categories').select('*').eq('id', categoryId);
+   * const category = Client.getCategory('categoryId')
+   *
+   */
+  const getCategory = async (categoryId) => {
+    const { data: Category } = await Client.from('Categories').select('*').eq('id', categoryId);
+
     return Category;
   };
 
@@ -174,10 +192,12 @@ const Supabase = function () {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const category = this.client.createCategory(category)
-   **/
-  this.createCategory = async (category) => {
-    let { data: Category } = await this.client.from('Categories').upsert(category);
+   * const category = Client.createCategory(category)
+   *
+   */
+  const createCategory = async (category) => {
+    const { data: Category } = await Client.from('Categories').upsert(category);
+
     return Category;
   };
 
@@ -188,13 +208,14 @@ const Supabase = function () {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const newCategory = this.client.updateCategory(categoryId, category)
-   **/
-  this.updateCategory = async (categoryId, category) => {
-    let { data: Category } = await this.client
-      .from('Categories')
+   * const newCategory = Client.updateCategory(categoryId, category)
+   *
+   */
+  const updateCategory = async (categoryId, category) => {
+    const { data: Category } = await Client.from('Categories')
       .update(category)
       .match({ id: categoryId });
+
     return Category;
   };
 
@@ -204,17 +225,31 @@ const Supabase = function () {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const removedCategory = this.client.removeCategory(categoryId)
-   **/
-  this.removeCategory = async (categoryId) => {
-    let { data: Category } = await this.client
-      .from('Categories')
-      .delete()
-      .match({ id: categoryId });
+   * const removedCategory = Client.removeCategory(categoryId)
+   *
+   */
+  const removeCategory = async (categoryId) => {
+    const { data: Category } = await Client.from('Categories').delete().match({ id: categoryId });
+
     return Category;
   };
 
-  return this;
+  return {
+    auth,
+    createCategory,
+    createJob,
+    getCategories,
+    getCategory,
+    getCompanies,
+    getCompany,
+    getJob,
+    getJobs,
+    removeCategory,
+    removeJob,
+    updateCategory,
+    updateJob,
+    uploadLogo,
+  };
 };
 
 export default Supabase;
