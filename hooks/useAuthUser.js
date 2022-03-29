@@ -1,9 +1,45 @@
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import Client from '@/utils/initDatabase';
+import Provider from '@/utils/initDatabase';
+
+const currentProvider = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
 
 export const UserContext = createContext();
+
+export function UserContextProvider(props) {
+  const [session, setSession] = useState(false);
+  const [user, setUser] = useState(false);
+
+  useEffect(() => {
+    const AuthProvider = Provider(currentProvider).Auth;
+    const currSession = AuthProvider.getCurrentSession();
+    const currentUser = AuthProvider.getCurrentUser();
+
+    setSession(currSession);
+    setUser(currentUser ? currentUser : false);
+    // Const { authSession, authListener } = Provider(currentProvider).Auth.onAuthStateChange();
+    const { data: authListener } = Provider(currentProvider).Client.auth.onAuthStateChange(
+      // eslint-disable-next-line no-shadow
+      (_event, session) => {
+        setSession(session || false);
+        setUser(currentUser ?? false);
+      }
+    );
+
+    return () => {
+      authListener.unsubscribe();
+    };
+  }, [user, session]);
+
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  const value = {
+    session,
+    user,
+  };
+
+  return <UserContext.Provider value={value} {...props} />;
+}
 
 export const useUser = () => {
   const context = useContext(UserContext);
@@ -13,12 +49,6 @@ export const useUser = () => {
   }
 
   return context;
-};
-
-const AuthUser = () => {
-  const { user } = useUser();
-
-  return user;
 };
 
 export const RequireAuth = () => {
@@ -44,35 +74,13 @@ export const AuthRedirect = () => {
 };
 
 export const SignOut = async () => {
-  await Client.auth.signOut();
+  await Provider(currentProvider).Auth.signOut();
 };
 
-export function UserContextProvider(props) {
-  const [session, setSession] = useState(false);
-  const [user, setUser] = useState(false);
+const AuthUser = () => {
+  const { user } = useUser();
 
-  useEffect(() => {
-    const currSession = Client.auth.session();
-
-    setSession(currSession);
-    setUser(currSession?.user ?? false);
-    const { data: authListener } = Client.auth.onAuthStateChange(async (event, authSession) => {
-      setSession(authSession);
-      setUser(authSession?.user ?? false);
-    });
-
-    return () => {
-      authListener.unsubscribe();
-    };
-  }, []);
-
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  const value = {
-    session,
-    user,
-  };
-
-  return <UserContext.Provider value={value} {...props} />;
-}
+  return user;
+};
 
 export default AuthUser;

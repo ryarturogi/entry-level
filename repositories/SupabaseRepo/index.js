@@ -1,18 +1,10 @@
-import { createClient } from '@supabase/supabase-js';
-
 import { slugify } from '@/utils/slugify';
 
+import Auth from './auth';
+import Client from './SupabaseConfig';
+
 const Supabase = () => {
-  // Init using Supabase service
-  const Client = createClient(
-    process.env.NEXT_PUBLIC_PROVIDER_URL,
-    process.env.NEXT_PUBLIC_PROVIDER_KEY
-  );
-
-  // Auth
-  const { auth } = Client;
   // Jobs
-
   /**
    * @title Get all jobs
    * @returns {Promise<Array>}
@@ -235,7 +227,8 @@ const Supabase = () => {
   };
 
   return {
-    auth,
+    Auth,
+    Client,
     createCategory,
     createJob,
     getCategories,

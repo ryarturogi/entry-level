@@ -60,7 +60,7 @@ export default function Profile() {
                   </div>
                   <div>
                     <h1>you&apos;re signed in</h1>
-                    <h2 strong>Email: {user.email}</h2>
+                    <h2>Email: {user.email}</h2>
                     <h3 type="success">User data:</h3>
 
                     <pre>{JSON.stringify(user, null, 2)}</pre>

@@ -1,5 +1,10 @@
 module.exports = {
   images: {
-    domains: ['avatars.githubusercontent.com', 'remoteok.com'],
+    domains: [
+      'avatars.githubusercontent.com',
+      'remoteok.com',
+      'remoteok.io',
+      'assets.landing.jobs',
+    ],
   },
 };
