@@ -24,7 +24,7 @@ function JobsList() {
             <Loader />
           </li>
         )) ||
-          jobs.map((job) => <JobCard job={job} key={job.id} />)}
+          (jobs ? jobs.map((job) => <JobCard job={job} key={job.id} />) : null)}
       </ul>
     </section>
   );
