@@ -3,8 +3,9 @@ import Link from 'next/link';
 function JobTags({ tags, theme }) {
   return (
     <ul className="flex flex-wrap items-end justify-center space-x-1 space-y-1">
-      {tags.map((tag) => (
-        <Link href={`/jobs?tag=${tag}`} key={tag} passHref>
+      {tags.map((tag, idx) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <Link href={`/jobs?tag=${tag}`} key={idx} passHref>
           <li>
             <a
               className={`cursor-pointer flex items-center justify-center px-2 py-1 text-[0.60rem] border rounded  ${

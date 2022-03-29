@@ -20,6 +20,11 @@
     }
   },
   "rules": {
+    "max-statements": ["error", 20],
+    "newline-per-chained-call": 0,
+    "function-paren-newline": 0,
+    "max-lines": ["error", {"max": 400, "skipBlankLines": true}],
+    "no-console": 0,
     "indent": 0,
     "quotes": ["error", "single"],
     "semi": ["error", "always"],

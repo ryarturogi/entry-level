@@ -4,8 +4,12 @@ import Head from '@/components/partials/Head';
 import { AuthRedirect } from '@/hooks/useAuthUser';
 import Provider from '@/utils/initDatabase';
 
+const currentProvider = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
+
 function AuthPage() {
   AuthRedirect();
+
+  const { Client } = Provider(currentProvider);
 
   return (
     <>
@@ -20,7 +24,7 @@ function AuthPage() {
               providers={['google', 'github']}
               socialButtonSize="large"
               socialLayout="horizontal"
-              supabaseClient={Provider}
+              supabaseClient={Client}
               view="sign_in"
             />
           </div>

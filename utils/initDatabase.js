@@ -1,14 +1,18 @@
 import Repository from 'repositories';
+import Firebase from 'repositories/FirebaseRepo';
 import Supabase from 'repositories/SupabaseRepo';
 
-const Provider = (providerName) => {
-  switch (providerName) {
+const Provider = (provider) => {
+  switch (provider) {
     case 'supabase':
-      // init using Supabase service
-      return Repository.init(new Supabase());
+      // Init using Supabase service
+      return Repository.init(Supabase());
+    case 'firebase':
+      // Init using Firebase service
+      return Repository.init(Firebase());
     default:
-      return Repository.init(new Supabase());
+      return Repository.init(Supabase());
   }
 };
 
-export default Provider();
+export default Provider;

@@ -1,10 +1,10 @@
-import Provider from '@/utils/initDatabase';
+import Client from '@/utils/initDatabase';
 
 import { GET_JOB, GET_JOBS, JOB_ERROR, JOBS_ERROR } from '../types';
 
 export const getJobs = () => async (dispatch) => {
   try {
-    const Jobs = await Provider.getJobs();
+    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs();
 
     dispatch({
       payload: Jobs,
@@ -20,7 +20,7 @@ export const getJobs = () => async (dispatch) => {
 
 export const getJob = (jobId) => async (dispatch) => {
   try {
-    const Job = await Provider.getJob(jobId);
+    const Job = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJob(jobId);
 
     dispatch({
       payload: Job,
