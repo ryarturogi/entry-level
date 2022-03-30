@@ -3,121 +3,121 @@ const createdAt = new Date();
 const expirationDate = createdAt.setDate(createdAt.getDate() + 30);
 
 export const EMPTY_JOB = {
+  // The Company
+  companyDescription: null,
+  companyEmail: null,
+  companyLogo: null,
+  companyName: null,
+  companyStatement: null,
+  companyWebsite: null,
+  createdAt,
+  expirationDate,
+  hasCompanyColor: {
+    color: null,
+    isActive: false,
+  },
+  howToApply: null,
   // The Job
   id: null,
-  userId: null,
-  jobType: 'remote',
-  jobTitle: null,
+  isFeatured: false,
+  isGuaranteed: false,
   jobCategory: 'programming',
   jobDescription: null,
   jobTags: null,
-  howToApply: null,
-  salaryRate: null,
-  isFeatured: false,
-  isGuaranteed: false,
-  hasCompanyColor: {
-    isActive: false,
-    color: null,
-  },
-  createdAt,
-  expirationDate,
-
-  // The Company
-  companyLogo: null,
-  companyName: null,
-  companyEmail: null,
-  companyWebsite: null,
-  companyDescription: null,
-  companyStatement: null,
+  jobTitle: null,
+  jobType: 'remote',
   location: null,
+  salaryRate: null,
+  userId: null,
 };
-// TODO: Regional Restrictions
+
 export const CATEGORIES = [
   {
     id: 1,
-    title: 'Programming',
     image: 'programming',
     slug: 'programming',
+    title: 'Programming',
   },
   {
     id: 2,
-    title: 'Design',
     image: 'design',
     slug: 'design',
+    title: 'Design',
   },
   {
     id: 3,
-    title: 'Copywriting',
     image: 'copywriting',
     slug: 'copywriting',
+    title: 'Copywriting',
   },
   {
     id: 4,
-    title: 'Devops and Sysadmin',
     image: 'devops-and-sysadmin',
     slug: 'devops-and-sysadmin',
+    title: 'Devops and Sysadmin',
   },
   {
     id: 5,
-    title: 'Business',
     image: 'business',
     slug: 'business',
+    title: 'Business',
   },
   {
     id: 6,
-    title: 'Management and Finance',
     image: 'management-and-finance',
     slug: 'management-and-finance',
+    title: 'Management and Finance',
   },
   {
     id: 7,
-    title: 'Product',
     image: 'product',
     slug: 'product',
+    title: 'Product',
   },
   {
     id: 8,
-    title: 'Customer Support',
     image: 'customer-support',
     slug: 'customer-support',
+    title: 'Customer Support',
   },
   {
     id: 9,
-    title: 'Sales and Marketing',
     image: 'sales-and-marketing',
     slug: 'sales-and-marketing',
+    title: 'Sales and Marketing',
   },
   {
     id: 10,
-    title: 'All Other',
     image: 'others',
     slug: 'others',
+    title: 'All Other',
   },
 ];
+
 export const JOBTYPES = [
   {
+    baseColor: 'remote',
     key: 'remote',
     text: 'Remote',
-    baseColor: 'remote',
   },
   {
+    baseColor: 'freelance',
     key: 'freelance',
     text: 'Freelance',
-    baseColor: 'freelance',
   },
   {
+    baseColor: 'full-time',
     key: 'full-time',
     text: 'Full-Time',
-    baseColor: 'full-time',
   },
   {
+    baseColor: 'part-time',
     key: 'part-time',
     text: 'Part-Time',
-    baseColor: 'part-time',
   },
   {
+    baseColor: 'intern',
     key: 'intern',
     text: 'Intern',
-    baseColor: 'intern',
   },
 ];
