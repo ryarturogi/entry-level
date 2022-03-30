@@ -9,7 +9,7 @@ import { auth } from './FirebaseConfig';
  * const newUser = Client.Auth.createUser(userData)
  */
 const createUser = async (email, password) => {
-  auth()
+  auth
     .createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       // Signed in
@@ -34,7 +34,7 @@ const createUser = async (email, password) => {
  * const user = Client.Auth.signIn(email, password)
  */
 const signIn = async (email, password) => {
-  auth()
+  auth
     .signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
       // Signed in
@@ -60,20 +60,17 @@ const signIn = async (email, password) => {
  */
 
 const signOut = async () => {
-  auth()
-    .signOut()
-    .then(() => {
-      // Sign-out successful.
-      // eslint-disable-next-line no-console
-      console.log('Sign-out successful.');
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+  try {
+    return await auth.signOut();
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
 
-      // eslint-disable-next-line no-console
-      console.log(errorCode, errorMessage);
-    });
+    // eslint-disable-next-line no-console
+    console.log(errorCode, errorMessage);
+
+    return { error, errorCode, errorMessage };
+  }
 };
 
 /**
@@ -84,7 +81,7 @@ const signOut = async () => {
  * const user = Client.Auth.getCurrentUser()
  */
 const getCurrentUser = async () => {
-  const { currentUser } = auth();
+  const { currentUser } = auth;
 
   return currentUser;
 };
@@ -98,7 +95,7 @@ const getCurrentUser = async () => {
  */
 const getCurrentSession = () => {
   try {
-    const session = auth().session();
+    const session = auth.session();
 
     return session;
   } catch (error) {
@@ -120,27 +117,30 @@ const getCurrentSession = () => {
  * const authState = Client.Auth.onAuthStateChange()
  */
 const onAuthStateChange = () => {
-  let authSession = null;
-
   try {
-    const authListener = {
-      unsubscribe: auth().onAuthStateChanged((user) => {
-        if (user === null) {
-          // eslint-disable-next-line no-unused-expressions
-          authSession && clearTimeout(authSession);
-          authSession = null;
-        } else {
-          user.getIdTokenResult().then((idTokenResult) => {
-            const sessionTime = idTokenResult.claims.auth_time * 1000;
+    let authSession = null;
+    let authListener = null;
 
-            authSession = {
-              sessionTime,
-              user,
-            };
-          });
-        }
-      }),
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user === null) {
+        authSession = null;
+      } else {
+        user.getIdTokenResult().then((idTokenResult) => {
+          const sessionTime = idTokenResult.claims.auth_time * 1000;
+
+          authSession = {
+            sessionTime,
+            user,
+          };
+        });
+      }
+    });
+
+    authListener = {
+      unsubscribe,
     };
+
+    console.log(authListener, authSession);
 
     return { authListener, authSession };
   } catch (error) {
@@ -163,4 +163,4 @@ const Auth = () => ({
   signOut,
 });
 
-export default Auth;
+export default Auth();
