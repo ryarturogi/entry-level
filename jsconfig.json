@@ -10,6 +10,7 @@
       "@/api/*": ["pages/api/*"],
       "@/store/*": ["store/*"],
       "@/utils/*": ["utils/*"],
+      "@/repositories/*": ["repositories/*"],
       "@/assets/*": ["assets/*"],
       "@/styles/*": ["styles/*"],
       "@/public/*": ["public/*"],
