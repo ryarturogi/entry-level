@@ -54,6 +54,31 @@ const signIn = async (email, password) => {
 };
 
 /**
+ * @title Sign in user with GitHub
+ * @returns {Promise<Object>}
+ * @memberof Supabase
+ * @example
+ * const user = Client.Auth.signInWithGithub()
+ */
+const signInWithProvider = async (providerName) => {
+  try {
+    const { user, session, error } = await Client.auth.signIn({
+      provider: providerName || 'google',
+    });
+
+    return { error, session, user };
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+
+    // eslint-disable-next-line no-console
+    console.log(errorCode, errorMessage);
+
+    return { error, errorCode, errorMessage };
+  }
+};
+
+/**
  * @title Sign Out user
  * @returns {Promise<Object>}
  * @memberof Supabase
@@ -62,7 +87,7 @@ const signIn = async (email, password) => {
  */
 
 const signOut = async () => {
-  const signedOut = await Client.auth.signOut();
+  const signedOut = Client.auth.signOut();
 
   return signedOut;
 };
@@ -120,34 +145,19 @@ const getCurrentSession = () => {
  * @example
  * const authState = Client.Auth.onAuthStateChange()
  */
-/*
- * Const { data: authListener } = Client.auth.onAuthStateChange((event, session) => {
- *   if (event === 'SIGNED_IN') {
- *     authSession = session;
- *     console.log(authSession);
- *   }
- */
-
-/*
- *   If (event === 'SIGNED_OUT') {
- *     authSession = null;
- *   }
- * });
- */
 const onAuthStateChange = () => {
-  let authSession = null;
-
   try {
-    const { data: authListener } = Client.auth.onAuthStateChange(
-      // eslint-disable-next-line no-shadow
-      async (_event, session) => {
-        authSession = session;
+    let authSession = null;
+    let authUser = null;
 
-        return authSession;
-      }
-    );
+    let authState = Client.auth.onAuthStateChange(async (_event, session) => {
+      authSession = session || null;
+      authUser = session?.user || null;
+    });
 
-    return { authListener, authSession };
+    authState = { ...authState, authSession, authUser };
+
+    return authState;
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -166,6 +176,7 @@ const Auth = () => ({
   getCurrentUser,
   onAuthStateChange,
   signIn,
+  signInWithProvider,
   signOut,
 });
 
