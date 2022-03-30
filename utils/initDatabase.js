@@ -1,6 +1,7 @@
-import Repository from 'repositories';
-import Firebase from 'repositories/FirebaseRepo';
-import Supabase from 'repositories/SupabaseRepo';
+import Firebase from '@/repositories/FirebaseRepo';
+import Supabase from '@/repositories/SupabaseRepo';
+
+import Repository from '../repositories';
 
 const Provider = (provider) => {
   switch (provider) {
