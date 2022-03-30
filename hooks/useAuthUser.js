@@ -12,18 +12,23 @@ export function UserContextProvider(props) {
   const [user, setUser] = useState(false);
 
   useEffect(() => {
-    const AuthProvider = Provider(currentProvider).Auth;
-    const currSession = AuthProvider.getCurrentSession();
-    const currentUser = AuthProvider.getCurrentUser();
+    const currProvider = Provider(currentProvider);
+    const currSession = currProvider.Auth.getCurrentSession();
+    const currentUser = currProvider.Auth.getCurrentUser();
 
     setSession(currSession);
     setUser(currentUser ? currentUser : false);
-    // Const { authSession, authListener } = Provider(currentProvider).Auth.onAuthStateChange();
-    const { data: authListener } = Provider(currentProvider).Client.auth.onAuthStateChange(
+
+    /*
+     *  FIXME: Fix listener for auth state change
+     * Const { authSession, authListener } = Provider(currentProvider).Auth.onAuthStateChange();
+     */
+
+    const { data: authListener } = currProvider.Client.auth.onAuthStateChange(
       // eslint-disable-next-line no-shadow
-      (_event, session) => {
-        setSession(session || false);
-        setUser(currentUser ?? false);
+      async (_event, session) => {
+        setSession(session ?? false);
+        setUser(session?.user ?? false);
       }
     );
 
