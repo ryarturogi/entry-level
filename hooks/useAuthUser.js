@@ -3,18 +3,15 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import Provider from '@/utils/initDatabase';
 
-const currentProvider = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
+const providerName = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
+const currentProvider = Provider(providerName);
 
 export const UserContext = createContext();
 
-export function UserContextProvider(props) {
-  const [session, setSession] = useState(false);
-  const [user, setUser] = useState(false);
-
-  useEffect(() => {
-    const currProvider = Provider(currentProvider);
-    const currSession = currProvider.Auth.getCurrentSession();
-    const currentUser = currProvider.Auth.getCurrentUser();
+const AuthStateChanged = (setSession, setUser) => {
+  if (providerName === 'supabase') {
+    const currSession = currentProvider.Auth.getCurrentSession();
+    const currentUser = currentProvider.Auth.getCurrentUser();
 
     setSession(currSession);
     setUser(currentUser ? currentUser : false);
@@ -23,14 +20,42 @@ export function UserContextProvider(props) {
      *  FIXME: Fix listener for auth state change
      * Const { authSession, authListener } = Provider(currentProvider).Auth.onAuthStateChange();
      */
-
-    const { data: authListener } = currProvider.Client.auth.onAuthStateChange(
+    // Return console.log(currentProvider.Client);
+    const { data: authListener } = currentProvider.Client.auth.onAuthStateChange(
       // eslint-disable-next-line no-shadow
       async (_event, session) => {
         setSession(session ?? false);
         setUser(session?.user ?? false);
       }
     );
+
+    return { authListener };
+  } else if (providerName === 'firebase') {
+    const unsubscribe = currentProvider.Auth.auth.onAuthStateChanged((user) => {
+      if (user) {
+        user.getIdTokenResult().then((idTokenResult) => {
+          setSession(idTokenResult.claims.auth_time * 1000 ?? false);
+        });
+        setUser(user ?? false);
+      }
+    });
+
+    const authListener = {
+      unsubscribe,
+    };
+
+    return { authListener };
+  }
+
+  return {};
+};
+
+export function AuthProvider(props) {
+  const [session, setSession] = useState(false);
+  const [user, setUser] = useState(false);
+
+  useEffect(() => {
+    const { authListener } = AuthStateChanged(setSession, setUser);
 
     return () => {
       authListener.unsubscribe();
@@ -79,7 +104,7 @@ export const AuthRedirect = () => {
 };
 
 export const SignOut = async () => {
-  await Provider(currentProvider).Auth.signOut();
+  await currentProvider.Auth.signOut();
 };
 
 const AuthUser = () => {

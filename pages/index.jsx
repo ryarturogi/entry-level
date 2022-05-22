@@ -3,7 +3,7 @@ import JobSearch from '@/components/Jobs/JobSearch';
 import JobsList from '@/components/Jobs/JobsList';
 import Head from '@/components/partials/Head';
 
-function Index() {
+function Home() {
   return (
     <>
       <Head />
@@ -14,4 +14,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default Home;

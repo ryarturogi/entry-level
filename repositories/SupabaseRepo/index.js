@@ -90,14 +90,18 @@ const Supabase = () => {
    *
    */
   const uploadLogo = async (company, file) => {
-    const { data: Logo } = await Client.storage
+    const { data, error } = await Client.storage
       .from('company-logos')
       .upload(`public/img/logos/${slugify(company)}.png`, file, {
         cacheControl: '3600',
         upsert: true,
       });
 
-    return Logo;
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
   };
 
   // Companies

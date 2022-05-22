@@ -11,6 +11,16 @@ export default function Profile() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { user } = useUser();
 
+  const profileImage = () => {
+    if (user.photoURL) {
+      return user.photoURL;
+    } else if (user.user_metadata.avatar_url) {
+      return user.user_metadata.avatar_url;
+    }
+
+    return '';
+  };
+
   return (
     <>
       <Head title="Profile" />
@@ -50,9 +60,9 @@ export default function Profile() {
               <Tab.Panel>
                 <section className="py-5 space-y-5 text-gray-800">
                   <div className="flex items-end">
-                    <Avatar avatar={user.user_metadata.avatar_url} isRounded size="sm" />
+                    <Avatar avatar={profileImage()} isRounded size="sm" />
 
-                    {user.user_metadata.certified && (
+                    {user.user_metadata?.certified && (
                       <div className="relative top right-5" title="Certified account">
                         <CheckCircleIcon className="w-4 h-4 text-green-500 bg-white rounded-full" />
                       </div>

@@ -391,7 +391,6 @@ const Firebase = () => ({
   removeJob,
   updateCategory,
   updateJob,
-  uploadLogo,
 });
 
 export default Firebase;

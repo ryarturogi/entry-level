@@ -5,6 +5,7 @@ module.exports = {
       'remoteok.com',
       'remoteok.io',
       'assets.landing.jobs',
+      'lh3.googleusercontent.com',
     ],
   },
 };

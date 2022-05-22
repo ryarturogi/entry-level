@@ -18,8 +18,10 @@ const firebaseConfig = {
 export default firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
+const signOut = () => auth.signOut();
 const db = firebase.firestore();
 const storage = firebase.storage();
 const fieldValue = firebase.firestore.FieldValue;
+const { GithubAuthProvider, GoogleAuthProvider } = firebase.auth;
 
-export { auth, db, fieldValue, storage };
+export { auth, db, fieldValue, GithubAuthProvider, GoogleAuthProvider, signOut, storage };

@@ -35,11 +35,11 @@ function Button(props) {
       case 'sm':
         return 'text-sm py-1 px-2';
       case 'md':
-        return 'text-base py-2 px-4';
+        return 'text-base py-2.5 px-6';
       case 'lg':
-        return 'text-lg py-2 px-5';
+        return 'text-lg py-3 px-8';
       default:
-        return 'text-base py-3 px-6';
+        return 'text-base py-3.5 px-6';
     }
   };
 
