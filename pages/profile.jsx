@@ -1,6 +1,7 @@
 import { Tab } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
+import { formatDate, isToday, timeSince } from '@/utils/formatDate';
 
 import Head from '@/components/partials/Head';
 import Avatar from '@/components/UI/Avatar';
@@ -11,14 +12,38 @@ export default function Profile() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { user } = useUser();
 
+  const mappedUser = (user) => {
+    switch (process.env.NEXT_PUBLIC_PROVIDER_NAME) {
+      case 'supabase':
+        return {
+          id: user.id,
+          email: user.email,
+          phone: user.phone,
+          avatar: user?.user_metadata?.avatar_url,
+          name: user?.user_metadata?.name,
+          createdAt: user.created_at,
+        };
+      case 'firebase':
+        console.log(user);
+        return {
+          id: user.uid,
+          email: user.email,
+          name: user.displayName,
+          avatar: user.photoURL,
+          createdAt: user?.metadata?.creationTime,
+        };
+      default:
+        return {};
+    }
+  };
+  const userMapped = mappedUser(user);
+
   const profileImage = () => {
-    if (user.photoURL) {
-      return user.photoURL;
-    } else if (user.user_metadata.avatar_url) {
-      return user.user_metadata.avatar_url;
+    if (userMapped.avatar) {
+      return userMapped.avatar;
     }
 
-    return '';
+    return userMapped.avatar;
   };
 
   return (
@@ -69,11 +94,24 @@ export default function Profile() {
                     )}
                   </div>
                   <div>
-                    <h1>you&apos;re signed in</h1>
-                    <h2>Email: {user.email}</h2>
-                    <h3 type="success">User data:</h3>
+                    <h1 className="text-2xl font-semibold">{userMapped.name}</h1>
+                    <p className="text-sm">
+                      <span className="font-semibold">ID:</span> {userMapped.id}
+                    </p>
+                    <p className="text-sm">{userMapped.email}</p>
 
-                    <pre>{JSON.stringify(user, null, 2)}</pre>
+                    <p className="text-sm">
+                      <span className="font-semibold">Joined:</span>
+                      {isToday(new Date(userMapped.createdAt), new Date())
+                        ? timeSince(userMapped.createdAt)
+                        : formatDate(userMapped.createdAt)}
+                    </p>
+
+                    {userMapped.phone && (
+                      <p className="text-sm">
+                        <span className="font-semibold">Phone:</span> {userMapped.phone}
+                      </p>
+                    )}
                   </div>
                 </section>
               </Tab.Panel>

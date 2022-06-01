@@ -13,10 +13,25 @@ const Supabase = () => {
    * const jobs = Client.getJobs()
    *
    */
-  const getJobs = async () => {
-    const { data: Jobs } = await Client.from('Jobs').select('*');
-
-    return Jobs;
+  const getJobs = async (type, category, location) => {
+    switch (true) {
+      case type:
+        const { data: JobsByType } = await Client.from('Jobs').select('*').eq('jobType', type);
+        return JobsByType;
+      case category:
+        const { data: JobsByCategory } = await Client.from('Jobs')
+          .select('*')
+          .eq('jobCategory', category);
+        return JobsByCategory;
+      case location:
+        const { data: JobsByLocation } = await Client.from('Jobs')
+          .select('*')
+          .eq('location', location);
+        return JobsByLocation;
+      default:
+        const { data: Jobs } = await Client.from('Jobs').select('*');
+        return Jobs;
+    }
   };
 
   /**
@@ -31,7 +46,7 @@ const Supabase = () => {
   const getJob = async (jobId) => {
     const { data: Job } = await Client.from('Jobs').select('*').eq('id', jobId);
 
-    return Job;
+    return Job[0];
   };
 
   /**

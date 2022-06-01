@@ -2,9 +2,31 @@ import Client from '@/utils/initDatabase';
 
 import { GET_JOB, GET_JOBS, JOB_ERROR, JOBS_ERROR } from '../types';
 
-export const getJobs = () => async (dispatch) => {
+export const getJobs = (type, category, location) => async (dispatch) => {
+  let Jobs;
   try {
-    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs();
+    switch (true) {
+      case type:
+        Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(type);
+        console.log(type, category, location);
+
+        break;
+      case category:
+        Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(category);
+        console.log(type, category, location);
+
+        break;
+      case location:
+        Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(location);
+        console.log(type, category, location);
+
+        break;
+      default:
+        Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs();
+        console.log(type, category, location);
+
+        break;
+    }
 
     dispatch({
       payload: Jobs,

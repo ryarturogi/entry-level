@@ -12,19 +12,7 @@ function Login() {
 
   const { Auth } = Provider(currentProvider);
 
-  const login = async (provider) => {
-    let data = {};
-
-    try {
-      data = await Auth.signInWithProvider(provider);
-    } catch (error) {
-      console.error(error);
-    }
-
-    console.log(data);
-
-    return data;
-  };
+  const login = async (provider) => Auth.signInWithProvider(provider);
 
   return (
     <>

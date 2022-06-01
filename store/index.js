@@ -1,24 +1,18 @@
-import { createWrapper } from 'next-redux-wrapper';
-import { applyMiddleware, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+  
+  
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { JobApi } from 'store/api/JobService';
+import jobReducer from 'store/reducers/jobsReducers';
 
-import rootReducer from './reducers';
+const middlewares = [JobApi.middleware];
 
-// Initial states here
-const initialState = {};
+export const store = configureStore({
+  middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), ...middlewares],
+  reducer: {
+    [JobApi.reducerPath]: JobApi.reducer,
+    jobsList: jobReducer,
+  },
+});
 
-// Middleware
-const middleware = [thunk];
-
-// Creating store
-export const store = createStore(
-  rootReducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
-
-// Assigning store to next wrapper
-const makeStore = () => store;
-
-export const wrapper = createWrapper(makeStore);
+setupListeners(store.dispatch);

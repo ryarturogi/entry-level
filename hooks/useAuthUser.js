@@ -16,11 +16,6 @@ const AuthStateChanged = (setSession, setUser) => {
     setSession(currSession);
     setUser(currentUser ? currentUser : false);
 
-    /*
-     *  FIXME: Fix listener for auth state change
-     * Const { authSession, authListener } = Provider(currentProvider).Auth.onAuthStateChange();
-     */
-    // Return console.log(currentProvider.Client);
     const { data: authListener } = currentProvider.Client.auth.onAuthStateChange(
       // eslint-disable-next-line no-shadow
       async (_event, session) => {
@@ -75,7 +70,7 @@ export const useUser = () => {
   const context = useContext(UserContext);
 
   if (!context) {
-    throw new Error('useUser must be used within a UserContextClient.');
+    throw new Error('useUser must be used within a UserContext.');
   }
 
   return context;

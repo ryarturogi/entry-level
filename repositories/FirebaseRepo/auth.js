@@ -60,6 +60,7 @@ const signIn = async (email, password) => {
  */
 const signInWithProvider = async (providerName) => {
   let provider = null;
+  let errorMessage = null;
 
   switch (providerName) {
     case 'google':
@@ -72,7 +73,7 @@ const signInWithProvider = async (providerName) => {
       provider = new GithubAuthProvider();
   }
 
-  auth
+  return auth
     .signInWithPopup(provider)
     .then((userCredential) => {
       // Signed in
@@ -81,11 +82,8 @@ const signInWithProvider = async (providerName) => {
       return user;
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-
-      // eslint-disable-next-line no-console
-      console.log(errorCode, errorMessage);
+      errorMessage = error.message;
+      console.log(errorMessage);
     });
 };
 

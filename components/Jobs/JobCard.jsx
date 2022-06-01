@@ -1,11 +1,13 @@
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { formatDate, isToday, timeSince } from '@/utils/formatDate';
+
 import { BookmarkIcon } from '@heroicons/react/outline';
 import { ArrowRightIcon } from '@heroicons/react/solid';
-import Link from 'next/link';
 
 import JobTags from '@/components/Jobs/JobTags';
 import Avatar from '@/components/UI/Avatar';
 import Button from '@/components/UI/Button';
-import { formatDate, isToday, timeSince } from '@/utils/formatDate';
 
 const jobStatus = (job) => {
   switch (true) {
@@ -19,6 +21,8 @@ const jobStatus = (job) => {
 };
 
 function JobCard({ job }) {
+  const router = useRouter();
+
   return (
     <li
       className={`
@@ -57,20 +61,43 @@ function JobCard({ job }) {
                 )}
 
                 <Link href={`/job/${job.id}`}>
-                  <a className="">
-                    <div className="text-sm font-light leading-snug hover:text-accent-500">
+                  <a>
+                    <div className="mb-0.5 text-sm font-light hover:text-accent-500">
                       {job.companyName}
                     </div>
-                    <div className="text-base font-bold leading-snug hover:text-accent-500 ">
-                      {job.jobTitle}
-                    </div>
+                    <div className="text-lg font-bold hover:text-accent-500 ">{job.jobTitle}</div>
                   </a>
                 </Link>
 
-                <small className="text-[0.6rem] font-medium">{job.location}</small>
+                <nav className="flex space-x-2 place-items-start mt-0.5 mb-0.5 text-xs text-gray-800">
+                  <li
+                    className="capitalize cursor-pointer hover:text-accent-500"
+                    onClick={() => router.push(`/jobs/location/${job.location}`)}
+                  >
+                    Location: <strong>{job.location}</strong>
+                  </li>
+                  <li>
+                    <strong>|</strong>
+                  </li>
+                  <li
+                    className="capitalize cursor-pointer hover:text-accent-500"
+                    onClick={() => router.push(`/jobs/type/${job.jobType}`)}
+                  >
+                    Type: <strong>{job?.jobType?.replace('_', ' ')}</strong>
+                  </li>
+                  <li>
+                    <strong>|</strong>
+                  </li>
+                  <li
+                    className="capitalize cursor-pointer hover:text-accent-500"
+                    onClick={() => router.push(`/jobs/category/${job.jobCategory}`)}
+                  >
+                    Category: <strong>{job.jobCategory}</strong>
+                  </li>
+                </nav>
                 {job.jobTags && (
                   <JobTags
-                    tags={job.jobTags}
+                    tags={job.jobTags.slice(0, 5)}
                     theme={job.hasCompanyColor.isActive ? 'light' : 'dark'}
                   />
                 )}

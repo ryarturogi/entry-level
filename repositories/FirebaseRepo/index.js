@@ -12,8 +12,23 @@ import { db, fieldValue, storage } from './FirebaseConfig';
  * const jobs = Client.getJobs()
  *
  */
-const getJobs = async () => {
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc');
+const getJobs = async (type, category, location) => {
+  console.log(type, category, location);
+  let ref;
+  switch (true) {
+    case type:
+      ref = db.collection('jobs').orderBy('createdAt', 'desc').where('jobType', '==', type);
+      break;
+    case category:
+      ref = db.collection('jobs').orderBy('createdAt', 'desc').where('jobCategory', '==', category);
+      break;
+    case location:
+      ref = db.collection('jobs').orderBy('createdAt', 'desc').where('location', '==', location);
+      break;
+    default:
+      ref = db.collection('jobs').orderBy('createdAt', 'desc');
+      break;
+  }
 
   const jobs = [];
 

@@ -25,6 +25,8 @@ function Button(props) {
         return 'bg-orange-500 hover:bg-orange-700';
       case 'info':
         return 'bg-notice-info hover:bg-accent-800';
+      case 'link':
+        return 'bg-transparent text-gray-800 hover:text-accent-500';
       default:
         return 'bg-accent-500 hover:bg-accent-800';
     }

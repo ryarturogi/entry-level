@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 
 import Layout from '@/components/Layout';
 import { AuthProvider } from '@/hooks/useAuthUser';
-import { store, wrapper } from '@/store/index';
+import { store } from '@/store/index';
 
 function App({ Component, pageProps }) {
   return (
@@ -19,4 +19,4 @@ function App({ Component, pageProps }) {
   );
 }
 
-export default wrapper.withRedux(App);
+export default App;
