@@ -4,19 +4,19 @@ import React from 'react';
 import { Provider } from 'react-redux';
 
 import Layout from '@/components/Layout';
-import { UserContextProvider } from '@/hooks/useAuthUser';
-import { store, wrapper } from '@/store/store';
+import { AuthProvider } from '@/hooks/useAuthUser';
+import { store } from '@/store/index';
 
 function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
-      <UserContextProvider>
+      <AuthProvider>
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </UserContextProvider>
+      </AuthProvider>
     </Provider>
   );
 }
 
-export default wrapper.withRedux(App);
+export default App;

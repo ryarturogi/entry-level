@@ -3,8 +3,10 @@ module.exports = {
     domains: [
       'avatars.githubusercontent.com',
       'remoteok.com',
+      'remotive.com',
       'remoteok.io',
       'assets.landing.jobs',
+      'lh3.googleusercontent.com',
     ],
   },
 };

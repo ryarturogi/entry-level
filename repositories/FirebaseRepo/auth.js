@@ -1,4 +1,4 @@
-import { auth } from './FirebaseConfig';
+import { auth, GithubAuthProvider, GoogleAuthProvider, signOut } from './FirebaseConfig';
 
 /**
  *
@@ -52,6 +52,42 @@ const signIn = async (email, password) => {
 };
 
 /**
+ * @title Sign in user with GitHub
+ * @returns {Promise<Object>}
+ * @memberof Firebase
+ * @example
+ * const user = Client.Auth.signInWithProvider()
+ */
+const signInWithProvider = async (providerName) => {
+  let provider = null;
+  let errorMessage = null;
+
+  switch (providerName) {
+    case 'google':
+      provider = new GoogleAuthProvider();
+      break;
+    case 'github':
+      provider = new GithubAuthProvider();
+      break;
+    default:
+      provider = new GithubAuthProvider();
+  }
+
+  return auth
+    .signInWithPopup(provider)
+    .then((userCredential) => {
+      // Signed in
+      const { user } = userCredential;
+
+      return user;
+    })
+    .catch((error) => {
+      errorMessage = error.message;
+      console.log(errorMessage);
+    });
+};
+
+/**
  * @title Sign Out user
  * @returns {Promise<Object>}
  * @memberof Firebase
@@ -59,9 +95,9 @@ const signIn = async (email, password) => {
  * const logOutUser = Client.Auth.signOut();
  */
 
-const signOut = async () => {
+const logout = async () => {
   try {
-    return await auth.signOut();
+    return await signOut();
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -109,58 +145,14 @@ const getCurrentSession = () => {
   }
 };
 
-/**
- * @title On Auth state change
- * @returns {Promise<Object>}
- * @memberof Firebase
- * @example
- * const authState = Client.Auth.onAuthStateChange()
- */
-const onAuthStateChange = () => {
-  try {
-    let authSession = null;
-    let authListener = null;
-
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user === null) {
-        authSession = null;
-      } else {
-        user.getIdTokenResult().then((idTokenResult) => {
-          const sessionTime = idTokenResult.claims.auth_time * 1000;
-
-          authSession = {
-            sessionTime,
-            user,
-          };
-        });
-      }
-    });
-
-    authListener = {
-      unsubscribe,
-    };
-
-    console.log(authListener, authSession);
-
-    return { authListener, authSession };
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-
-    // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
-
-    return { error, errorCode, errorMessage };
-  }
-};
-
 const Auth = () => ({
+  auth,
   createUser,
   getCurrentSession,
   getCurrentUser,
-  onAuthStateChange,
   signIn,
-  signOut,
+  signInWithProvider,
+  signOut: logout,
 });
 
 export default Auth();

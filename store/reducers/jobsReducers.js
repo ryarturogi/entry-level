@@ -1,6 +1,7 @@
 import { GET_JOB, GET_JOBS, JOB_ERROR, JOBS_ERROR } from '../types';
 
 const initialState = {
+  error: null,
   job: {},
   jobs: [],
   loading: true,
@@ -22,7 +23,7 @@ const jobReducers = (state = initialState, action) => {
     case GET_JOB:
       return {
         ...state,
-        job: action.payload[0],
+        job: action.payload,
         loading: false,
       };
     case JOB_ERROR:

@@ -25,6 +25,8 @@ function Button(props) {
         return 'bg-orange-500 hover:bg-orange-700';
       case 'info':
         return 'bg-notice-info hover:bg-accent-800';
+      case 'link':
+        return 'bg-transparent text-gray-800 hover:text-accent-500';
       default:
         return 'bg-accent-500 hover:bg-accent-800';
     }
@@ -35,11 +37,11 @@ function Button(props) {
       case 'sm':
         return 'text-sm py-1 px-2';
       case 'md':
-        return 'text-base py-2 px-4';
+        return 'text-base py-2.5 px-6';
       case 'lg':
-        return 'text-lg py-2 px-5';
+        return 'text-lg py-3 px-8';
       default:
-        return 'text-base py-3 px-6';
+        return 'text-base py-3.5 px-6';
     }
   };
 
