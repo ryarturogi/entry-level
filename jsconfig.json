@@ -1,11 +1,16 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "module": "commonjs",
+    "target": "es6",
+    "sourceMap": true,
     "paths": {
-      "@/components/*": ["/components/*"],
+      "@/components/*": ["components/*"],
       "@/pages/*": ["pages/*"],
       "@/api/*": ["pages/api/*"],
+      "@/store/*": ["store/*"],
       "@/utils/*": ["utils/*"],
+      "@/repositories/*": ["repositories/*"],
       "@/assets/*": ["assets/*"],
       "@/styles/*": ["styles/*"],
       "@/public/*": ["public/*"],

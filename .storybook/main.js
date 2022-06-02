@@ -1,11 +1,11 @@
 // .storybook/main.js
 
-const path = require('path')
+const path = require('path');
 
 module.exports = {
-  stories: ['../**/*.stories.mdx', '../**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../**/*.stories.mdx', '../**/*.stories.@(js|jsx)'],
   /** Expose public folder to storybook as static */
-  staticDirs: ['../public'],
+  staticDirs: ['@/public'],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -33,14 +33,14 @@ module.exports = {
     config.resolve.alias = {
       ...config.resolve?.alias,
       '@': [path.resolve(__dirname, '../')],
-    }
+    };
 
     /**
      * Fixes font import with /
      * @see https://github.com/storybookjs/storybook/issues/12844#issuecomment-867544160
      */
-    config.resolve.roots = [path.resolve(__dirname, '../public'), 'node_modules']
+    config.resolve.roots = [path.resolve(__dirname, '@/public'), 'node_modules'];
 
-    return config
+    return config;
   },
-}
+};

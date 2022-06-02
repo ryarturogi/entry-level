@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 module.exports = {
   content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
@@ -6,9 +7,6 @@ module.exports = {
       backgroundImage: {
         'hero-pattern': "url('/img/hero-pattern.png')",
       },
-      maxWidth: {
-        hero: '76.25rem',
-      },
       colors: {
         accent: {
           100: '#6791ff',
@@ -16,18 +14,21 @@ module.exports = {
           800: '#2b3298',
         },
         notice: {
-          success: '#00d6c0',
-          warn: '#ffc549',
-          info: '#6791ff',
           'danger-100': '#ff5c49',
           'danger-200': '#cb3903',
           'danger-300': '#b60000',
+          info: '#6791ff',
+          success: '#00d6c0',
+          warn: '#ffc549',
         },
       },
+      maxWidth: {
+        hero: '76.25rem',
+      },
     },
+    plugins: [require('@tailwindcss/typography')],
     variants: {
       extend: {},
     },
-    plugins: [require('@tailwindcss/typography')],
   },
-}
+};

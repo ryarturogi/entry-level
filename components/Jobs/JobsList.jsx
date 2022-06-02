@@ -1,15 +1,33 @@
-import JobCard from './JobCard'
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-const JobsList = ({ jobs }) => {
+import Loader from '@/components/UI/Loader';
+import { getJobs } from '@/store/actions/jobAction';
+
+import JobCard from './JobCard';
+
+function JobsList() {
+  const dispatch = useDispatch();
+  const jobsList = useSelector((state) => state.jobsList);
+  const { loading, error, jobs } = jobsList;
+
+  useEffect(() => {
+    dispatch(getJobs());
+  }, [dispatch]);
+
   return (
     <section className="flex flex-col items-center justify-center mx-auto w-[96%]">
       <ul className="w-full space-y-5 max-w-hero">
-        {jobs.map((job) => (
-          <JobCard key={job.id} job={job} />
-        ))}
+        {error && error.message}
+        {(loading && !error && (
+          <li className="flex items-center justify-center w-full ">
+            <Loader />
+          </li>
+        )) ||
+          (jobs ? jobs.map((job) => <JobCard job={job} key={job.id} />) : null)}
       </ul>
     </section>
-  )
+  );
 }
 
-export default JobsList
+export default JobsList;

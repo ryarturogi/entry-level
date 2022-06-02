@@ -1,15 +1,22 @@
-import React from 'react'
-import { wrapper } from '@/api/store'
+import '@/styles/globals.css';
 
-import { UserContextProvider } from '@/hooks/useAuthUser'
-import '@/styles/globals.css'
+import React from 'react';
+import { Provider } from 'react-redux';
 
-const App = ({ Component, pageProps }) => {
+import Layout from '@/components/Layout';
+import { AuthProvider } from '@/hooks/useAuthUser';
+import { store } from '@/store/index';
+
+function App({ Component, pageProps }) {
   return (
-    <UserContextProvider>
-      <Component {...pageProps} />
-    </UserContextProvider>
-  )
+    <Provider store={store}>
+      <AuthProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </AuthProvider>
+    </Provider>
+  );
 }
 
-export default wrapper.withRedux(App)
+export default App;

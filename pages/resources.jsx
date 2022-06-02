@@ -1,15 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import Header from '@/components/Header'
+import Head from '@/components/partials/Head';
 
 export default function Resources() {
   return (
     <>
-      <Header pageTitle="Resources" />
-
-      <main role="main">
-        <section className="">Resources</section>
-      </main>
+      <Head title="Resources" />
+      <div className="">Resources</div>
     </>
-  )
+  );
 }

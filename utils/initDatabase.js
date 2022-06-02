@@ -1,6 +1,19 @@
-import { createClient } from '@supabase/supabase-js'
+import Firebase from '@/repositories/FirebaseRepo';
+import Supabase from '@/repositories/SupabaseRepo';
 
-export const provider = createClient(
-  process.env.NEXT_PUBLIC_PROVIDER_URL,
-  process.env.NEXT_PUBLIC_PROVIDER_KEY
-)
+import Repository from '../repositories';
+
+const Provider = (provider) => {
+  switch (provider) {
+    case 'supabase':
+      // Init using Supabase service
+      return Repository.init(Supabase());
+    case 'firebase':
+      // Init using Firebase service
+      return Repository.init(Firebase());
+    default:
+      return Repository.init(Supabase());
+  }
+};
+
+export default Provider;
