@@ -65,12 +65,26 @@ const Supabase = () => {
    * const jobs = Client.searchJobs('developer')
    * const jobs = Client.searchJobs('developer', 'remote')
    **/
-  const searchJobs = async (keywords) => {
-    const { data: Jobs } = await Client.from('jobs').select('*').textSearch('jobTitle', keywords, {
-      type: 'websearch',
-      config: 'english',
+  const searchJobs = async (searchValue) => {
+    const { data: jobs } = await Client.from('jobs').select('*');
+    return jobs.filter((job) => {
+      const isValid = (str) => {
+        return str.toLowerCase().includes(searchValue.toLowerCase());
+      };
+
+      const isSearchQueryValid =
+        isValid(job.jobTitle) ||
+        isValid(job.jobType) ||
+        isValid(job.jobCategory) ||
+        isValid(job.companyName) ||
+        isValid(job.location);
+
+      if (!isSearchQueryValid) {
+        return;
+      }
+
+      return job;
     });
-    return Jobs;
   };
 
   /**

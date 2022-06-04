@@ -17,11 +17,6 @@ function Home() {
 
   const handleOnSearch = (search) => {
     if (search.length > 2) {
-      search = search
-        .split(' ')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-      console.log(search);
       return dispatch(searchJobs(search));
     }
     return dispatch(getJobs());
