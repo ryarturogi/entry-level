@@ -33,7 +33,7 @@ function JobCard({ job }) {
             {job.jobTags && (
               <div className="mb-3">
                 <JobTags
-                  tags={job.jobTags.slice(0, 12)}
+                  tags={job.jobTags}
                   theme={job.hasCompanyColor.isActive ? 'light' : 'dark'}
                 />
               </div>

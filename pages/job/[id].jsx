@@ -15,8 +15,10 @@ function Job() {
   const { loading, error, job } = jobsList;
 
   useEffect(() => {
-    dispatch(getJob(id));
-  }, [dispatch, id]);
+    if (id) {
+      dispatch(getJob(id));
+    }
+  }, [id]);
 
   return (
     <>

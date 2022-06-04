@@ -42,7 +42,7 @@ function JobCard({ job }) {
         <div className="flex flex-col items-center justify-start w-full space-x-5 space-y-3 lg:justify-between sm:space-y-0 sm:items-start lg:items-start sm:flex-row">
           <div className="self-center">
             {job.hasCompanyLogo && (
-              <Link href={`job/${job.id}`}>
+              <Link href={`/job/${job.id}`}>
                 <a>
                   <Avatar avatar={job.companyLogo} size="md" />
                 </a>
@@ -53,12 +53,15 @@ function JobCard({ job }) {
           <div className="flex flex-col justify-between w-full lg:items-center lg:flex-row">
             <div className="items-center justify-between w-full lg:flex sm:pr-5">
               <section className="flex flex-col items-center text-center sm:items-start sm:text-left">
-                {job.isFeatured && (
-                  <small className="text-xs font-medium capitalize">Featured</small>
-                )}
-                {job.isGuaranteed && (
-                  <small className="text-xs font-medium capitalize">Guaranteed</small>
-                )}
+                <div className="space-x-2">
+                  {job.isFeatured && (
+                    <small className="text-xs font-medium capitalize">Featured</small>
+                  )}
+                  {job.isGuaranteed && job.isFeatured && <span>|</span>}
+                  {job.isGuaranteed && (
+                    <small className="text-xs font-medium capitalize">Guaranteed</small>
+                  )}
+                </div>
 
                 <Link href={`/job/${job.id}`}>
                   <a>
@@ -69,7 +72,7 @@ function JobCard({ job }) {
                   </a>
                 </Link>
 
-                <nav className="flex space-x-2 place-items-start mt-0.5 mb-0.5 text-xs text-gray-800">
+                <nav className="flex space-x-2 place-items-start mt-0.5 mb-0.5 text-xs ">
                   <li
                     className="capitalize cursor-pointer hover:text-accent-500"
                     onClick={() => router.push(`/jobs/location/${job.location}`)}
@@ -97,7 +100,7 @@ function JobCard({ job }) {
                 </nav>
                 {job.jobTags && (
                   <JobTags
-                    tags={job.jobTags.slice(0, 5)}
+                    tags={job.jobTags}
                     theme={job.hasCompanyColor.isActive ? 'light' : 'dark'}
                   />
                 )}

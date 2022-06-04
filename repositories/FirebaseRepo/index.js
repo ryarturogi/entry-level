@@ -12,24 +12,49 @@ import { db, fieldValue, storage } from './FirebaseConfig';
  * const jobs = Client.getJobs()
  *
  */
-const getJobs = async (type, category, location) => {
-  console.log(type, category, location);
-  let ref;
-  switch (true) {
-    case type:
-      ref = db.collection('jobs').orderBy('createdAt', 'desc').where('jobType', '==', type);
-      break;
-    case category:
-      ref = db.collection('jobs').orderBy('createdAt', 'desc').where('jobCategory', '==', category);
-      break;
-    case location:
-      ref = db.collection('jobs').orderBy('createdAt', 'desc').where('location', '==', location);
-      break;
-    default:
-      ref = db.collection('jobs').orderBy('createdAt', 'desc');
-      break;
+
+const getJobsBySearchQuery = async (ref, searchValue) => {
+  const jobs = [];
+
+  try {
+    let snap = await ref.get({ source: 'cache' });
+
+    if (!snap.exists) {
+      snap = await ref.get({ source: 'server' });
+    }
+    if (snap.empty) {
+      return [];
+    }
+
+    snap.forEach((doc) => {
+      const job = { ...doc.data() };
+
+      const isValid = (str) => {
+        return str.toLowerCase().includes(searchValue.toLowerCase());
+      };
+
+      const isSearchQueryValid =
+        isValid(job.jobTitle) ||
+        isValid(job.jobType) ||
+        isValid(job.jobCategory) ||
+        isValid(job.companyName) ||
+        isValid(job.location);
+
+      if (!isSearchQueryValid) {
+        return;
+      }
+
+      job.id = doc.id;
+      jobs.push(job);
+    });
+  } catch (err) {
+    throw new Error(err.code);
   }
 
+  return jobs;
+};
+
+const getJobsQuery = async (ref) => {
   const jobs = [];
 
   try {
@@ -52,6 +77,62 @@ const getJobs = async (type, category, location) => {
   }
 
   return jobs;
+};
+
+const getJobs = async () => {
+  const ref = db.collection('jobs').orderBy('createdAt', 'desc');
+
+  return getJobsQuery(ref);
+};
+
+const getJobsByType = async (type) => {
+  const ref = db.collection('jobs').orderBy('createdAt', 'desc').where('jobType', '==', type);
+
+  return getJobsQuery(ref);
+};
+
+const getJobsByCategory = async (category) => {
+  const ref = db
+    .collection('jobs')
+    .orderBy('createdAt', 'desc')
+    .where('jobCategory', '==', category);
+
+  return getJobsQuery(ref);
+};
+
+const getJobsByLocation = async (location) => {
+  const ref = db.collection('jobs').orderBy('createdAt', 'desc').where('location', '==', location);
+
+  return getJobsQuery(ref);
+};
+
+const getJobsByTag = async (tag) => {
+  const ref = db
+    .collection('jobs')
+    .orderBy('createdAt', 'desc')
+    .where('jobTags', 'array-contains', tag);
+
+  return getJobsQuery(ref);
+};
+
+const getJobsByCompany = async (company) => {
+  const ref = db.collection('jobs').orderBy('createdAt', 'desc').where('company', '==', company);
+
+  return getJobsQuery(ref);
+};
+
+/**
+ * @title Search jobs by (companyName, jobTitle, location)
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.searchJobs(keywords)
+ **/
+const searchJobs = async (searchValue) => {
+  //capitalize first letter of each word
+  const ref = db.collection('jobs').orderBy('createdAt', 'desc');
+
+  return getJobsBySearchQuery(ref, searchValue);
 };
 
 /**
@@ -155,7 +236,7 @@ const createJob = async (userId, job) => {
  *
  */
 const updateJob = async (userId, job) => {
-  const ref = db.collection('jobs').doc(job.id);
+  const ref = db.collection('jobs').doc(job.id).where('userId', '==', userId);
 
   let doc = {};
 
@@ -182,7 +263,7 @@ const updateJob = async (userId, job) => {
  *
  */
 const removeJob = async (userId, job) => {
-  const ref = db.collection('jobs').doc(job.id);
+  const ref = db.collection('jobs').doc(job.id).where('userId', '==', userId);
 
   try {
     await ref.delete();
@@ -402,6 +483,12 @@ const Firebase = () => ({
   getCompany,
   getJob,
   getJobs,
+  getJobsByType,
+  getJobsByCategory,
+  getJobsByLocation,
+  getJobsByTag,
+  getJobsByCompany,
+  searchJobs,
   removeCategory,
   removeJob,
   updateCategory,
