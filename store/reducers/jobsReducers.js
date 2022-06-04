@@ -1,4 +1,5 @@
-import { GET_JOB, GET_JOBS, JOB_ERROR, JOBS_ERROR } from '../types';
+/* eslint-disable default-param-last */
+import { GET_JOB, GET_JOBS, JOBS_ERROR, JOBS_LOADING } from '../types';
 
 const initialState = {
   error: null,
@@ -7,7 +8,7 @@ const initialState = {
   loading: true,
 };
 
-const jobReducers = (state = initialState, action) => {
+const jobsReducers = (state = initialState, action) => {
   switch (action.type) {
     case GET_JOBS:
       return {
@@ -26,14 +27,15 @@ const jobReducers = (state = initialState, action) => {
         job: action.payload,
         loading: false,
       };
-    case JOB_ERROR:
+    case JOBS_LOADING:
       return {
-        error: action.payload,
-        loading: false,
+        ...state,
+        loading: true,
       };
+
     default:
       return state;
   }
 };
 
-export default jobReducers;
+export default jobsReducers;

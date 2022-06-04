@@ -1,11 +1,18 @@
 import Link from 'next/link';
 
 function JobTags({ tags, theme }) {
+  const parsedTags = () => {
+    if (process.env.NEXT_PUBLIC_PROVIDER_NAME === 'supabase') {
+      return JSON.parse(tags);
+    }
+    return tags;
+  };
+
   return (
     <ul className="flex flex-wrap items-end justify-start space-x-1.5 space-y-1.5">
-      {tags.map((tag, idx) => (
+      {parsedTags().map((tag, idx) => (
         // eslint-disable-next-line react/no-array-index-key
-        <Link href={`/jobs?tag=${tag}`} key={idx} passHref>
+        <Link href={`/jobs/tag/${tag.replace(/\s/g, '-')}`} key={idx} passHref>
           <li>
             <a
               className={`cursor-pointer flex items-center justify-center px-2 py-0.5 text-xs border rounded capitalize  ${

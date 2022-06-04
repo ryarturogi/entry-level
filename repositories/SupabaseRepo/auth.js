@@ -87,9 +87,7 @@ const signInWithProvider = async (providerName) => {
  */
 
 const signOut = async () => {
-  const signedOut = Client.auth.signOut();
-
-  return signedOut;
+  return Client.auth.signOut();
 };
 
 /**
@@ -101,9 +99,7 @@ const signOut = async () => {
  */
 const getCurrentUser = () => {
   try {
-    const user = Client.auth.user();
-
-    return user;
+    return Client.auth.user();
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -124,9 +120,7 @@ const getCurrentUser = () => {
  */
 const getCurrentSession = () => {
   try {
-    const session = Client.auth.session();
-
-    return session;
+    return Client.auth.session();
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;

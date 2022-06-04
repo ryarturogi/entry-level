@@ -3,26 +3,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import JobCard from 'components/Jobs/JobCard';
 import Loader from 'components/UI/Loader';
 import { useRouter } from 'next/router';
-import { getJobsByCategory } from '@/store/actions/jobAction';
+import { getJobsByTag } from '@/store/actions/jobAction';
 import Head from 'next/head';
 
-function JobType() {
+function JobTag() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { loading, error, jobs } = useSelector((state) => state.jobsList);
-  const { category } = router.query;
-  const categoryCapitalize = category?.charAt(0)?.toUpperCase() + category?.slice(1) || '';
+  const { tag } = router.query;
+  const tagCapitalize = tag?.charAt(0)?.toUpperCase() + tag?.slice(1);
 
   useEffect(() => {
-    if (category) {
-      dispatch(getJobsByCategory(category));
+    if (tag) {
+      dispatch(getJobsByTag(tag));
     }
-  }, [category]);
+  }, [tag]);
 
   return (
     <section className="flex flex-col items-center justify-center mx-auto w-[96%]">
       <Head>
-        <title>{`${categoryCapitalize} Category`} | EntryLevelDevs</title>
+        <title>{`${tagCapitalize} Jobs`} | EntryLevelDevs</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <ul className="w-full space-y-5 max-w-hero">
@@ -38,4 +38,4 @@ function JobType() {
   );
 }
 
-export default JobType;
+export default JobTag;

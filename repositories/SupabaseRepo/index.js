@@ -13,25 +13,64 @@ const Supabase = () => {
    * const jobs = Client.getJobs()
    *
    */
-  const getJobs = async (type, category, location) => {
-    switch (true) {
-      case type:
-        const { data: JobsByType } = await Client.from('Jobs').select('*').eq('jobType', type);
-        return JobsByType;
-      case category:
-        const { data: JobsByCategory } = await Client.from('Jobs')
-          .select('*')
-          .eq('jobCategory', category);
-        return JobsByCategory;
-      case location:
-        const { data: JobsByLocation } = await Client.from('Jobs')
-          .select('*')
-          .eq('location', location);
-        return JobsByLocation;
-      default:
-        const { data: Jobs } = await Client.from('Jobs').select('*');
-        return Jobs;
-    }
+  const getJobs = async () => {
+    const { data: Jobs } = await Client.from('jobs');
+
+    return Jobs;
+  };
+
+  const getJobsByType = async (type) => {
+    const { data: JobsByType } = await Client.from('jobs')
+      .select('*')
+      .order('createdAt', { ascending: false })
+      .eq('jobType', type);
+
+    return JobsByType;
+  };
+
+  const getJobsByCategory = async (category) => {
+    const { data: JobsByCategory } = await Client.from('jobs')
+      .select('*')
+      .order('createdAt', { ascending: false })
+      .eq('jobCategory', category);
+
+    return JobsByCategory;
+  };
+
+  const getJobsByLocation = async (location) => {
+    const { data: JobsByLocation } = await Client.from('jobs')
+      .select('*')
+      .order('createdAt', { ascending: false })
+      .eq('location', location);
+
+    return JobsByLocation;
+  };
+
+  const getJobsByTag = async (tag) => {
+    const { data: JobsByTag } = await Client.from('jobs')
+      .select('*')
+      .order('createdAt', { ascending: false })
+      .textSearch('jobTags', tag, {
+        config: 'english',
+      });
+    return JobsByTag;
+  };
+
+  /**
+   * @title Search jobs by keyword
+   * @param {string} keyword
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example
+   * const jobs = Client.searchJobs('developer')
+   * const jobs = Client.searchJobs('developer', 'remote')
+   **/
+  const searchJobs = async (keywords) => {
+    const { data: Jobs } = await Client.from('jobs').select('*').textSearch('jobTitle', keywords, {
+      type: 'websearch',
+      config: 'english',
+    });
+    return Jobs;
   };
 
   /**
@@ -44,7 +83,7 @@ const Supabase = () => {
    *
    */
   const getJob = async (jobId) => {
-    const { data: Job } = await Client.from('Jobs').select('*').eq('id', jobId);
+    const { data: Job } = await Client.from('jobs').select('*').eq('id', jobId);
 
     return Job[0];
   };
@@ -75,7 +114,7 @@ const Supabase = () => {
    *
    */
   const updateJob = async (jobId, job) => {
-    const { data: Job } = await Client.from('Jobs').update(job).match({ id: jobId });
+    const { data: Job } = await Client.from('jobs').update(job).match({ id: jobId });
 
     return Job;
   };
@@ -90,7 +129,7 @@ const Supabase = () => {
    *
    */
   const removeJob = async (jobId) => {
-    const { data: Job } = await Client.from('Jobs').delete().match({ id: jobId });
+    const { data: Job } = await Client.from('jobs').delete().match({ id: jobId });
 
     return Job;
   };
@@ -129,7 +168,7 @@ const Supabase = () => {
    *
    */
   const getCompanies = async () => {
-    const { data: Companies } = await Client.from('Jobs').select(`id,
+    const { data: Companies } = await Client.from('jobs').select(`id,
     userId,
     companyLogo,
     companyName,
@@ -151,7 +190,7 @@ const Supabase = () => {
    *
    */
   const getCompany = async (companyId) => {
-    const { data: Company } = await Client.from('Jobs')
+    const { data: Company } = await Client.from('jobs')
       .select(
         `id,
         userId,
@@ -256,6 +295,11 @@ const Supabase = () => {
     getCompany,
     getJob,
     getJobs,
+    getJobsByType,
+    getJobsByCategory,
+    getJobsByLocation,
+    getJobsByTag,
+    searchJobs,
     removeCategory,
     removeJob,
     updateCategory,

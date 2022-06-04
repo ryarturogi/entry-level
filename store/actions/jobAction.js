@@ -1,32 +1,90 @@
 import Client from '@/utils/initDatabase';
 
-import { GET_JOB, GET_JOBS, JOB_ERROR, JOBS_ERROR } from '../types';
+import { GET_JOB, GET_JOBS, JOBS_ERROR, JOBS_LOADING } from '../types';
 
-export const getJobs = (type, category, location) => async (dispatch) => {
-  let Jobs;
+export const getJobs = () => async (dispatch) => {
+  dispatch({
+    type: JOBS_LOADING,
+  });
+
   try {
-    switch (true) {
-      case type:
-        Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(type);
-        console.log(type, category, location);
+    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs();
 
-        break;
-      case category:
-        Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(category);
-        console.log(type, category, location);
+    dispatch({
+      payload: Jobs,
+      type: GET_JOBS,
+    });
+  } catch (error) {
+    dispatch({
+      payload: error,
+      type: JOBS_ERROR,
+    });
+  }
+};
+export const getJobsByType = (type) => async (dispatch) => {
+  dispatch({
+    type: JOBS_LOADING,
+  });
 
-        break;
-      case location:
-        Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(location);
-        console.log(type, category, location);
+  try {
+    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobsByType(type);
 
-        break;
-      default:
-        Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs();
-        console.log(type, category, location);
+    dispatch({
+      payload: Jobs,
+      type: GET_JOBS,
+    });
+  } catch (error) {
+    dispatch({
+      payload: error,
+      type: JOBS_ERROR,
+    });
+  }
+};
+export const getJobsByCategory = (category) => async (dispatch) => {
+  dispatch({
+    type: JOBS_LOADING,
+  });
 
-        break;
-    }
+  try {
+    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobsByCategory(category);
+
+    dispatch({
+      payload: Jobs,
+      type: GET_JOBS,
+    });
+  } catch (error) {
+    dispatch({
+      payload: error,
+      type: JOBS_ERROR,
+    });
+  }
+};
+export const getJobsByTag = (tag) => async (dispatch) => {
+  dispatch({
+    type: JOBS_LOADING,
+  });
+
+  try {
+    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobsByTag(tag);
+
+    dispatch({
+      payload: Jobs,
+      type: GET_JOBS,
+    });
+  } catch (error) {
+    dispatch({
+      payload: error,
+      type: JOBS_ERROR,
+    });
+  }
+};
+export const getJobsByLocation = (location) => async (dispatch) => {
+  dispatch({
+    type: JOBS_LOADING,
+  });
+
+  try {
+    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobsByLocation(location);
 
     dispatch({
       payload: Jobs,
@@ -41,6 +99,10 @@ export const getJobs = (type, category, location) => async (dispatch) => {
 };
 
 export const getJob = (jobId) => async (dispatch) => {
+  dispatch({
+    type: JOBS_LOADING,
+  });
+
   try {
     const Job = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJob(jobId);
 
@@ -51,7 +113,27 @@ export const getJob = (jobId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       payload: error,
-      type: JOB_ERROR,
+      type: JOBS_ERROR,
+    });
+  }
+};
+
+export const searchJobs = (keywords) => async (dispatch) => {
+  dispatch({
+    type: JOBS_LOADING,
+  });
+
+  try {
+    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).searchJobs(keywords);
+
+    dispatch({
+      payload: Jobs,
+      type: GET_JOBS,
+    });
+  } catch (error) {
+    dispatch({
+      payload: error,
+      type: JOBS_ERROR,
     });
   }
 };
