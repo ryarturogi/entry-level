@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import JobCard from 'components/Jobs/JobCard';
 import Loader from 'components/UI/Loader';
 import { useRouter } from 'next/router';
-import { getJobs } from '@/store/actions/jobAction';
+import { getJobsByType } from '@/store/actions/jobAction';
 import Head from 'next/head';
 
 function JobType() {
@@ -14,8 +14,10 @@ function JobType() {
   const typeCapitalize = type?.charAt(0)?.toUpperCase() + type?.slice(1);
 
   useEffect(() => {
-    dispatch(getJobs(type));
-  }, [dispatch, type]);
+    if (type) {
+      dispatch(getJobsByType(type));
+    }
+  }, [type]);
 
   return (
     <section className="flex flex-col items-center justify-center mx-auto w-[96%]">

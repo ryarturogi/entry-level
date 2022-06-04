@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import JobCard from 'components/Jobs/JobCard';
 import Loader from 'components/UI/Loader';
 import { useRouter } from 'next/router';
-import { getJobs } from '@/store/actions/jobAction';
+import { getJobsByLocation } from '@/store/actions/jobAction';
 import Head from 'next/head';
 
 function JobType() {
@@ -14,8 +14,10 @@ function JobType() {
   const locationCapitalize = location?.charAt(0)?.toUpperCase() + location?.slice(1);
 
   useEffect(() => {
-    dispatch(getJobs(location.toLowerCase()));
-  }, [dispatch, location]);
+    if (location) {
+      dispatch(getJobsByLocation(location));
+    }
+  }, [location]);
 
   return (
     <section className="flex flex-col items-center justify-center mx-auto w-[96%]">
@@ -30,7 +32,7 @@ function JobType() {
             <Loader />
           </li>
         )) ||
-          (jobs ? jobs.map((job) => <JobCard job={job} key={job.id} />) : null)}
+          (jobs ? jobs.map((job, idx) => <JobCard job={job} key={idx} />) : null)}
       </ul>
     </section>
   );

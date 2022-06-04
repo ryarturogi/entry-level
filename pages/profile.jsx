@@ -24,7 +24,6 @@ export default function Profile() {
           createdAt: user.created_at,
         };
       case 'firebase':
-        console.log(user);
         return {
           id: user.uid,
           email: user.email,

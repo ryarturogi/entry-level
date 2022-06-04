@@ -3,6 +3,29 @@ import sanitizeHtml from 'sanitize-html';
 
 import baseQuery from './BaseQuery';
 
+const mappedData = (data) => {
+  return data.map((job) => ({
+    companyDescription: job.company_description,
+    companyLogo: job.company_logo,
+    companyName: job.company_name,
+    createdAt: new Date(job.publication_date),
+    hasCompanyColor: {
+      color: '#ffffff',
+      isActive: false,
+    },
+    hasCompanyLogo: Boolean(job.company_logo),
+    howToApply: job.url,
+    id: job.id,
+    jobCategory: job.category,
+    jobDescription: job.description,
+    jobTags: job.tags,
+    jobTitle: job.title,
+    jobType: job.job_type,
+    location: job.candidate_required_location,
+    salary: job.salary,
+  }));
+};
+
 export const JobApi = createApi({
   baseQuery,
   endpoints: (builder) => ({
@@ -12,14 +35,14 @@ export const JobApi = createApi({
         // eslint-disable-next-line prefer-destructuring
         const job = data[0];
 
-        const jobData = {
+        return {
           companyDescription: sanitizeHtml(job.company_description),
           companyLogo: job.company_logo,
           companyName: job.company_name,
           createdAt: job.publication_date,
           hasCompanyColor: {
             color: '#ffffff',
-            isActive: false
+            isActive: false,
           },
           hasCompanyLogo: Boolean(job.company_logo),
           howToApply: sanitizeHtml(job.url),
@@ -32,66 +55,21 @@ export const JobApi = createApi({
           location: job.candidate_required_location,
           salary: job.salary,
         };
-
-
-        return jobData;
       },
       validatesTags: ['Job'],
     }),
     getJobs: builder.query({
       query: () => 'jobs?_limit=100',
       transformResponse: (data) => {
-        const jobs = data.map((job) => ({
-          companyDescription: job.company_description,
-          companyLogo: job.company_logo,
-          companyName: job.company_name,
-          createdAt: new Date(job.publication_date),
-          hasCompanyColor: {
-            color: '#ffffff',
-            isActive: false
-          },
-          hasCompanyLogo: Boolean(job.company_logo),
-          howToApply: job.url,
-          id: job.id,
-          jobCategory: job.category,
-          jobDescription: job.description,
-          jobTags: job.tags,
-          jobTitle: job.title,
-          jobType: job.job_type,
-          location: job.candidate_required_location,
-          salary: job.salary,
-        }));
-
-        return jobs;
+        return mappedData(data);
       },
       validatesTags: ['Jobs'],
     }),
     getJobsByType: builder.query({
       query: (type) => `jobs?job_type=${type}&_limit=100`,
       transformResponse: (data) => {
-        const jobs = data.map((job) => ({
-          companyDescription: job.company_description,
-          companyLogo: job.company_logo,
-          companyName: job.company_name,
-          createdAt: new Date(job.publication_date),
-          hasCompanyColor: {
-            color: '#ffffff',
-            isActive: false
-          },
-          hasCompanyLogo: Boolean(job.company_logo),
-          howToApply: job.url,
-          id: job.id,
-          jobCategory: job.category,
-          jobDescription: job.description,
-          jobTags: job.tags,
-          jobTitle: job.title,
-          jobType: job.job_type,
-          location: job.candidate_required_location,
-          salary: job.salary,
-        }));
-
-        return jobs;
-      }
+        return mappedData(data);
+      },
     }),
   }),
   reducerPath: 'JobApi',
