@@ -26,9 +26,9 @@ module.exports = {
         hero: '76.25rem',
       },
     },
-    plugins: [require('@tailwindcss/typography')],
-    variants: {
-      extend: {},
-    },
+  },
+  plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
+  variants: {
+    extend: {},
   },
 };

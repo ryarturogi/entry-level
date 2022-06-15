@@ -1,30 +1,30 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { getJobsByLocation } from '@/store/actions/jobAction';
+import { getJobsByCompany } from '@/store/actions/jobAction';
 import Head from 'next/head';
 
 import Loader from 'components/UI/Loader';
-import JobCard from 'components/Jobs/JobCard';
 import Hero from '@/components/UI/Hero';
+import JobCard from 'components/Jobs/JobCard';
 
-function JobsByLocation() {
+function JobsByCompany() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { loading, error, jobs } = useSelector((state) => state.jobsList);
-  const { location } = router.query;
-  const locationCapitalize = location?.charAt(0)?.toUpperCase() + location?.slice(1);
+  const { company } = router.query;
+  const companyCapitalize = company?.charAt(0)?.toUpperCase() + company?.slice(1);
 
   useEffect(() => {
-    if (location) {
-      dispatch(getJobsByLocation(location));
+    if (company) {
+      dispatch(getJobsByCompany(company));
     }
-  }, [location]);
+  }, [company]);
 
   return (
     <section className="flex flex-col items-center justify-center mx-auto w-[96%]">
       <Head>
-        <title>{`${locationCapitalize} Jobs`} | EntryLevelDevs</title>
+        <title>{`${companyCapitalize} Jobs`} | EntryLevelDevs</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Hero />
@@ -35,10 +35,10 @@ function JobsByLocation() {
             <Loader />
           </li>
         )) ||
-          (jobs ? jobs.map((job, idx) => <JobCard job={job} key={idx} />) : null)}
+          (jobs ? jobs.map((job) => <JobCard job={job} key={job.id} />) : null)}
       </ul>
     </section>
   );
 }
 
-export default JobsByLocation;
+export default JobsByCompany;
