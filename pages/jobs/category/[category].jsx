@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import JobCard from 'components/Jobs/JobCard';
-import Loader from 'components/UI/Loader';
 import { useRouter } from 'next/router';
 import { getJobsByCategory } from '@/store/actions/jobAction';
 import Head from 'next/head';
 
-function JobType() {
+import JobCard from 'components/Jobs/JobCard';
+import Loader from 'components/UI/Loader';
+import Hero from '@/components/UI/Hero';
+
+function JobsByCategory() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { loading, error, jobs } = useSelector((state) => state.jobsList);
@@ -25,6 +27,7 @@ function JobType() {
         <title>{`${categoryCapitalize} Category`} | EntryLevelDevs</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
+      <Hero />
       <ul className="w-full space-y-5 max-w-hero">
         {error && error.message}
         {(loading && !error && (
@@ -38,4 +41,4 @@ function JobType() {
   );
 }
 
-export default JobType;
+export default JobsByCategory;

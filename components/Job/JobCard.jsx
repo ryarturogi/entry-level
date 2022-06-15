@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import JobTags from '@/components/Jobs/JobTags';
 import Avatar from '@/components/UI/Avatar';
 import { formatDate, isToday, timeSince } from '@/utils/formatDate';
+import Link from 'next/link';
 
 function JobCard({ job }) {
   const router = useRouter();
@@ -48,9 +49,11 @@ function JobCard({ job }) {
           </a>
         </div>
         <div className="flex flex-col items-center h-full col-span-4 px-5 py-8 space-y-2 bg-gray-100 shadow rounded-lg max-h-[45rem]">
-          <div className="mb-2">
-            {job.hasCompanyLogo && <Avatar avatar={job.companyLogo} size="md" />}
-          </div>
+          <Link href={`/company/${job.companySlug}`}>
+            <a className="mb-2">
+              {job.hasCompanyLogo && <Avatar avatar={job.companyLogo} size="md" />}
+            </a>
+          </Link>
           <div className="text-center">
             <h3 className="text-2xl font-bold">{job.companyName}</h3>
             <span className="text-base capitalize">{job.location}</span>

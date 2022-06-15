@@ -4,14 +4,18 @@ import Auth from './auth';
 import { db, fieldValue, storage } from './FirebaseConfig';
 
 // Jobs
+
 /**
- * @title Get all jobs
+ * @title Get Jobs API order by createdAt
  * @returns {Promise<Array>}
  * @memberof Firebase
  * @example
- * const jobs = Client.getJobs()
+ * const jobs = Client.getJobsApi()
  *
  */
+const getJobsApi = () => {
+  return db.collection('jobs').orderBy('createdAt', 'desc');
+};
 
 const getJobsBySearchQuery = async (ref, searchValue) => {
   const jobs = [];
@@ -79,45 +83,81 @@ const getJobsQuery = async (ref) => {
   return jobs;
 };
 
+/**
+ * @title Get all jobs
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobs()
+ *
+ */
 const getJobs = async () => {
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc');
-
+  const ref = await getJobsApi();
   return getJobsQuery(ref);
 };
 
+/**
+ * @title Gets all Jobs by type
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobsByType()
+ *
+ */
 const getJobsByType = async (type) => {
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc').where('jobType', '==', type);
-
+  const ref = await getJobsApi().where('jobType', '==', type);
   return getJobsQuery(ref);
 };
 
+/**
+ * @title Gets all Jobs by type
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobsByCategory()
+ *
+ */
 const getJobsByCategory = async (category) => {
-  const ref = db
-    .collection('jobs')
-    .orderBy('createdAt', 'desc')
-    .where('jobCategory', '==', category);
-
+  const ref = await getJobsApi().where('jobCategory', '==', category);
   return getJobsQuery(ref);
 };
 
+/**
+ * @title Gets all Jobs by Location
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobsByLocation()
+ *
+ */
 const getJobsByLocation = async (location) => {
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc').where('location', '==', location);
-
+  const ref = await getJobsApi().where('location', '==', location);
   return getJobsQuery(ref);
 };
 
+/**
+ * @title Gets all Jobs by Tag
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobsByTag()
+ *
+ */
 const getJobsByTag = async (tag) => {
-  const ref = db
-    .collection('jobs')
-    .orderBy('createdAt', 'desc')
-    .where('jobTags', 'array-contains', tag);
-
+  const ref = await getJobsApi().where('jobTags', 'array-contains', tag);
   return getJobsQuery(ref);
 };
 
+/**
+ * @title Gets all Jobs by Company
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobsByCompany()
+ *
+ */
 const getJobsByCompany = async (company) => {
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc').where('company', '==', company);
-
+  const ref = getJobsApi().where('companySlug', '==', company);
   return getJobsQuery(ref);
 };
 
@@ -130,7 +170,7 @@ const getJobsByCompany = async (company) => {
  **/
 const searchJobs = async (searchValue) => {
   //capitalize first letter of each word
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc');
+  const ref = getJobsApi();
 
   return getJobsBySearchQuery(ref, searchValue);
 };
@@ -170,7 +210,7 @@ const getJob = async (jobId) => {
  *
  */
 const uploadLogo = (jobId, companyLogo) => {
-  const ref = db.collection('jobs').doc(jobId);
+  const ref = getJobsApi().doc(jobId);
 
   try {
     ref.update({
@@ -195,7 +235,7 @@ const createJob = async (userId, job) => {
     job,
     userId,
   };
-  const ref = db.collection('jobs').doc();
+  const ref = getJobsApi().doc();
 
   let doc = {};
 
@@ -236,7 +276,7 @@ const createJob = async (userId, job) => {
  *
  */
 const updateJob = async (userId, job) => {
-  const ref = db.collection('jobs').doc(job.id).where('userId', '==', userId);
+  const ref = getJobsApi().doc(job.id).where('userId', '==', userId);
 
   let doc = {};
 
@@ -263,7 +303,7 @@ const updateJob = async (userId, job) => {
  *
  */
 const removeJob = async (userId, job) => {
-  const ref = db.collection('jobs').doc(job.id).where('userId', '==', userId);
+  const ref = getJobsApi().doc(job.id).where('userId', '==', userId);
 
   try {
     await ref.delete();
@@ -282,7 +322,7 @@ const removeJob = async (userId, job) => {
  *
  */
 const getCompanies = async () => {
-  const ref = db.collection('companies').orderBy('createdAt', 'desc');
+  const ref = db.collection('companies');
 
   const companies = [];
 
@@ -343,7 +383,7 @@ const getCompany = async (companyId) => {
  *
  */
 const getCategories = async () => {
-  const ref = db.collection('categories').orderBy('createdAt', 'desc');
+  const ref = db.collection('categories');
 
   const categories = [];
 
@@ -473,6 +513,58 @@ const removeCategory = async (categoryId) => {
   }
 };
 
+/**
+ * @title Save job to watchlist
+ * @param {string} jobId
+ * @returns {Promise<Object>}
+ * @memberof Supabase
+ * @example
+ * const job = Client.saveJobToWatchlist('jobId')
+ */
+const saveJobToWatchlist = async (job) => {
+  const { data: Job } = await Client.from('watchlist').insert(job);
+
+  return Job;
+};
+
+/**
+ * @title Remove job from watchlist
+ * @param {string} jobId
+ * @returns {Promise<Object>}
+ * @memberof Supabase
+ * @example
+ * const job = Client.removeSavedJob('jobId')
+ */
+const removeSavedJob = async (jobId) => {
+  const { data: Job } = await Client.from('watchlist').delete().match({ id: jobId });
+
+  return Job;
+};
+
+/**
+ * @title Remove all jobs from watchlist
+ * @returns {Promise<Object>}
+ * @memberof Supabase
+ * @example
+ * const job = Client.removeAllSavedJobs()
+ */
+const removeAllSavedJobs = async () => {
+  await Client.from('watchlist').delete();
+};
+
+/**
+ * @title Get all jobs from watchlist
+ * @returns {Promise<Array>}
+ * @memberof Supabase
+ * @example
+ * const jobs = Client.getSavedJobs()
+ */
+const getSavedJobs = async () => {
+  const { data: Jobs } = await Client.from('watchlist').select('*');
+
+  return Jobs;
+};
+
 const Firebase = () => ({
   Auth,
   createCategory,
@@ -493,6 +585,10 @@ const Firebase = () => ({
   removeJob,
   updateCategory,
   updateJob,
+  saveJobToWatchlist,
+  removeSavedJob,
+  removeAllSavedJobs,
+  getSavedJobs,
 });
 
 export default Firebase;

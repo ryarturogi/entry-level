@@ -21,7 +21,7 @@
   "plugins": ["react", "prettier"],
   "rules": {
     "import/extensions": [
-      "ignorePackages",
+      "1",
       {
         "js": "never",
         "jsx": "never",
