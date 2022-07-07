@@ -1,31 +1,33 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { getSavedJobs } from '@/store/actions/savedJobsAction';
+import { useDispatch, useSelector } from 'react-redux';
 import { useUser } from '@/hooks/useAuthUser';
-import JobsList from '@/components/Jobs/JobsList';
-import Hero from '@/components/UI/Hero';
 
-const SavedJobs = () => {
+import 'react-toastify/dist/ReactToastify.css';
+import { getSavedJobs } from '@/store/actions/savedJobsAction';
+
+import Hero from '@/components/UI/Hero';
+import JobsList from '@/components/Jobs/JobsList';
+import Head from '@/components/partials/Head';
+
+function SavedJobs() {
   const dispatch = useDispatch();
   const { user } = useUser();
   const { loading, error, savedJobs } = useSelector((state) => state.savedJobs);
 
-  const userID = user?.id || user?.uid;
-
   useEffect(() => {
-    if (userID) {
-      dispatch(getSavedJobs(userID));
+    if (user) {
+      dispatch(getSavedJobs());
     }
   }, [user]);
 
   return (
-    <>
-      <Hero title="Watchlist" subtitle="This is where you keep track of your saved jobs." />
+    <div className="min-h-screen mb-20">
+      <Head />
+      <Hero title="Saved Jobs" subtitle="Saved jobs are stored here." />
 
       <JobsList jobs={savedJobs} error={error} loading={loading} />
-    </>
+    </div>
   );
-};
+}
 
 export default SavedJobs;

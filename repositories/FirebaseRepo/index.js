@@ -10,10 +10,10 @@ import { db, fieldValue, storage } from './FirebaseConfig';
  * @returns {Promise<Array>}
  * @memberof Firebase
  * @example
- * const jobs = Client.getJobsApi()
+ * const jobs = Client.JobsApi()
  *
  */
-const getJobsApi = () => {
+const JobsApi = () => {
   return db.collection('jobs').orderBy('createdAt', 'desc');
 };
 
@@ -92,7 +92,7 @@ const getJobsQuery = async (ref) => {
  *
  */
 const getJobs = async () => {
-  const ref = await getJobsApi();
+  const ref = await JobsApi();
   return getJobsQuery(ref);
 };
 
@@ -105,7 +105,7 @@ const getJobs = async () => {
  *
  */
 const getJobsByType = async (type) => {
-  const ref = await getJobsApi().where('jobType', '==', type);
+  const ref = await JobsApi().where('jobType', '==', type);
   return getJobsQuery(ref);
 };
 
@@ -118,7 +118,7 @@ const getJobsByType = async (type) => {
  *
  */
 const getJobsByCategory = async (category) => {
-  const ref = await getJobsApi().where('jobCategory', '==', category);
+  const ref = await JobsApi().where('jobCategory', '==', category);
   return getJobsQuery(ref);
 };
 
@@ -131,7 +131,7 @@ const getJobsByCategory = async (category) => {
  *
  */
 const getJobsByLocation = async (location) => {
-  const ref = await getJobsApi().where('location', '==', location);
+  const ref = await JobsApi().where('location', '==', location);
   return getJobsQuery(ref);
 };
 
@@ -144,7 +144,7 @@ const getJobsByLocation = async (location) => {
  *
  */
 const getJobsByTag = async (tag) => {
-  const ref = await getJobsApi().where('jobTags', 'array-contains', tag);
+  const ref = await JobsApi().where('jobTags', 'array-contains', tag);
   return getJobsQuery(ref);
 };
 
@@ -157,7 +157,7 @@ const getJobsByTag = async (tag) => {
  *
  */
 const getJobsByCompany = async (company) => {
-  const ref = getJobsApi().where('companySlug', '==', company);
+  const ref = JobsApi().where('companySlug', '==', company);
   return getJobsQuery(ref);
 };
 
@@ -170,7 +170,7 @@ const getJobsByCompany = async (company) => {
  **/
 const searchJobs = async (searchValue) => {
   //capitalize first letter of each word
-  const ref = getJobsApi();
+  const ref = JobsApi();
 
   return getJobsBySearchQuery(ref, searchValue);
 };
@@ -210,7 +210,7 @@ const getJob = async (jobId) => {
  *
  */
 const uploadLogo = (jobId, companyLogo) => {
-  const ref = getJobsApi().doc(jobId);
+  const ref = JobsApi().doc(jobId);
 
   try {
     ref.update({
@@ -235,7 +235,7 @@ const createJob = async (userId, job) => {
     job,
     userId,
   };
-  const ref = getJobsApi().doc();
+  const ref = JobsApi().doc();
 
   let doc = {};
 
@@ -276,7 +276,7 @@ const createJob = async (userId, job) => {
  *
  */
 const updateJob = async (userId, job) => {
-  const ref = getJobsApi().doc(job.id).where('userId', '==', userId);
+  const ref = JobsApi().doc(job.id).where('userId', '==', userId);
 
   let doc = {};
 
@@ -303,7 +303,7 @@ const updateJob = async (userId, job) => {
  *
  */
 const removeJob = async (userId, job) => {
-  const ref = getJobsApi().doc(job.id).where('userId', '==', userId);
+  const ref = JobsApi().doc(job.id).where('userId', '==', userId);
 
   try {
     await ref.delete();
@@ -513,58 +513,6 @@ const removeCategory = async (categoryId) => {
   }
 };
 
-/**
- * @title Save job to watchlist
- * @param {string} jobId
- * @returns {Promise<Object>}
- * @memberof Supabase
- * @example
- * const job = Client.saveJobToWatchlist('jobId')
- */
-const saveJobToWatchlist = async (job) => {
-  const { data: Job } = await Client.from('watchlist').insert(job);
-
-  return Job;
-};
-
-/**
- * @title Remove job from watchlist
- * @param {string} jobId
- * @returns {Promise<Object>}
- * @memberof Supabase
- * @example
- * const job = Client.removeSavedJob('jobId')
- */
-const removeSavedJob = async (jobId) => {
-  const { data: Job } = await Client.from('watchlist').delete().match({ id: jobId });
-
-  return Job;
-};
-
-/**
- * @title Remove all jobs from watchlist
- * @returns {Promise<Object>}
- * @memberof Supabase
- * @example
- * const job = Client.removeAllSavedJobs()
- */
-const removeAllSavedJobs = async () => {
-  await Client.from('watchlist').delete();
-};
-
-/**
- * @title Get all jobs from watchlist
- * @returns {Promise<Array>}
- * @memberof Supabase
- * @example
- * const jobs = Client.getSavedJobs()
- */
-const getSavedJobs = async () => {
-  const { data: Jobs } = await Client.from('watchlist').select('*');
-
-  return Jobs;
-};
-
 const Firebase = () => ({
   Auth,
   createCategory,
@@ -585,10 +533,6 @@ const Firebase = () => ({
   removeJob,
   updateCategory,
   updateJob,
-  saveJobToWatchlist,
-  removeSavedJob,
-  removeAllSavedJobs,
-  getSavedJobs,
 });
 
 export default Firebase;

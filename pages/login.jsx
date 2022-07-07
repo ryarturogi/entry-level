@@ -18,10 +18,10 @@ function Login() {
     <>
       <Head title="Login" />
 
-      <div className="authcontainer">
-        <div className="flex flex-col items-center w-full space-y-5">
-          <section className="space-y-1.5 w-full">
-            <h1 className="flex justify-start w-full text-sm font-medium text-left text-gray-500">
+      <div className="relative flex items-center justify-center h-full min-h-[250px] max-w-sm p-5 m-auto bg-gray-100 top-40 rounded-xl">
+        <div className="flex flex-col items-center w-full space-y-5 ">
+          <section className="space-y-2.5 w-full">
+            <h1 className="flex justify-center w-full text-2xl font-bold text-left text-gray-800">
               Sign in with
             </h1>
             <nav className="space-y-3 text-base text-gray-400 list-none">
@@ -29,6 +29,8 @@ function Login() {
                 <Button
                   icon={<BookmarkIcon />}
                   iconSize="md"
+                  color="success"
+                  styles="bg-[#DB4437] hover:bg-[#cb3e32] focus:bg-[#DB4437]"
                   onClick={() => login('google')}
                   size="md"
                 >
@@ -39,6 +41,8 @@ function Login() {
                 <Button
                   icon={<BookmarkIcon />}
                   iconSize="md"
+                  color="success"
+                  styles="bg-[#333] hover:bg-[#282727] focus:bg-[#333]"
                   onClick={() => login('github')}
                   size="md"
                 >
@@ -47,7 +51,7 @@ function Login() {
               </li>
             </nav>
           </section>
-          <div className="flex justify-center w-full text-sm font-medium text-left text-gray-500 ">
+          {/* <div className="flex justify-center w-full text-sm font-medium text-left text-gray-500 ">
             <span>or continue with</span>
           </div>
           <section className="space-y-1.5 w-full">
@@ -85,7 +89,7 @@ function Login() {
                 </Button>
               </div>
             </form>
-          </section>
+          </section> */}
         </div>
       </div>
     </>

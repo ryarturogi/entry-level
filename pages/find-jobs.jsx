@@ -1,19 +1,15 @@
-import { useEffect } from 'react';
 import { searchJobs, getJobs } from '@/store/actions/jobAction';
 import { useDispatch, useSelector } from 'react-redux';
-import { useUser } from '@/hooks/useAuthUser';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { getSavedJobs } from '@/store/actions/savedJobsAction';
 
 import Hero from '@/components/UI/Hero';
 import JobSearch from '@/components/Jobs/JobSearch';
 import JobsList from '@/components/Jobs/JobsList';
 import Head from '@/components/partials/Head';
 
-function Home() {
+function FindJobs() {
   const dispatch = useDispatch();
-  const { user } = useUser();
   const { loading, error, jobs } = useSelector((state) => state.jobsList);
 
   const handleOnSearch = (search) => {
@@ -22,12 +18,6 @@ function Home() {
     }
     return dispatch(getJobs());
   };
-
-  useEffect(() => {
-    if (user) {
-      dispatch(getSavedJobs());
-    }
-  }, [user]);
 
   return (
     <div className="min-h-screen mb-20">
@@ -44,4 +34,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default FindJobs;
