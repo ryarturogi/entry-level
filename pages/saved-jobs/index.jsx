@@ -1,13 +1,13 @@
+import { useUser } from '@/hooks/useAuthUser';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useUser } from '@/hooks/useAuthUser';
 
-import 'react-toastify/dist/ReactToastify.css';
 import { getSavedJobs } from '@/store/actions/savedJobsAction';
+import 'react-toastify/dist/ReactToastify.css';
 
-import Hero from '@/components/UI/Hero';
 import JobsList from '@/components/Jobs/JobsList';
 import Head from '@/components/partials/Head';
+import Hero from '@/components/UI/Hero';
 
 function SavedJobs() {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ function SavedJobs() {
     if (user) {
       dispatch(getSavedJobs());
     }
-  }, [user]);
+  }, [user, dispatch]);
 
   return (
     <div className="min-h-screen mb-20">

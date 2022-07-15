@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function Jobs() {
   const router = useRouter();
@@ -8,5 +8,5 @@ export default function Jobs() {
     if (router.pathname === '/jobs') {
       router.push('/');
     }
-  }, []);
+  }, [router]);
 }
