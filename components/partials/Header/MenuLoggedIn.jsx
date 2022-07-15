@@ -1,10 +1,9 @@
-import { Fragment, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 import { Menu, Transition } from '@headlessui/react';
 import { UserCircleIcon } from '@heroicons/react/outline';
 import classNames from '@/utils/classsesNames';
 import { SignOut } from '@/hooks/useAuthUser';
-import { getSavedJobsCount } from '@/store/actions/savedJobsAction';
 import Link from 'next/link';
 
 const Navigation = [
@@ -19,7 +18,6 @@ const Navigation = [
 ];
 
 function MenuLoggedIn() {
-  const dispatch = useDispatch();
   const { savedJobsCount } = useSelector((state) => state.savedJobs);
 
   const logout = () => {
@@ -27,12 +25,6 @@ function MenuLoggedIn() {
       window.location.reload();
     }
   };
-
-  useEffect(() => {
-    if (!savedJobsCount) {
-      dispatch(getSavedJobsCount());
-    }
-  }, [dispatch, savedJobsCount]);
 
   return (
     <Menu as="div" className="relative z-50 ml-3">

@@ -59,7 +59,6 @@ export const removeJob = (jobs, job) => async (dispatch) => {
   });
 
   try {
-    console.log(jobs, job);
     await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).Auth.removeJob(jobs, job);
 
     dispatch({

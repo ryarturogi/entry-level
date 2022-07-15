@@ -12,8 +12,8 @@ function JobTags({ tags, theme }) {
     <ul className="flex flex-wrap items-end justify-start space-x-1.5 space-y-1.5">
       {parsedTags().map((tag, idx) => (
         // eslint-disable-next-line react/no-array-index-key
-        <Link href={`/jobs/tag/${tag.replace(/\s/g, '-')}`} key={idx} passHref>
-          <li>
+        <li key={idx}>
+          <Link href={`/jobs/tag/${tag.replace(/\s/g, '-')}`} passHref>
             <a
               className={`cursor-pointer flex items-center justify-center px-2 py-0.5 text-xs border rounded capitalize  ${
                 theme === 'light'
@@ -23,8 +23,8 @@ function JobTags({ tags, theme }) {
             >
               {tag}
             </a>
-          </li>
-        </Link>
+          </Link>
+        </li>
       ))}
     </ul>
   );

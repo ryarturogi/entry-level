@@ -1,4 +1,36 @@
-import { auth, GithubAuthProvider, GoogleAuthProvider, signOut } from './FirebaseConfig';
+import { db, auth, GithubAuthProvider, GoogleAuthProvider, signOut } from './FirebaseConfig';
+
+const SavedJobsApi = async () => {
+  return await db.collection('saved-jobs').orderBy('createdAt', 'desc');
+};
+
+const getSavedJobsQuery = async (ref) => {
+  const user = await getCurrentUser();
+  const userId = user?.uid;
+  const jobs = [];
+
+  try {
+    let snap = await ref.get({ source: 'cache' });
+
+    if (!snap.exists) {
+      snap = await ref.get({ source: 'server' });
+    }
+    if (snap.empty) {
+      return [];
+    }
+    snap.forEach((doc) => {
+      if (doc.data().userId === userId) {
+        const job = { ...doc.data() };
+        job.id = doc.id;
+        jobs.push(job);
+      }
+    });
+  } catch (err) {
+    throw new Error(err.code);
+  }
+
+  return jobs;
+};
 
 /**
  *
@@ -73,18 +105,39 @@ const signInWithProvider = async (providerName) => {
       provider = new GithubAuthProvider();
   }
 
-  return auth
-    .signInWithPopup(provider)
-    .then((userCredential) => {
-      // Signed in
-      const { user } = userCredential;
+  return auth.signInWithPopup(provider).catch((err) => {
+    if (err.code === 'auth/account-exists-with-different-credential') {
+      var pendingCred = err.credential;
+      var email = err.email;
+      auth
+        .fetchSignInMethodsForEmail(email)
+        .then((methods) => {
+          const getProviderForProviderId = (providerId) => {
+            switch (providerId) {
+              case 'google.com':
+                return new GoogleAuthProvider();
+              case 'github.com':
+                return new GithubAuthProvider();
+              default:
+                return new GithubAuthProvider();
+            }
+          };
 
-      return user;
-    })
-    .catch((error) => {
-      errorMessage = error.message;
-      console.log(errorMessage);
-    });
+          const provider = getProviderForProviderId(methods[0]);
+          auth.signInWithPopup(provider).then((result) => {
+            result.user.linkWithCredential(pendingCred).then((usercred) => {
+              return usercred;
+            });
+          });
+        })
+        .catch((error) => {
+          errorMessage = error.message;
+          // eslint-disable-next-line no-console
+          console.log(errorMessage);
+          return errorMessage;
+        });
+    }
+  });
 };
 
 /**
@@ -129,11 +182,9 @@ const getCurrentUser = async () => {
  * @example
  * const authState = Client.Auth.getCurrentSession()
  */
-const getCurrentSession = () => {
+const getCurrentSession = async () => {
   try {
-    const session = auth.session();
-
-    return session;
+    return await auth.session();
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -145,6 +196,114 @@ const getCurrentSession = () => {
   }
 };
 
+/**
+ * @title Save job to saved jobs
+ * @param {string} jobId
+ * @returns {Promise<Object>}
+ * @memberof Supabase
+ * @example
+ * const job = Client.saveJob('job')
+ */
+const saveJob = async (_, job) => {
+  const user = await getCurrentUser();
+  const userId = user?.uid;
+
+  if (userId) {
+    const jobData = {
+      ...job,
+      userId,
+    };
+
+    try {
+      await db.collection('saved-jobs').doc(job.id).set(jobData);
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      // eslint-disable-next-line no-console
+      console.log(errorCode, errorMessage);
+
+      return { error, errorCode, errorMessage };
+    }
+  }
+  return jobData;
+};
+
+/**
+ * @title Remove job from saved jobs
+ * @param {string} jobId
+ * @returns {Promise<Object>}
+ * @memberof Supabase
+ * @example
+ * const job = Client.removeJob('jobId')
+ */
+
+const removeJob = async (_, { id }) => {
+  const ref = await SavedJobsApi();
+
+  getSavedJobsQuery(ref).then((jobs) => {
+    const jobToRemove = jobs.find((job) => job.id === id);
+
+    if (jobToRemove) {
+      return db.collection('saved-jobs').doc(id).delete();
+    }
+  });
+};
+
+/**
+ * @title Remove all jobs from saved jobs
+ * @returns {Promise<Object>}
+ * @memberof Supabase
+ * @example
+ * const job = Client.removeAllSavedJobs()
+ */
+const removeAllSavedJobs = async () => {
+  try {
+    await SavedJobsApi()
+      .get()
+      .toPromise()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
+  } catch (error) {
+    throw new Error(error.code);
+  }
+};
+
+/**
+ * @title Get all jobs from saved jobs
+ * @returns {Promise<Array>}
+ * @memberof Supabase
+ * @example
+ * const jobs = Client.getSavedJobs()
+ */
+const getSavedJobs = async () => {
+  const ref = await SavedJobsApi();
+  try {
+    return await getSavedJobsQuery(ref);
+  } catch (error) {
+    throw new Error(error.code);
+  }
+};
+
+/**
+ * @title Get saved jobs count
+ * @returns {string}
+ * @memberof Supabase
+ * @example
+ * const savedJobsCount = Client.Auth.savedJobsCount()
+ */
+const getSavedJobsCount = async () => {
+  const ref = await SavedJobsApi();
+  try {
+    return (await getSavedJobsQuery(ref)?.length) || 0;
+  } catch (error) {
+    throw new Error(error.code);
+  }
+};
+
 const Auth = () => ({
   auth,
   createUser,
@@ -153,6 +312,11 @@ const Auth = () => ({
   signIn,
   signInWithProvider,
   signOut: logout,
+  saveJob,
+  removeJob,
+  removeAllSavedJobs,
+  getSavedJobs,
+  getSavedJobsCount,
 });
 
 export default Auth();

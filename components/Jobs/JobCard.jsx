@@ -1,6 +1,12 @@
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { formatDate, isToday, timeSince } from '@/utils/formatDate';
-import { saveJob, removeJob, getSavedJobs } from '@/store/actions/savedJobsAction';
+import {
+  saveJob,
+  removeJob,
+  getSavedJobs,
+  getSavedJobsCount,
+} from '@/store/actions/savedJobsAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { useUser } from '@/hooks/useAuthUser';
 import { useRouter } from 'next/router';
@@ -24,44 +30,48 @@ const jobStatus = (job) => {
   }
 };
 
-const JobMeta = ({ job }) => (
-  <nav className="flex space-x-2 place-items-start mt-0.5 mb-0.5 text-xs ">
-    {job.location && (
-      <>
+const JobMeta = ({ job }) => {
+  const router = useRouter();
+
+  return (
+    <nav className="flex space-x-2 place-items-start mt-0.5 mb-0.5 text-xs ">
+      {job.location && (
+        <>
+          <li
+            className="capitalize cursor-pointer hover:text-accent-500"
+            onClick={() => router.push(`/jobs/location/${job.location}`)}
+          >
+            Location: <strong>{job.location}</strong>
+          </li>
+          <li>
+            <strong>|</strong>
+          </li>
+        </>
+      )}
+      {job.jobType && (
+        <>
+          <li
+            className="capitalize cursor-pointer hover:text-accent-500"
+            onClick={() => router.push(`/jobs/type/${job.jobType}`)}
+          >
+            Type: <strong>{job?.jobType?.replace('_', ' ')}</strong>
+          </li>
+          <li>
+            <strong>|</strong>
+          </li>
+        </>
+      )}
+      {job.jobCategory && (
         <li
           className="capitalize cursor-pointer hover:text-accent-500"
-          onClick={() => router.push(`/jobs/location/${job.location}`)}
+          onClick={() => router.push(`/jobs/category/${job.jobCategory}`)}
         >
-          Location: <strong>{job.location}</strong>
+          Category: <strong>{job.jobCategory}</strong>
         </li>
-        <li>
-          <strong>|</strong>
-        </li>
-      </>
-    )}
-    {job.jobType && (
-      <>
-        <li
-          className="capitalize cursor-pointer hover:text-accent-500"
-          onClick={() => router.push(`/jobs/type/${job.jobType}`)}
-        >
-          Type: <strong>{job?.jobType?.replace('_', ' ')}</strong>
-        </li>
-        <li>
-          <strong>|</strong>
-        </li>
-      </>
-    )}
-    {job.jobCategory && (
-      <li
-        className="capitalize cursor-pointer hover:text-accent-500"
-        onClick={() => router.push(`/jobs/category/${job.jobCategory}`)}
-      >
-        Category: <strong>{job.jobCategory}</strong>
-      </li>
-    )}
-  </nav>
-);
+      )}
+    </nav>
+  );
+};
 
 const CompanyLogo = ({ job }) => (
   <div className="self-center">
@@ -120,9 +130,10 @@ const JobContent = ({ job }) => (
 );
 
 const JobActions = ({ job, user }) => {
-  const router = useRouter();
-
   const userID = user?.id || user?.uid;
+  const [isSaved, setIsSaved] = useState(
+    savedJobs?.length > 0 ? savedJobs?.some((savedJob) => savedJob.id === job.id) : false
+  );
 
   if (!userID) {
     const handleSavedJobWithoutLogin = () => {
@@ -135,13 +146,13 @@ const JobActions = ({ job, user }) => {
     return (
       <div className="flex w-full items-center sm:max-w-[8rem] space-x-5 justify-center sm:pl-5">
         <button
-          className={`p-2 text-white rounded-full w-9 h-9 'bg-accent-800 bg-accent-800 hover:bg-green-500 hover:bg-accent-500`}
+          className={`p-2 text-white rounded-full w-9 h-9 'bg-accent-800 bg-accent-800 hover:bg-green-500`}
           type="button"
           onClick={handleSavedJobWithoutLogin}
         >
           <BookmarkIcon />
         </button>
-        <Link href={`job/${job.id}`}>
+        <Link href={`/job/${job.id}`}>
           <a className="p-2 text-white rounded-full w-9 h-9 bg-notice-danger-100 hover:bg-green-500">
             <ArrowRightIcon />
           </a>
@@ -152,43 +163,55 @@ const JobActions = ({ job, user }) => {
 
   const dispatch = useDispatch();
   const { savedJobs } = useSelector((state) => state.savedJobs);
-  const isJobSaved =
-    savedJobs?.length > 0 ? savedJobs?.some((savedJob) => savedJob.id === job.id) : false;
 
   const handleSaveJob = async () => {
     if (!userID) {
       return toast.error('You must be logged in to save jobs');
     }
     try {
-      dispatch(saveJob(savedJobs.length > 0 ? savedJobs : [], job));
-      if (toast.success('Job saved!')) dispatch(getSavedJobs());
+      dispatch(saveJob(savedJobs?.length > 0 ? savedJobs : [], job));
+      toast.success('Job saved!');
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch(getSavedJobs());
+      dispatch(getSavedJobsCount());
+      setIsSaved(true);
     }
   };
 
   const handleRemoveSavedJob = async () => {
     try {
-      dispatch(removeJob(savedJobs.length > 0 ? savedJobs : [], job));
-      if (toast.warn('Job removed from watchlist')) dispatch(getSavedJobs());
+      dispatch(removeJob(savedJobs?.length > 0 ? savedJobs : [], job));
+      toast.warn('Job removed!');
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch(getSavedJobsCount());
+      setIsSaved(false);
     }
   };
+
+  useEffect(() => {
+    if (savedJobs) {
+      const savedJob = savedJobs.find((j) => j.id === job.id);
+      setIsSaved(!!savedJob);
+    }
+  }, []);
 
   return (
     <div className="flex w-full items-center sm:max-w-[8rem] space-x-5 justify-center sm:pl-5">
       <Button
         className={`p-2 text-white rounded-full w-9 h-9  ${
-          isJobSaved ? 'bg-green-500 hover:bg-red-500' : 'bg-accent-800 hover:bg-accent-500'
+          isSaved ? 'bg-green-500 hover:bg-red-500' : 'bg-accent-800 hover:bg-accent-500'
         }`}
-        title={isJobSaved ? 'Remove' : 'Save'}
-        onClick={() => (isJobSaved ? handleRemoveSavedJob() : handleSaveJob())}
+        title={isSaved ? 'Remove' : 'Save'}
+        onClick={() => (isSaved ? handleRemoveSavedJob() : handleSaveJob())}
       >
         <BookmarkIcon />
       </Button>
 
-      <Link href={`job/${job.id}`}>
+      <Link href={`/job/${job.id}`}>
         <a className="p-2 text-white rounded-full w-9 h-9 bg-notice-danger-100 hover:bg-green-500">
           <ArrowRightIcon />
         </a>

@@ -64,6 +64,7 @@ const signInWithProvider = async (providerName) => {
   try {
     const { user, session, error } = await Client.auth.signIn({
       provider: providerName || 'google',
+      redirectTo: 'http://localhost:3000',
     });
 
     return { error, session, user };
@@ -171,7 +172,6 @@ const onAuthStateChange = () => {
  * const user = Client.Auth.getCurrentUser()
  */
 const saveJob = async (jobs, job) => {
-  console.log(jobs, job);
   try {
     if (jobs?.length > 0) {
       const { data, error } = Client.auth.update({
