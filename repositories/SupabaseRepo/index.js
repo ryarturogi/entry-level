@@ -6,7 +6,19 @@ import Client from './SupabaseConfig';
 const Supabase = () => {
   // Jobs
   /**
-   * @title Get all jobs
+   * @title Get Jobs API
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example
+   * const jobs = Client.getJobsApi()
+   *
+   */
+  const getJobsApi = () => {
+    return Client.from('jobs').select('*').order('createdAt', { ascending: false });
+  };
+
+  /**
+   * @title Get Jobs API
    * @returns {Promise<Array>}
    * @memberof Supabase
    * @example
@@ -14,45 +26,65 @@ const Supabase = () => {
    *
    */
   const getJobs = async () => {
-    const { data: Jobs } = await Client.from('jobs');
+    const { data: Jobs } = await getJobsApi();
 
     return Jobs;
   };
 
+  /**
+   * @title Get Jobs by Type
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example
+   * const jobs = Client.getJobsByType()
+   *
+   */
   const getJobsByType = async (type) => {
-    const { data: JobsByType } = await Client.from('jobs')
-      .select('*')
-      .order('createdAt', { ascending: false })
-      .eq('jobType', type);
+    const { data: JobsByType } = await getJobsApi().eq('jobType', type);
 
     return JobsByType;
   };
 
+  /**
+   * @title Get Jobs by Category
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example
+   * const jobs = Client.getJobsByCategory()
+   *
+   */
   const getJobsByCategory = async (category) => {
-    const { data: JobsByCategory } = await Client.from('jobs')
-      .select('*')
-      .order('createdAt', { ascending: false })
-      .eq('jobCategory', category);
+    const { data: JobsByCategory } = await getJobsApi().eq('jobCategory', category);
 
     return JobsByCategory;
   };
 
+  /**
+   * @title Get Jobs by Location
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example
+   * const jobs = Client.getJobsByLocation()
+   *
+   */
   const getJobsByLocation = async (location) => {
-    const { data: JobsByLocation } = await Client.from('jobs')
-      .select('*')
-      .order('createdAt', { ascending: false })
-      .eq('location', location);
+    const { data: JobsByLocation } = await getJobsApi().eq('location', location);
 
     return JobsByLocation;
   };
 
+  /**
+   * @title Get Jobs by Tags
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example
+   * const jobs = Client.getJobsByTag()
+   *
+   */
   const getJobsByTag = async (tag) => {
-    const { data: JobsByTag } = await Client.from('jobs')
-      .select('*')
-      .order('createdAt', { ascending: false })
-      .textSearch('jobTags', tag, {
-        config: 'english',
-      });
+    const { data: JobsByTag } = await getJobsApi().textSearch('jobTags', tag, {
+      config: 'english',
+    });
     return JobsByTag;
   };
 
@@ -63,14 +95,27 @@ const Supabase = () => {
    * @memberof Supabase
    * @example
    * const jobs = Client.searchJobs('developer')
-   * const jobs = Client.searchJobs('developer', 'remote')
    **/
-  const searchJobs = async (keywords) => {
-    const { data: Jobs } = await Client.from('jobs').select('*').textSearch('jobTitle', keywords, {
-      type: 'websearch',
-      config: 'english',
+  const searchJobs = async (searchValue) => {
+    const { data: jobs } = await Client.from('jobs').select('*');
+    return jobs.filter((job) => {
+      const isValid = (str) => {
+        return str.toLowerCase().includes(searchValue.toLowerCase());
+      };
+
+      const isSearchQueryValid =
+        isValid(job.jobTitle) ||
+        isValid(job.jobType) ||
+        isValid(job.jobCategory) ||
+        isValid(job.companyName) ||
+        isValid(job.location);
+
+      if (!isSearchQueryValid) {
+        return;
+      }
+
+      return job;
     });
-    return Jobs;
   };
 
   /**

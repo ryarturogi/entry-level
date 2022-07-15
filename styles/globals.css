@@ -23,7 +23,7 @@ body {
 */
 
 .authcontainer {
-  @apply bg-gray-100 p-10 rounded-2xl text-center mt-20 mx-auto max-w-lg !important;
+  @apply bg-gray-100 p-10 rounded-2xl text-center mt-20 mx-auto max-w-sm !important;
 }
 
 .authcontainer .sbui-card {

@@ -4,14 +4,18 @@ import Auth from './auth';
 import { db, fieldValue, storage } from './FirebaseConfig';
 
 // Jobs
+
 /**
- * @title Get all jobs
+ * @title Get Jobs API order by createdAt
  * @returns {Promise<Array>}
  * @memberof Firebase
  * @example
- * const jobs = Client.getJobs()
+ * const jobs = Client.JobsApi()
  *
  */
+const JobsApi = () => {
+  return db.collection('jobs').orderBy('createdAt', 'desc');
+};
 
 const getJobsBySearchQuery = async (ref, searchValue) => {
   const jobs = [];
@@ -79,45 +83,81 @@ const getJobsQuery = async (ref) => {
   return jobs;
 };
 
+/**
+ * @title Get all jobs
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobs()
+ *
+ */
 const getJobs = async () => {
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc');
-
+  const ref = await JobsApi();
   return getJobsQuery(ref);
 };
 
+/**
+ * @title Gets all Jobs by type
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobsByType()
+ *
+ */
 const getJobsByType = async (type) => {
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc').where('jobType', '==', type);
-
+  const ref = await JobsApi().where('jobType', '==', type);
   return getJobsQuery(ref);
 };
 
+/**
+ * @title Gets all Jobs by type
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobsByCategory()
+ *
+ */
 const getJobsByCategory = async (category) => {
-  const ref = db
-    .collection('jobs')
-    .orderBy('createdAt', 'desc')
-    .where('jobCategory', '==', category);
-
+  const ref = await JobsApi().where('jobCategory', '==', category);
   return getJobsQuery(ref);
 };
 
+/**
+ * @title Gets all Jobs by Location
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobsByLocation()
+ *
+ */
 const getJobsByLocation = async (location) => {
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc').where('location', '==', location);
-
+  const ref = await JobsApi().where('location', '==', location);
   return getJobsQuery(ref);
 };
 
+/**
+ * @title Gets all Jobs by Tag
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobsByTag()
+ *
+ */
 const getJobsByTag = async (tag) => {
-  const ref = db
-    .collection('jobs')
-    .orderBy('createdAt', 'desc')
-    .where('jobTags', 'array-contains', tag);
-
+  const ref = await JobsApi().where('jobTags', 'array-contains', tag);
   return getJobsQuery(ref);
 };
 
+/**
+ * @title Gets all Jobs by Company
+ * @returns {Promise<Array>}
+ * @memberof Firebase
+ * @example
+ * const jobs = Client.getJobsByCompany()
+ *
+ */
 const getJobsByCompany = async (company) => {
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc').where('company', '==', company);
-
+  const ref = JobsApi().where('companySlug', '==', company);
   return getJobsQuery(ref);
 };
 
@@ -130,7 +170,7 @@ const getJobsByCompany = async (company) => {
  **/
 const searchJobs = async (searchValue) => {
   //capitalize first letter of each word
-  const ref = db.collection('jobs').orderBy('createdAt', 'desc');
+  const ref = JobsApi();
 
   return getJobsBySearchQuery(ref, searchValue);
 };
@@ -170,7 +210,7 @@ const getJob = async (jobId) => {
  *
  */
 const uploadLogo = (jobId, companyLogo) => {
-  const ref = db.collection('jobs').doc(jobId);
+  const ref = JobsApi().doc(jobId);
 
   try {
     ref.update({
@@ -195,7 +235,7 @@ const createJob = async (userId, job) => {
     job,
     userId,
   };
-  const ref = db.collection('jobs').doc();
+  const ref = JobsApi().doc();
 
   let doc = {};
 
@@ -236,7 +276,7 @@ const createJob = async (userId, job) => {
  *
  */
 const updateJob = async (userId, job) => {
-  const ref = db.collection('jobs').doc(job.id).where('userId', '==', userId);
+  const ref = JobsApi().doc(job.id).where('userId', '==', userId);
 
   let doc = {};
 
@@ -263,7 +303,7 @@ const updateJob = async (userId, job) => {
  *
  */
 const removeJob = async (userId, job) => {
-  const ref = db.collection('jobs').doc(job.id).where('userId', '==', userId);
+  const ref = JobsApi().doc(job.id).where('userId', '==', userId);
 
   try {
     await ref.delete();
@@ -282,7 +322,7 @@ const removeJob = async (userId, job) => {
  *
  */
 const getCompanies = async () => {
-  const ref = db.collection('companies').orderBy('createdAt', 'desc');
+  const ref = db.collection('companies');
 
   const companies = [];
 
@@ -343,7 +383,7 @@ const getCompany = async (companyId) => {
  *
  */
 const getCategories = async () => {
-  const ref = db.collection('categories').orderBy('createdAt', 'desc');
+  const ref = db.collection('categories');
 
   const categories = [];
 

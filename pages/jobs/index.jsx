@@ -1,12 +1,12 @@
-import Head from '@/components/partials/Head';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Jobs() {
-  return (
-    <>
-      <Head title="Find a Job" />
-      <main role="main">
-        <section className="">Jobs</section>
-      </main>
-    </>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.pathname === '/jobs') {
+      router.push('/');
+    }
+  }, []);
 }

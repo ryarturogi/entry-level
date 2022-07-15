@@ -8,6 +8,7 @@ function Button(props) {
     rounded,
     displayType,
     children,
+    styles,
     ...rest
   } = props;
 
@@ -94,6 +95,7 @@ function Button(props) {
         ${setRounded(rounded)} 
         ${setColor(color)} 
         ${setSize(size)}
+        ${styles}
       `}
       type="button"
       {...rest}
