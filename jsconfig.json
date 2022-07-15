@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "commonjs",
-    "target": "es6",
-    "sourceMap": true,
     "paths": {
       "@/components/*": ["components/*"],
       "@/pages/*": ["pages/*"],

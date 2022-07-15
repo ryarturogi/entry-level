@@ -18,7 +18,7 @@ function Job() {
     if (id) {
       dispatch(getJob(id));
     }
-  }, [id]);
+  }, [id, dispatch]);
 
   return (
     <>
