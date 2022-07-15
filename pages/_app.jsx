@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import Layout from '@/components/Layout';
 import { AuthProvider } from '@/hooks/useAuthUser';
 import { store } from '@/store/index';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 function App({ Component, pageProps }) {
   return (
