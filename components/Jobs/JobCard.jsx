@@ -1,15 +1,15 @@
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { formatDate, isToday, timeSince } from '@/utils/formatDate';
+import { useUser } from '@/hooks/useAuthUser';
 import {
-  saveJob,
-  removeJob,
   getSavedJobs,
   getSavedJobsCount,
+  removeJob,
+  saveJob,
 } from '@/store/actions/savedJobsAction';
-import { useDispatch, useSelector } from 'react-redux';
-import { useUser } from '@/hooks/useAuthUser';
+import { formatDate, isToday, timeSince } from '@/utils/formatDate';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { BookmarkIcon } from '@heroicons/react/outline';
 import { ArrowRightIcon } from '@heroicons/react/solid';
@@ -131,9 +131,18 @@ const JobContent = ({ job }) => (
 
 const JobActions = ({ job, user }) => {
   const userID = user?.id || user?.uid;
+  const dispatch = useDispatch();
+  const { savedJobs } = useSelector((state) => state.savedJobs);
   const [isSaved, setIsSaved] = useState(
     savedJobs?.length > 0 ? savedJobs?.some((savedJob) => savedJob.id === job.id) : false
   );
+
+  useEffect(() => {
+    if (savedJobs) {
+      const savedJob = savedJobs.find((j) => j.id === job.id);
+      setIsSaved(!!savedJob);
+    }
+  }, [savedJobs, job.id]);
 
   if (!userID) {
     const handleSavedJobWithoutLogin = () => {
@@ -160,9 +169,6 @@ const JobActions = ({ job, user }) => {
       </div>
     );
   }
-
-  const dispatch = useDispatch();
-  const { savedJobs } = useSelector((state) => state.savedJobs);
 
   const handleSaveJob = async () => {
     if (!userID) {
@@ -191,13 +197,6 @@ const JobActions = ({ job, user }) => {
       setIsSaved(false);
     }
   };
-
-  useEffect(() => {
-    if (savedJobs) {
-      const savedJob = savedJobs.find((j) => j.id === job.id);
-      setIsSaved(!!savedJob);
-    }
-  }, []);
 
   return (
     <div className="flex w-full items-center sm:max-w-[8rem] space-x-5 justify-center sm:pl-5">

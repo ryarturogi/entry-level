@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
 import { getJobsByCategory } from '@/store/actions/jobAction';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import Hero from '@/components/UI/Hero';
 import JobCard from 'components/Jobs/JobCard';
 import Loader from 'components/UI/Loader';
-import Hero from '@/components/UI/Hero';
 
 function JobsByCategory() {
   const router = useRouter();
@@ -19,7 +19,7 @@ function JobsByCategory() {
     if (category) {
       dispatch(getJobsByCategory(category));
     }
-  }, [category]);
+  }, [category, dispatch]);
 
   return (
     <section className="flex flex-col items-center justify-center mx-auto w-[96%]">
