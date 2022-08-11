@@ -22,9 +22,9 @@ import { toast } from 'react-toastify';
 const jobStatus = (job) => {
   switch (true) {
     case job.isGuaranteed:
-      return 'border-b-[2rem] sm:border-b-0 sm:border-l-[4rem] border-accent-100';
+      return 'border-b-[2rem] sm:border-b-0 sm:border-l-[4rem] border-primary-100';
     case job.isFeatured:
-      return 'border-l-[4.5rem] border-accent-800';
+      return 'border-l-[4.5rem] border-primary-800';
     default:
       return '';
   }
@@ -38,7 +38,7 @@ const JobMeta = ({ job }) => {
       {job.location && (
         <>
           <li
-            className="capitalize cursor-pointer hover:text-accent-500"
+            className="capitalize cursor-pointer hover:text-primary-500"
             onClick={() => router.push(`/jobs/location/${job.location}`)}
           >
             Location: <strong>{job.location}</strong>
@@ -51,7 +51,7 @@ const JobMeta = ({ job }) => {
       {job.jobType && (
         <>
           <li
-            className="capitalize cursor-pointer hover:text-accent-500"
+            className="capitalize cursor-pointer hover:text-primary-500"
             onClick={() => router.push(`/jobs/type/${job.jobType}`)}
           >
             Type: <strong>{job?.jobType?.replace('_', ' ')}</strong>
@@ -63,7 +63,7 @@ const JobMeta = ({ job }) => {
       )}
       {job.jobCategory && (
         <li
-          className="capitalize cursor-pointer hover:text-accent-500"
+          className="capitalize cursor-pointer hover:text-primary-500"
           onClick={() => router.push(`/jobs/category/${job.jobCategory}`)}
         >
           Category: <strong>{job.jobCategory}</strong>
@@ -97,12 +97,14 @@ const JobContent = ({ job }) => (
 
         <Link href={`/company/${job.companySlug}`}>
           <a>
-            <div className="mb-0.5 text-sm font-light hover:text-accent-500">{job.companyName}</div>
+            <div className="mb-0.5 text-sm font-light hover:text-primary-500">
+              {job.companyName}
+            </div>
           </a>
         </Link>
         <Link href={`/job/${job.id}`}>
           <a>
-            <div className="text-lg font-bold hover:text-accent-500 ">{job.jobTitle}</div>
+            <div className="text-lg font-bold hover:text-primary-500 ">{job.jobTitle}</div>
           </a>
         </Link>
 
@@ -139,8 +141,7 @@ const JobActions = ({ job, user }) => {
 
   useEffect(() => {
     if (savedJobs) {
-      const savedJob = savedJobs.find((j) => j.id === job.id);
-      setIsSaved(!!savedJob);
+      setIsSaved(Boolean(savedJobs?.find((j) => j.id === job.id)));
     }
   }, [savedJobs, job.id]);
 
@@ -155,14 +156,14 @@ const JobActions = ({ job, user }) => {
     return (
       <div className="flex w-full items-center sm:max-w-[8rem] space-x-5 justify-center sm:pl-5">
         <button
-          className={`p-2 text-white rounded-full w-9 h-9 'bg-accent-800 bg-accent-800 hover:bg-green-500`}
+          className={`p-2 text-white rounded-full w-9 h-9 bg-primary-800 hover:bg-primary-500`}
           type="button"
           onClick={handleSavedJobWithoutLogin}
         >
           <BookmarkIcon />
         </button>
         <Link href={`/job/${job.id}`}>
-          <a className="p-2 text-white rounded-full w-9 h-9 bg-notice-danger-100 hover:bg-green-500">
+          <a className="p-2 text-white rounded-full w-9 h-9 bg-error-100 hover:bg-primary-500">
             <ArrowRightIcon />
           </a>
         </Link>
@@ -202,7 +203,7 @@ const JobActions = ({ job, user }) => {
     <div className="flex w-full items-center sm:max-w-[8rem] space-x-5 justify-center sm:pl-5">
       <Button
         className={`p-2 text-white rounded-full w-9 h-9  ${
-          isSaved ? 'bg-green-500 hover:bg-red-500' : 'bg-accent-800 hover:bg-accent-500'
+          isSaved ? 'bg-primary-500 hover:bg-error-300' : 'bg-primary-800 hover:bg-primary-500'
         }`}
         title={isSaved ? 'Remove' : 'Save'}
         onClick={() => (isSaved ? handleRemoveSavedJob() : handleSaveJob())}
@@ -211,7 +212,7 @@ const JobActions = ({ job, user }) => {
       </Button>
 
       <Link href={`/job/${job.id}`}>
-        <a className="p-2 text-white rounded-full w-9 h-9 bg-notice-danger-100 hover:bg-green-500">
+        <a className="p-2 text-white rounded-full w-9 h-9 bg-error-100 hover:bg-primary-500">
           <ArrowRightIcon />
         </a>
       </Link>
@@ -225,7 +226,7 @@ function JobCard({ job }) {
   return (
     <div
       className={`
-        max-w-4xl mx-auto relative flex flex-col justify-center w-full px-5 py-3.5 bg-white rounded-2xl sm:rounded-3xl shadow-md shadow-slate-300
+        max-w-4xl mx-auto relative flex flex-col justify-center w-full px-5 py-3.5 bg-white rounded-2xl sm:rounded-3xl shadow-md shadow-gray-300
       ${jobStatus(job)}`}
       style={{
         backgroundColor: job.hasCompanyColor.isActive ? job.hasCompanyColor.color : '#fff',

@@ -22,70 +22,38 @@ const Supabase = () => {
    * @returns {Promise<Array>}
    * @memberof Supabase
    * @example
-   * const jobs = Client.getJobs()
+   * const jobs = Client.getJobs(contentType, content)
    *
    */
-  const getJobs = async () => {
-    const { data: Jobs } = await getJobsApi();
+  const getJobs = async (contentType, content) => {
+    const jobsApi = getJobsApi();
+    console.log(contentType, content);
+
+    switch (true) {
+      case contentType === 'jobType':
+        jobsApi.eq('jobType', content);
+        break;
+      case contentType === 'jobCategory':
+        jobsApi.eq('jobCategory', content);
+        break;
+      case contentType === 'location':
+        jobsApi.eq('location', content);
+        break;
+      case contentType === 'company':
+        jobsApi.eq('companySlug', content);
+        break;
+      case contentType === 'jobTags':
+        jobsApi.textSearch('jobTags', content, {
+          config: 'english',
+        });
+        break;
+      default:
+        break;
+    }
+
+    const { data: Jobs } = await jobsApi.order('createdAt', { ascending: false });
 
     return Jobs;
-  };
-
-  /**
-   * @title Get Jobs by Type
-   * @returns {Promise<Array>}
-   * @memberof Supabase
-   * @example
-   * const jobs = Client.getJobsByType()
-   *
-   */
-  const getJobsByType = async (type) => {
-    const { data: JobsByType } = await getJobsApi().eq('jobType', type);
-
-    return JobsByType;
-  };
-
-  /**
-   * @title Get Jobs by Category
-   * @returns {Promise<Array>}
-   * @memberof Supabase
-   * @example
-   * const jobs = Client.getJobsByCategory()
-   *
-   */
-  const getJobsByCategory = async (category) => {
-    const { data: JobsByCategory } = await getJobsApi().eq('jobCategory', category);
-
-    return JobsByCategory;
-  };
-
-  /**
-   * @title Get Jobs by Location
-   * @returns {Promise<Array>}
-   * @memberof Supabase
-   * @example
-   * const jobs = Client.getJobsByLocation()
-   *
-   */
-  const getJobsByLocation = async (location) => {
-    const { data: JobsByLocation } = await getJobsApi().eq('location', location);
-
-    return JobsByLocation;
-  };
-
-  /**
-   * @title Get Jobs by Tags
-   * @returns {Promise<Array>}
-   * @memberof Supabase
-   * @example
-   * const jobs = Client.getJobsByTag()
-   *
-   */
-  const getJobsByTag = async (tag) => {
-    const { data: JobsByTag } = await getJobsApi().textSearch('jobTags', tag, {
-      config: 'english',
-    });
-    return JobsByTag;
   };
 
   /**
@@ -340,10 +308,6 @@ const Supabase = () => {
     getCompany,
     getJob,
     getJobs,
-    getJobsByType,
-    getJobsByCategory,
-    getJobsByLocation,
-    getJobsByTag,
     searchJobs,
     removeCategory,
     removeJob,

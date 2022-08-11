@@ -1,8 +1,10 @@
+@import 'fonts/fonts.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html {
+  scroll-behavior: smooth;
 }
 
 *,
@@ -10,62 +12,16 @@ html {
 *::after {
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 
 body {
-  font-family: 'allumi-std', sans-serif;
-  font-size: 10px;
   background-color: #fafafa;
-}
-
-/* 
- * Auth
-*/
-
-.authcontainer {
-  @apply bg-gray-100 p-10 rounded-2xl text-center mt-20 mx-auto max-w-sm !important;
-}
-
-.authcontainer .sbui-card {
-  @apply bg-gray-100 !important;
-}
-
-.authcontainer .sbui-typography-title {
-  @apply text-gray-800 font-bold !important;
-}
-
-.authcontainer label,
-.authcontainer .sbui-typography-text {
-  @apply text-accent-500 font-light !important;
-}
-
-.authcontainer .sbui-btn {
-  @apply bg-accent-500 text-white hover:bg-accent-800 !important;
-}
-
-.authcontainer .sbui-formlayout__label {
-  @apply text-gray-800 !important;
-}
-
-.authcontainer a {
-  @apply text-accent-500 shadow-none hover:text-accent-800 !important;
-}
-
-.authcontainer button[type='submit'] {
-  @apply bg-accent-500 !important;
-}
-
-.authcontainer input:focus {
-  @apply border-accent-800 !important;
-}
-
-.authcontainer .sbui-typography-text-danger {
-  top: 3px !important;
-  position: absolute !important;
-}
-
-.sbui-checkbox {
-  @apply text-gray-800 hover:border-accent-800 checked:bg-accent-100 !important;
+  font-family: 'Lexend', sans-serif;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+  overflow-x: hidden;
 }
 
 /*  Loader icon */

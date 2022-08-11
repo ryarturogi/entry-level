@@ -49,7 +49,7 @@ export default function Header() {
                           className={classNames(
                             item.current
                               ? 'bg-gray-800 text-white'
-                              : 'text-gray-800 hover:bg-accent-500 hover:text-white',
+                              : 'text-gray-800 hover:bg-primary-500 hover:text-white',
                             'px-3 py-2 rounded text-sm font-medium'
                           )}
                         >

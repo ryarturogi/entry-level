@@ -1,4 +1,4 @@
-import { getJobsByTag } from '@/store/actions/jobAction';
+import { getJobs } from '@/store/actions/jobAction';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -17,7 +17,7 @@ function JobsByTags() {
 
   useEffect(() => {
     if (tag) {
-      dispatch(getJobsByTag(tag));
+      dispatch(getJobs('jobTags', tag));
     }
   }, [tag, dispatch]);
 

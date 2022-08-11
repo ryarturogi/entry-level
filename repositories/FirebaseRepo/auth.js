@@ -38,9 +38,9 @@ const getSavedJobsQuery = async (ref) => {
  * @returns {Promise<Object>}
  * @memberof Firebase
  * @example
- * const newUser = Client.Auth.createUser(userData)
+ * const newUser = Client.Auth.signUp(userData)
  */
-const createUser = async (email, password) => {
+const signUp = async (email, password) => {
   auth
     .createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
@@ -107,8 +107,8 @@ const signInWithProvider = async (providerName) => {
 
   return auth.signInWithPopup(provider).catch((err) => {
     if (err.code === 'auth/account-exists-with-different-credential') {
-      var pendingCred = err.credential;
-      var email = err.email;
+      let pendingCred = err.credential;
+      let email = err.email;
       auth
         .fetchSignInMethodsForEmail(email)
         .then((methods) => {
@@ -306,7 +306,7 @@ const getSavedJobsCount = async () => {
 
 const Auth = () => ({
   auth,
-  createUser,
+  signUp,
   getCurrentSession,
   getCurrentUser,
   signIn,

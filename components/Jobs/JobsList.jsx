@@ -18,7 +18,7 @@ function JobsList({ loading, error, jobs }) {
     <section className="flex flex-col items-center justify-center mx-auto w-[96%]">
       {jobs?.length > 0 && (
         <ul className="flex flex-col items-center justify-center w-full space-y-4 max-w-hero">
-          {jobs.map((job, idx) => {
+          {jobs?.map((job, idx) => {
             return (
               <li className="w-full" key={idx}>
                 <JobCard job={job} />

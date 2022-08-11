@@ -1,4 +1,4 @@
-import { getJobsByCompany } from '@/store/actions/jobAction';
+import { getJobs } from '@/store/actions/jobAction';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -17,7 +17,7 @@ function JobsByCompany() {
 
   useEffect(() => {
     if (company) {
-      dispatch(getJobsByCompany(company));
+      dispatch(getJobs('companySlug', company));
     }
   }, [company, dispatch]);
 

@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
-
 import Provider from '@/utils/initDatabase';
+import { PROVIDERS } from '@/constants/index';
 
 const providerName = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
 const currentProvider = Provider(providerName);
 
 export const UserContext = createContext();
 
-const AuthStateChanged = (setSession, setUser) => {
-  if (providerName === 'supabase') {
+const AuthStateChanged = async (setSession, setUser) => {
+  if (providerName === PROVIDERS.SUPABASE) {
     const currSession = currentProvider.Auth.getCurrentSession();
     const currentUser = currentProvider.Auth.getCurrentUser();
 
@@ -25,7 +25,7 @@ const AuthStateChanged = (setSession, setUser) => {
     );
 
     return { authListener };
-  } else if (providerName === 'firebase') {
+  } else if (providerName === PROVIDERS.FIREBASE) {
     const unsubscribe = currentProvider.Auth.auth.onAuthStateChanged((user) => {
       if (user) {
         user.getIdTokenResult().then((idTokenResult) => {
@@ -52,9 +52,7 @@ export function AuthProvider(props) {
   useEffect(() => {
     const { authListener } = AuthStateChanged(setSession, setUser);
 
-    return () => {
-      authListener.unsubscribe();
-    };
+    return () => authListener?.unsubscribe();
   }, [user, session]);
 
   // eslint-disable-next-line react/jsx-no-constructed-context-values

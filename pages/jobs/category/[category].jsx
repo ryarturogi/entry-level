@@ -1,4 +1,4 @@
-import { getJobsByCategory } from '@/store/actions/jobAction';
+import { getJobs } from '@/store/actions/jobAction';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -17,7 +17,7 @@ function JobsByCategory() {
 
   useEffect(() => {
     if (category) {
-      dispatch(getJobsByCategory(category));
+      dispatch(getJobs('jobCategory', category));
     }
   }, [category, dispatch]);
 

@@ -24,8 +24,7 @@ function SavedJobs() {
     <div className="min-h-screen mb-20">
       <Head />
       <Hero title="Saved Jobs" subtitle="Saved jobs are stored here." />
-
-      <JobsList jobs={savedJobs} error={error} loading={loading} />
+      <JobsList jobs={savedJobs || []} loading={loading} error={error} />
     </div>
   );
 }

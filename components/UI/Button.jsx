@@ -15,21 +15,21 @@ function Button(props) {
   const setColor = () => {
     switch (color) {
       case 'primary':
-        return 'bg-accent-500 hover:bg-accent-800';
+        return 'bg-primary-500 hover:bg-primary-800';
       case 'secondary':
-        return 'bg-accent-100 hover:bg-gray-500';
+        return 'bg-primary-100 hover:bg-gray-500';
       case 'success':
-        return 'bg-notice-success hover:bg-green-700';
+        return 'bg-success hover:bg-primary-700';
       case 'danger':
-        return 'bg-notice-danger-200 hover:bg-notice-danger-300';
+        return 'bg-error-200 hover:bg-error-300';
       case 'warning':
-        return 'bg-orange-500 hover:bg-orange-700';
+        return 'bg-warning hover:bg-orange-700';
       case 'info':
-        return 'bg-notice-info hover:bg-accent-800';
+        return 'bg-info hover:bg-primary-800';
       case 'link':
-        return 'bg-transparent text-gray-800 hover:text-accent-500';
+        return 'bg-transparent text-gray-800 hover:text-primary-500';
       default:
-        return 'bg-accent-500 hover:bg-accent-800';
+        return 'bg-primary-500 hover:bg-primary-800';
     }
   };
 
@@ -91,20 +91,18 @@ function Button(props) {
     <button
       className={`
         text-white font-semibold flex items-center justify-center
-        ${setDisplayType(displayType)} 
-        ${setRounded(rounded)} 
-        ${setColor(color)} 
-        ${setSize(size)}
+        ${setDisplayType()} 
+        ${setRounded()} 
+        ${setColor()} 
+        ${setSize()}
         ${styles}
       `}
       type="button"
       {...rest}
     >
-      {icon && iconPosition === 'left' && <i className={`${setIconSize(iconSize)} mr-1`}>{icon}</i>}
+      {icon && iconPosition === 'left' && <i className={`${setIconSize()} mr-1`}>{icon}</i>}
       {children}
-      {icon && iconPosition === 'right' && (
-        <i className={`${setIconSize(iconSize)} ml-1`}>{icon}</i>
-      )}
+      {icon && iconPosition === 'right' && <i className={`${setIconSize()} ml-1`}>{icon}</i>}
     </button>
   );
 }

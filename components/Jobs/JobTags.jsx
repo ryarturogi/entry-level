@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import { PROVIDERS } from '@/constants/index';
 
 function JobTags({ tags, theme }) {
   const parsedTags = () => {
-    if (process.env.NEXT_PUBLIC_PROVIDER_NAME === 'supabase') {
+    if (process.env.NEXT_PUBLIC_PROVIDER_NAME === PROVIDERS.SUPABASE) {
       return JSON.parse(tags);
     }
     return tags;
@@ -17,8 +18,8 @@ function JobTags({ tags, theme }) {
             <a
               className={`cursor-pointer flex items-center justify-center px-2 py-0.5 text-xs border rounded capitalize  ${
                 theme === 'light'
-                  ? 'border-white text-white hover:text-notice-danger-100 hover:bg-white'
-                  : 'border-notice-danger-100 text-notice-danger-100 hover:text-white hover:bg-notice-danger-100'
+                  ? 'border-white text-white hover:text-error-100 hover:bg-white'
+                  : 'border-error-100 text-error-100 hover:text-white hover:bg-error-100'
               }`}
             >
               {tag}

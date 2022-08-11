@@ -1,4 +1,4 @@
-import { getJobsByLocation } from '@/store/actions/jobAction';
+import { getJobs } from '@/store/actions/jobAction';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -17,7 +17,7 @@ function JobsByLocation() {
 
   useEffect(() => {
     if (location) {
-      dispatch(getJobsByLocation(location));
+      dispatch(getJobs('location', location));
     }
   }, [location, dispatch]);
 

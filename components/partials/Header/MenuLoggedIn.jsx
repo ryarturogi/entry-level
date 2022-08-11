@@ -36,7 +36,7 @@ function MenuLoggedIn() {
             {/* {savedJobsCount > 0 && (
               <div
                 title={`${savedJobsCount} saved job${savedJobsCount > 1 ? 's' : ''}`}
-                className="absolute grid w-3.5 h-3.5 p-2 text-xs font-bold rounded-full place-content-center bottom-0 right-0 bg-accent-500 text-white"
+                className="absolute grid w-3.5 h-3.5 p-2 text-xs font-bold rounded-full place-content-center bottom-0 right-0 bg-primary-500 text-white"
               >
                 {savedJobsCount}
               </div>
@@ -62,7 +62,7 @@ function MenuLoggedIn() {
                     <Link href={item.href}>
                       <a
                         className={classNames(
-                          active ? 'bg-accent-500 text-white' : 'text-gray-800 hover:bg-gray-100',
+                          active ? 'bg-primary-500 text-white' : 'text-gray-800 hover:bg-gray-100',
                           'pl-4 pr-2 py-2 text-sm relative flex items-center justify-between'
                         )}
                       >
@@ -70,7 +70,7 @@ function MenuLoggedIn() {
                         {item.label === 'Saved Jobs' && savedJobsCount > 0 && (
                           <div
                             title={`${savedJobsCount} saved job${savedJobsCount > 1 ? 's' : ''}`}
-                            className=" grid w-3.5 h-3.5 p-2 text-xs font-bold rounded-full place-content-center bg-accent-500 text-white"
+                            className=" grid w-3.5 h-3.5 p-2 text-xs font-bold rounded-full place-content-center bg-primary-500 text-white"
                           >
                             {savedJobsCount}
                           </div>
