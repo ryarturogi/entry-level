@@ -1,5 +1,6 @@
 import { PROVIDERS } from '@/constants/index';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
 function JobTags({ tags, theme }) {
   const parsedTags = () => {
@@ -32,3 +33,8 @@ function JobTags({ tags, theme }) {
 }
 
 export default JobTags;
+
+JobTags.propTypes = {
+  tags: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
+  theme: PropTypes.string.isRequired,
+};

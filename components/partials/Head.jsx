@@ -1,4 +1,5 @@
 import { default as HeadContainer } from 'next/head';
+import PropTypes from 'prop-types';
 
 const HomeTitle = 'EntryLevelDevs.io - Jobs for Entry level heros';
 const HomeDescription = 'Jobs for Entry level heros';
@@ -14,3 +15,8 @@ function Head({ title = HomeTitle, description = HomeDescription }) {
 }
 
 export default Head;
+
+Head.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+};

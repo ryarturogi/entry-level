@@ -1,4 +1,5 @@
 import Header from '@/components/partials/Header';
+import PropTypes from 'prop-types';
 
 export default function Layout({ children }) {
   return (
@@ -8,3 +9,7 @@ export default function Layout({ children }) {
     </>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};

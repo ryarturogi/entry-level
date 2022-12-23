@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 
 const JobMeta = (props) => {
   const router = useRouter();
@@ -44,3 +45,9 @@ const JobMeta = (props) => {
 };
 
 export default JobMeta;
+
+JobMeta.propTypes = {
+  location: PropTypes.string.isRequired,
+  jobType: PropTypes.string.isRequired,
+  jobCategory: PropTypes.string.isRequired,
+};
