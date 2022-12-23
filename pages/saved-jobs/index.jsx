@@ -23,9 +23,8 @@ function SavedJobs() {
   return (
     <div className="min-h-screen mb-20">
       <Head />
-      <Hero title="Saved Jobs" subtitle="Saved jobs are stored here." />
-
-      <JobsList jobs={savedJobs} error={error} loading={loading} />
+      <Hero subtitle="Saved jobs are stored here." title="Saved Jobs" />
+      <JobsList error={error} jobs={savedJobs || []} loading={loading} />
     </div>
   );
 }

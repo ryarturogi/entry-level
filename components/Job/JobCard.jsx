@@ -1,11 +1,9 @@
-/* eslint-disable react/no-danger */
-
-import { useRouter } from 'next/router';
-
 import JobTags from '@/components/Jobs/JobTags';
 import Avatar from '@/components/UI/Avatar';
 import { formatDate, isToday, timeSince } from '@/utils/formatDate';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 
 function JobCard({ job }) {
   const router = useRouter();
@@ -44,15 +42,18 @@ function JobCard({ job }) {
             className="text-base leading-relaxed text-gray-800"
             dangerouslySetInnerHTML={{ __html: job.jobDescription }}
           />
-          <a className="text-lg font-bold text-blue-600 hover:text-gray-800" href={job.howToApply}>
-            How to apply?
-          </a>
+          {job.howToApply && (
+            <Link
+              className="text-lg font-bold text-blue-600 hover:text-gray-800"
+              href={job.howToApply}
+            >
+              How to apply?
+            </Link>
+          )}
         </div>
         <div className="flex flex-col items-center h-full col-span-4 px-5 py-8 space-y-2 bg-gray-100 shadow rounded-lg max-h-[45rem]">
-          <Link href={`/company/${job.companySlug}`}>
-            <a className="mb-2">
-              {job.hasCompanyLogo && <Avatar avatar={job.companyLogo} size="md" />}
-            </a>
+          <Link className="mb-2" href={`/company/${job.companySlug}`}>
+            {job.hasCompanyLogo && <Avatar avatar={job.companyLogo} size="md" />}
           </Link>
           <div className="text-center">
             <h3 className="text-2xl font-bold">{job.companyName}</h3>
@@ -60,12 +61,13 @@ function JobCard({ job }) {
           </div>
           {job.companyDescription}
         </div>
-        {/* {job.companySlug} */}
-        {/* {job.isFeatured}
-      {job.isGuaranteed} */}
       </section>
     </div>
   );
 }
 
 export default JobCard;
+
+JobCard.propTypes = {
+  job: PropTypes.object.isRequired,
+};

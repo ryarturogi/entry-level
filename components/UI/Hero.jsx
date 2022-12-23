@@ -15,11 +15,11 @@ function Hero({ title, subtitle, action }) {
         </h2>
         {action ? (
           <Button
+            displayType="inline"
+            onClick={() => action.handler()}
             rounded="md"
             size="lg"
             styles="mt-8 w-full max-w-[320px]"
-            displayType="inline"
-            onClick={() => action.handler()}
             title={action.title}
           >
             {action.title || 'Post a Job for $1.00'}

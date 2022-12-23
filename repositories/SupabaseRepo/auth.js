@@ -6,9 +6,9 @@ import Client from './SupabaseConfig';
  * @returns {Promise<Object>}
  * @memberof Supabase
  * @example
- * const newUser = Client.Auth.createUser(userData)
+ * const newUser = Client.Auth.signUp(userData)
  */
-const createUser = async (email, password) => {
+const signUp = async (email, password) => {
   try {
     const { user, session, error } = await Client.auth.signUp({
       email,
@@ -305,7 +305,7 @@ const getSavedJobsCount = () => {
 
 const Auth = () => ({
   authMethods: Client.auth,
-  createUser,
+  signUp,
   getCurrentSession,
   getCurrentUser,
   onAuthStateChange,

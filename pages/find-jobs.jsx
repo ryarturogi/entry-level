@@ -1,14 +1,14 @@
-import { searchJobs, getJobs } from '@/store/actions/jobAction';
+import { getJobs, searchJobs } from '@/store/actions/jobAction';
 import { useDispatch, useSelector } from 'react-redux';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import Hero from '@/components/UI/Hero';
 import JobSearch from '@/components/Jobs/JobSearch';
 import JobsList from '@/components/Jobs/JobsList';
 import Head from '@/components/partials/Head';
+import Hero from '@/components/UI/Hero';
 
-function FindJobs() {
+const FindJobs = () => {
   const dispatch = useDispatch();
   const { loading, error, jobs } = useSelector((state) => state.jobsList);
 
@@ -28,10 +28,10 @@ function FindJobs() {
         }}
       ></Hero>
 
-      <JobSearch onSearch={handleOnSearch} loading={loading} />
-      <JobsList jobs={jobs} error={error} loading={loading} />
+      <JobSearch loading={loading} onSearch={handleOnSearch} />
+      <JobsList error={error} jobs={jobs} loading={loading} />
     </div>
   );
-}
+};
 
 export default FindJobs;

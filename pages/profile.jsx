@@ -1,10 +1,11 @@
+import { formatDate, isToday, timeSince } from '@/utils/formatDate';
 import { Tab } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
-import { formatDate, isToday, timeSince } from '@/utils/formatDate';
 
 import Head from '@/components/partials/Head';
 import Avatar from '@/components/UI/Avatar';
+import { PROVIDERS } from '@/constants/index';
 import { RequireAuth, useUser } from '@/hooks/useAuthUser';
 
 export default function Profile() {
@@ -14,7 +15,7 @@ export default function Profile() {
 
   const mappedUser = (user) => {
     switch (process.env.NEXT_PUBLIC_PROVIDER_NAME) {
-      case 'supabase':
+      case PROVIDERS.SUPABASE:
         return {
           id: user.id,
           email: user.email,
@@ -23,7 +24,7 @@ export default function Profile() {
           name: user?.user_metadata?.name,
           createdAt: user.created_at,
         };
-      case 'firebase':
+      case PROVIDERS.FIREBASE:
         return {
           id: user.uid,
           email: user.email,
@@ -37,14 +38,6 @@ export default function Profile() {
   };
   const userMapped = mappedUser(user);
 
-  const profileImage = () => {
-    if (userMapped.avatar) {
-      return userMapped.avatar;
-    }
-
-    return userMapped.avatar;
-  };
-
   return (
     <>
       <Head title="Profile" />
@@ -55,28 +48,30 @@ export default function Profile() {
             <Tab.List className="space-x-2 text-base">
               <Tab as={Fragment}>
                 {({ selected }) => (
-                  <a
+                  <button
                     className={`${
                       selected
-                        ? 'bg-accent-100 hover:bg-accent-100 text-white'
-                        : 'bg-gray-200 hover:bg-accent-100 text-black hover:text-white'
+                        ? 'bg-primary-100 hover:bg-primary-100 text-white'
+                        : 'bg-gray-200 hover:bg-primary-100 text-black hover:text-white'
                     } py-2 px-5 rounded cursor-pointer`}
+                    type="button"
                   >
                     Profile
-                  </a>
+                  </button>
                 )}
               </Tab>
               <Tab as={Fragment}>
                 {({ selected }) => (
-                  <a
+                  <button
                     className={`${
                       selected
-                        ? 'bg-accent-100 hover:bg-accent-100 text-white'
-                        : 'bg-gray-200 hover:bg-accent-100 text-black hover:text-white'
+                        ? 'bg-primary-100 hover:bg-primary-100 text-white'
+                        : 'bg-gray-200 hover:bg-primary-100 text-black hover:text-white'
                     } py-2 px-5 rounded cursor-pointer`}
+                    type="button"
                   >
                     Settings
-                  </a>
+                  </button>
                 )}
               </Tab>
             </Tab.List>
@@ -84,20 +79,20 @@ export default function Profile() {
               <Tab.Panel>
                 <section className="py-5 space-y-5 text-gray-800">
                   <div className="flex items-end">
-                    <Avatar avatar={profileImage()} isRounded size="sm" />
+                    <Avatar avatar={userMapped?.avatar} isRounded size="sm" />
 
                     {user.user_metadata?.certified && (
                       <div className="relative top right-5" title="Certified account">
-                        <CheckCircleIcon className="w-4 h-4 text-green-500 bg-white rounded-full" />
+                        <CheckCircleIcon className="w-4 h-4 bg-white rounded-full text-primary-500" />
                       </div>
                     )}
                   </div>
                   <div>
                     <h1 className="text-2xl font-semibold">{userMapped.name}</h1>
-                    <p className="text-sm">
+                    {/* <p className="text-sm">
                       <span className="font-semibold">ID:</span> {userMapped.id}
-                    </p>
-                    <p className="text-sm">{userMapped.email}</p>
+                    </p> */}
+                    <p className="text-sm">Email: {userMapped.email}</p>
 
                     <p className="text-sm">
                       <span className="font-semibold">Joined:</span>

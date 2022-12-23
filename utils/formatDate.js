@@ -1,82 +1,55 @@
-/* eslint-disable no-param-reassign */
 export const formatDate = (dateString) => {
-  const options = { day: 'numeric', month: 'long', year: 'numeric' };
-
-  // eslint-disable-next-line no-undefined
-  return new Date(dateString).toLocaleDateString(undefined, options);
+  // Use the Intl.DateTimeFormat object to format the date string
+  return new Intl.DateTimeFormat('en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(dateString));
 };
 
 export const timeSince = (time) => {
+  // Convert input time to a timestamp in milliseconds
+  let timestamp;
   switch (typeof time) {
     case 'number':
+      timestamp = time;
       break;
     case 'string':
-      time = Number(new Date(time));
+      timestamp = Number(new Date(time));
       break;
     case 'object':
       if (time.constructor === Date) {
-        time = time.getTime();
+        timestamp = time.getTime();
+      } else {
+        // If input is an object but not a Date object, return an empty string
+        return '';
       }
       break;
     default:
-      time = Number(new Date());
-  }
-  const timeFormats = [
-    [60, 'seconds', 1],
-    [120, '1 minute ago', '1 minute from now'],
-    [3600, 'minutes', 60],
-    [7200, '1 hour ago', '1 hour from now'],
-    [86400, 'hours', 3600],
-    [172800, 'Yesterday', 'Tomorrow'],
-    [604800, 'days', 86400],
-    [1209600, 'Last week', 'Next week'],
-    [2419200, 'weeks', 604800],
-    [4838400, 'Last month', 'Next month'],
-    [29030400, 'months', 2419200],
-    [58060800, 'Last year', 'Next year'],
-    [2903040000, 'years', 29030400],
-    [5806080000, 'Last century', 'Next century'],
-    [58060800000, 'centuries', 2903040000],
-  ];
-  let seconds = (Number(new Date()) - time) / 1000;
-  let token = 'ago';
-  let listChoice = 1;
-
-  if (seconds === 0) {
-    return 'Just now';
-  }
-  if (seconds < 0) {
-    seconds = Math.abs(seconds);
-    token = 'from now';
-    listChoice = 2;
-  }
-  let format = null;
-  let idx = 0;
-
-  while ((format = timeFormats[(idx += 1)])) {
-    if (seconds < format[0]) {
-      if (typeof format[2] === 'string') {
-        return format[listChoice];
-      }
-
-      return `${Math.floor(seconds / format[2])} ${format[1]} ${token}`;
-    }
+      timestamp = Number(new Date());
   }
 
-  return time;
+  // Calculate the number of seconds that have passed since the input time
+  const seconds = (Number(new Date()) - timestamp) / 1000;
+
+  // Return the appropriate string based on the number of seconds that have passed
+  if (seconds < 60) {
+    return `${Math.floor(seconds)} seconds ago`;
+  } else if (seconds < 3600) {
+    return `${Math.floor(seconds / 60)} minutes ago`;
+  } else if (seconds < 86400) {
+    return `${Math.floor(seconds / 3600)} hours ago`;
+  } else if (seconds < 604800) {
+    return `${Math.floor(seconds / 86400)} days ago`;
+  }
+  return `${Math.floor(seconds / 604800)} weeks ago`;
 };
 
-export const isToday = (date, now) => {
-  const yearDate = date.getYear();
-  const monthDate = date.getMonth();
-  const dayDate = date.getDate();
-  const yearNow = now.getYear();
-  const monthNow = now.getMonth();
-  const dayNow = now.getDate();
-
-  if (yearDate === yearNow && monthDate === monthNow && dayDate === dayNow) {
-    return true;
-  }
-
-  return false;
+export const isToday = (date, now = new Date()) => {
+  // Compare the year, month, and day of the input date to the year, month, and day of the "now" date
+  return (
+    date.getFullYear() === now.getFullYear() &&
+    date.getMonth() === now.getMonth() &&
+    date.getDate() === now.getDate()
+  );
 };
