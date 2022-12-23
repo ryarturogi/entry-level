@@ -12,12 +12,13 @@
 <p>To get started with the project, clone the repository and install the dependencies:</p>
 <pre><code>git clone https://github.com/ryarturogi/entry-level.git
 cd entry-level
-npm install
+npm install or yarn install
+
+Copy the .env-example file and renamed to .env
+Add the necesary enviroment variables
 </code></pre>
 <p>Then, start the development server:</p>
-<pre><code>npm run dev
-</code></pre>
-<pre><code>yarn dev
+<pre><code>npm run dev or yarn dev
 </code></pre>
 <p>The app will be available at <a href="http://localhost:3000">http://localhost:3000</a>.</p>
 <h2>Contributing</h2>
