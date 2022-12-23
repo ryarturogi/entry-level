@@ -10,7 +10,7 @@
 </ul>
 <h2>Getting Started</h2>
 <p>To get started with the project, clone the repository and install the dependencies:</p>
-<pre><code>git clone https://github.com/[user]/entry-level.git
+<pre><code>git clone https://github.com/ryarturogi/entry-level.git
 cd entry-level
 npm install
 </code></pre>
