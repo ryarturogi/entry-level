@@ -1,4 +1,5 @@
 import Button from '@/components/UI/Button';
+import PropTypes from 'prop-types';
 
 function Hero({ title, subtitle, action }) {
   return (
@@ -31,3 +32,12 @@ function Hero({ title, subtitle, action }) {
 }
 
 export default Hero;
+
+Hero.propTypes = {
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  action: PropTypes.shape({
+    title: PropTypes.string,
+    handler: PropTypes.func,
+  }),
+};

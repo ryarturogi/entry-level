@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
 import Loader from '../UI/Loader';
@@ -50,3 +51,8 @@ function JobSearch({ onSearch, loading }) {
 }
 
 export default JobSearch;
+
+JobSearch.propTypes = {
+  onSearch: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};

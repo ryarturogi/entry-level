@@ -1,5 +1,6 @@
 import Avatar from '@/components/UI/Avatar';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
 const CompanyLogo = ({ hasCompanyLogo, companySlug, companyLogo }) => (
   <div className="self-center">
@@ -12,3 +13,9 @@ const CompanyLogo = ({ hasCompanyLogo, companySlug, companyLogo }) => (
 );
 
 export default CompanyLogo;
+
+CompanyLogo.propTypes = {
+  hasCompanyLogo: PropTypes.bool.isRequired,
+  companySlug: PropTypes.string.isRequired,
+  companyLogo: PropTypes.string.isRequired,
+};

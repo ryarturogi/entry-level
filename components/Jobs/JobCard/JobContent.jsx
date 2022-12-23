@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import JobTags from '../JobTags';
 import JobMeta from './JobMeta';
 
@@ -49,3 +50,19 @@ const JobContent = (props) => (
 );
 
 export default JobContent;
+
+JobContent.propTypes = {
+  companyName: PropTypes.string.isRequired,
+  companySlug: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
+  hasCompanyColor: PropTypes.shape({
+    color: PropTypes.string.isRequired,
+    isActive: PropTypes.bool.isRequired,
+  }).isRequired,
+  hasCompanyLogo: PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
+  isFeatured: PropTypes.bool.isRequired,
+  isGuaranteed: PropTypes.bool.isRequired,
+  jobTags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  jobTitle: PropTypes.string.isRequired,
+};

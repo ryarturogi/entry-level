@@ -8,6 +8,7 @@ import {
 import { BookmarkIcon } from '@heroicons/react/outline';
 import { ArrowRightIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -106,3 +107,8 @@ const JobActions = (props) => {
 };
 
 export default JobActions;
+
+JobActions.propTypes = {
+  id: PropTypes.string.isRequired,
+  user: PropTypes.object,
+};

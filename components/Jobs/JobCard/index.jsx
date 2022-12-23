@@ -1,5 +1,6 @@
 import { useUser } from '@/hooks/useAuthUser';
 
+import PropTypes from 'prop-types';
 import CompanyLogo from './CompanyLogo';
 import JobActions from './JobActions';
 import JobContent from './JobContent';
@@ -51,3 +52,17 @@ function JobCard({ job }) {
 }
 
 export default JobCard;
+
+JobCard.propTypes = {
+  job: PropTypes.shape({
+    companyLogo: PropTypes.string.isRequired,
+    companySlug: PropTypes.string.isRequired,
+    hasCompanyColor: PropTypes.shape({
+      color: PropTypes.string.isRequired,
+      isActive: PropTypes.bool.isRequired,
+    }).isRequired,
+    hasCompanyLogo: PropTypes.bool.isRequired,
+    isFeatured: PropTypes.bool.isRequired,
+    isGuaranteed: PropTypes.bool.isRequired,
+  }).isRequired,
+};
