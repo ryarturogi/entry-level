@@ -1,9 +1,10 @@
-module.exports = {
+const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
   images: {
     domains: [
+      'https://assets.landing.jobs/',
       'avatars.githubusercontent.com',
       'remoteok.com',
       'remotive.com',
@@ -13,3 +14,5 @@ module.exports = {
     ],
   },
 };
+
+module.exports = nextConfig;

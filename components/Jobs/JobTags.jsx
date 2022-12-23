@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { PROVIDERS } from '@/constants/index';
+import Link from 'next/link';
 
 function JobTags({ tags, theme }) {
   const parsedTags = () => {
@@ -14,16 +14,16 @@ function JobTags({ tags, theme }) {
       {parsedTags().map((tag, idx) => (
         // eslint-disable-next-line react/no-array-index-key
         <li key={idx}>
-          <Link href={`/jobs/tag/${tag.replace(/\s/g, '-')}`} passHref>
-            <a
-              className={`cursor-pointer flex items-center justify-center px-2 py-0.5 text-xs border rounded capitalize  ${
-                theme === 'light'
-                  ? 'border-white text-white hover:text-error-100 hover:bg-white'
-                  : 'border-error-100 text-error-100 hover:text-white hover:bg-error-100'
-              }`}
-            >
-              {tag}
-            </a>
+          <Link
+            className={`cursor-pointer flex items-center justify-center px-2 py-0.5 text-xs border rounded capitalize  ${
+              theme === 'light'
+                ? 'border-white text-white hover:text-error-100 hover:bg-white'
+                : 'border-error-100 text-error-100 hover:text-white hover:bg-error-100'
+            }`}
+            href={`/jobs/tag/${tag.replace(/\s/g, '-')}`}
+            passHref
+          >
+            {tag}
           </Link>
         </li>
       ))}

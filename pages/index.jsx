@@ -18,9 +18,10 @@ function Home() {
 
   const handleOnSearch = (search) => {
     if (search.length > 2) {
-      return dispatch(searchJobs(search));
+      dispatch(searchJobs(search));
+    } else {
+      dispatch(getJobs());
     }
-    return dispatch(getJobs());
   };
 
   useEffect(() => {
@@ -38,8 +39,8 @@ function Home() {
         }}
       ></Hero>
 
-      <JobSearch onSearch={handleOnSearch} loading={loading} />
-      <JobsList jobs={jobs} error={error} loading={loading} />
+      <JobSearch loading={loading} onSearch={handleOnSearch} />
+      <JobsList error={error} jobs={jobs} loading={loading} />
     </div>
   );
 }

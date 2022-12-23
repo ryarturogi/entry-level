@@ -1,10 +1,10 @@
-import { Fragment } from 'react';
-import { useSelector } from 'react-redux';
+import { SignOut } from '@/hooks/useAuthUser';
+import classNames from '@/utils/classsesNames';
 import { Menu, Transition } from '@headlessui/react';
 import { UserCircleIcon } from '@heroicons/react/outline';
-import classNames from '@/utils/classsesNames';
-import { SignOut } from '@/hooks/useAuthUser';
 import Link from 'next/link';
+import { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 
 const Navigation = [
   {
@@ -59,23 +59,22 @@ function MenuLoggedIn() {
               {Navigation.map((item, index) => (
                 <Menu.Item key={index}>
                   {({ active }) => (
-                    <Link href={item.href}>
-                      <a
-                        className={classNames(
-                          active ? 'bg-primary-500 text-white' : 'text-gray-800 hover:bg-gray-100',
-                          'pl-4 pr-2 py-2 text-sm relative flex items-center justify-between'
-                        )}
-                      >
-                        {item.label}
-                        {item.label === 'Saved Jobs' && savedJobsCount > 0 && (
-                          <div
-                            title={`${savedJobsCount} saved job${savedJobsCount > 1 ? 's' : ''}`}
-                            className=" grid w-3.5 h-3.5 p-2 text-xs font-bold rounded-full place-content-center bg-primary-500 text-white"
-                          >
-                            {savedJobsCount}
-                          </div>
-                        )}
-                      </a>
+                    <Link
+                      className={classNames(
+                        active ? 'bg-primary-500 text-white' : 'text-gray-800 hover:bg-gray-100',
+                        'pl-4 pr-2 py-2 text-sm relative flex items-center justify-between'
+                      )}
+                      href={item.href}
+                    >
+                      {item.label}
+                      {item.label === 'Saved Jobs' && savedJobsCount > 0 && (
+                        <div
+                          className=" grid w-3.5 h-3.5 p-2 text-xs font-bold rounded-full place-content-center bg-primary-500 text-white"
+                          title={`${savedJobsCount} saved job${savedJobsCount > 1 ? 's' : ''}`}
+                        >
+                          {savedJobsCount}
+                        </div>
+                      )}
                     </Link>
                   )}
                 </Menu.Item>

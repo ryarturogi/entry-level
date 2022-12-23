@@ -31,10 +31,8 @@ export default function Header() {
                 </div>
 
                 <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
-                  <Link href="/">
-                    <a className="flex items-center flex-shrink-0 text-white">
-                      <Image alt="entry level devs" height={120} src="/logo.svg" width={120} />
-                    </a>
+                  <Link className="flex items-center flex-shrink-0 text-white" href="/">
+                    <Image alt="entry level devs" height={120} src="/logo.svg" width={120} />
                   </Link>
                 </div>
                 <div className="hidden sm:block sm:ml-6">
@@ -42,19 +40,16 @@ export default function Header() {
                     {Navigation.map((item) => (
                       <Link
                         aria-current={item.current ? 'page' : false}
+                        className={classNames(
+                          item.current
+                            ? 'bg-gray-800 text-white'
+                            : 'text-gray-800 hover:bg-primary-500 hover:text-white',
+                          'px-3 py-2 rounded text-sm font-medium'
+                        )}
                         href={item.href}
                         key={item.name}
                       >
-                        <a
-                          className={classNames(
-                            item.current
-                              ? 'bg-gray-800 text-white'
-                              : 'text-gray-800 hover:bg-primary-500 hover:text-white',
-                            'px-3 py-2 rounded text-sm font-medium'
-                          )}
-                        >
-                          {item.name}
-                        </a>
+                        {item.name}
                       </Link>
                     ))}
                   </div>
@@ -73,19 +68,16 @@ export default function Header() {
                 {Navigation.map((item) => (
                   <Link
                     aria-current={item.current ? 'page' : false}
+                    className={classNames(
+                      item.current
+                        ? 'bg-gray-900 text-white'
+                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      'block px-3 py-2 rounded-md text-base font-medium'
+                    )}
                     href={item.href}
                     key={item.name}
                   >
-                    <a
-                      className={classNames(
-                        item.current
-                          ? 'bg-gray-900 text-white'
-                          : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block px-3 py-2 rounded-md text-base font-medium'
-                      )}
-                    >
-                      {item.name}
-                    </a>
+                    {item.name}
                   </Link>
                 ))}
               </div>

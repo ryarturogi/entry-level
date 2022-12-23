@@ -1,12 +1,15 @@
 import Link from 'next/link';
 
-export default function FourOhFour() {
+const FourOhFour = () => {
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen">
-      <h1 className="text-xl">404 - Page Not Found</h1>
-      <Link href="/" replace>
-        <a className="text-lg hover:text-blue-500">Go back home</a>
+      <h1 className="mb-5 text-xl font-bold">404 - Page Not Found</h1>
+      <p className="mb-5 text-lg">Sorry, the page you are looking for could not be found.</p>
+      <Link className="text-lg hover:text-blue-500" href="/" replace>
+        Go back home
       </Link>
     </div>
   );
-}
+};
+
+export default FourOhFour;

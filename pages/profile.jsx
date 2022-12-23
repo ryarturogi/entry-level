@@ -1,12 +1,12 @@
+import { formatDate, isToday, timeSince } from '@/utils/formatDate';
 import { Tab } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
-import { formatDate, isToday, timeSince } from '@/utils/formatDate';
 
 import Head from '@/components/partials/Head';
 import Avatar from '@/components/UI/Avatar';
-import { RequireAuth, useUser } from '@/hooks/useAuthUser';
 import { PROVIDERS } from '@/constants/index';
+import { RequireAuth, useUser } from '@/hooks/useAuthUser';
 
 export default function Profile() {
   RequireAuth();
@@ -48,28 +48,30 @@ export default function Profile() {
             <Tab.List className="space-x-2 text-base">
               <Tab as={Fragment}>
                 {({ selected }) => (
-                  <a
+                  <button
                     className={`${
                       selected
                         ? 'bg-primary-100 hover:bg-primary-100 text-white'
                         : 'bg-gray-200 hover:bg-primary-100 text-black hover:text-white'
                     } py-2 px-5 rounded cursor-pointer`}
+                    type="button"
                   >
                     Profile
-                  </a>
+                  </button>
                 )}
               </Tab>
               <Tab as={Fragment}>
                 {({ selected }) => (
-                  <a
+                  <button
                     className={`${
                       selected
                         ? 'bg-primary-100 hover:bg-primary-100 text-white'
                         : 'bg-gray-200 hover:bg-primary-100 text-black hover:text-white'
                     } py-2 px-5 rounded cursor-pointer`}
+                    type="button"
                   >
                     Settings
-                  </a>
+                  </button>
                 )}
               </Tab>
             </Tab.List>

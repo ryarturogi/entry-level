@@ -27,7 +27,6 @@ const Supabase = () => {
    */
   const getJobs = async (contentType, content) => {
     const jobsApi = getJobsApi();
-    console.log(contentType, content);
 
     switch (true) {
       case contentType === 'jobType':

@@ -104,8 +104,6 @@ const getJobs = async (contentType, content) => {
       return getJobsQuery(ref.where('jobTags', 'array-contains', content));
     case contentType === 'companySlug':
       return getJobsQuery(ref.where('companySlug', '==', content));
-    case contentType === 'location':
-      return getJobsQuery(ref.where('location', '==', content));
     default:
       return getJobsQuery(ref);
   }
