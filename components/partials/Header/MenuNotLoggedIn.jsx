@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
 function MenuNotLoggedIn({ classes }) {
   return (
@@ -14,3 +15,7 @@ function MenuNotLoggedIn({ classes }) {
 }
 
 export default MenuNotLoggedIn;
+
+MenuNotLoggedIn.propTypes = {
+  classes: PropTypes.string.isRequired,
+};

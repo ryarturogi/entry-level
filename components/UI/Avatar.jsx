@@ -32,10 +32,9 @@ function Avatar({ avatar, isRounded = false, size = 'default' }) {
   );
 }
 
+export default Avatar;
 Avatar.propTypes = {
   avatar: PropTypes.string.isRequired,
   isRounded: PropTypes.bool,
   size: PropTypes.string,
 };
-
-export default Avatar;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Loader from '../UI/Loader';
 import JobCard from './JobCard';
 
@@ -33,3 +34,9 @@ function JobsList({ loading, error, jobs }) {
 }
 
 export default JobsList;
+
+JobsList.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+  jobs: PropTypes.array.isRequired,
+};

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 function Loader({ text = 'Loading...', className = '' }) {
   return (
     <div className={`loading ${className}`}>
@@ -12,3 +14,8 @@ function Loader({ text = 'Loading...', className = '' }) {
 }
 
 export default Loader;
+
+Loader.propTypes = {
+  text: PropTypes.string,
+  className: PropTypes.string,
+};
