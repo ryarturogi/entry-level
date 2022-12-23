@@ -7,6 +7,7 @@
       "@/api/*": ["pages/api/*"],
       "@/store/*": ["store/*"],
       "@/utils/*": ["utils/*"],
+      "@/constants/*": ["constants/*"],
       "@/repositories/*": ["repositories/*"],
       "@/assets/*": ["assets/*"],
       "@/styles/*": ["styles/*"],

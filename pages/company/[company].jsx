@@ -1,11 +1,11 @@
-import { getJobsByCompany } from '@/store/actions/jobAction';
+import { getJobs } from '@/store/actions/jobAction';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import JobCard from '@/components/Jobs/JobCard';
 import Hero from '@/components/UI/Hero';
-import JobCard from 'components/Jobs/JobCard';
 import Loader from 'components/UI/Loader';
 
 function JobsByCompany() {
@@ -17,7 +17,7 @@ function JobsByCompany() {
 
   useEffect(() => {
     if (company) {
-      dispatch(getJobsByCompany(company));
+      dispatch(getJobs('companySlug', company));
     }
   }, [company, dispatch]);
 
@@ -25,7 +25,7 @@ function JobsByCompany() {
     <section className="flex flex-col items-center justify-center mx-auto w-[96%]">
       <Head>
         <title>{`${companyCapitalize} Jobs`} | EntryLevelDevs</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta content="initial-scale=1.0, width=device-width" name="viewport" />
       </Head>
       <Hero />
       <ul className="w-full space-y-5 max-w-hero">

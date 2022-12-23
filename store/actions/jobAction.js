@@ -1,113 +1,13 @@
 import Client from '@/utils/initDatabase';
 import { GET_JOB, GET_JOBS, JOBS_ERROR, JOBS_LOADING } from '../types';
 
-export const getJobs = () => async (dispatch) => {
+export const getJobs = (contentType, content) => async (dispatch) => {
   dispatch({
     type: JOBS_LOADING,
   });
 
   try {
-    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs();
-
-    dispatch({
-      payload: Jobs,
-      type: GET_JOBS,
-    });
-  } catch (error) {
-    dispatch({
-      payload: error,
-      type: JOBS_ERROR,
-    });
-  }
-};
-
-export const getJobsByType = (type) => async (dispatch) => {
-  dispatch({
-    type: JOBS_LOADING,
-  });
-
-  try {
-    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobsByType(type);
-
-    dispatch({
-      payload: Jobs,
-      type: GET_JOBS,
-    });
-  } catch (error) {
-    dispatch({
-      payload: error,
-      type: JOBS_ERROR,
-    });
-  }
-};
-
-export const getJobsByCategory = (category) => async (dispatch) => {
-  dispatch({
-    type: JOBS_LOADING,
-  });
-
-  try {
-    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobsByCategory(category);
-
-    dispatch({
-      payload: Jobs,
-      type: GET_JOBS,
-    });
-  } catch (error) {
-    dispatch({
-      payload: error,
-      type: JOBS_ERROR,
-    });
-  }
-};
-
-export const getJobsByTag = (tag) => async (dispatch) => {
-  dispatch({
-    type: JOBS_LOADING,
-  });
-
-  try {
-    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobsByTag(tag);
-
-    dispatch({
-      payload: Jobs,
-      type: GET_JOBS,
-    });
-  } catch (error) {
-    dispatch({
-      payload: error,
-      type: JOBS_ERROR,
-    });
-  }
-};
-
-export const getJobsByLocation = (location) => async (dispatch) => {
-  dispatch({
-    type: JOBS_LOADING,
-  });
-
-  try {
-    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobsByLocation(location);
-
-    dispatch({
-      payload: Jobs,
-      type: GET_JOBS,
-    });
-  } catch (error) {
-    dispatch({
-      payload: error,
-      type: JOBS_ERROR,
-    });
-  }
-};
-
-export const getJobsByCompany = (company) => async (dispatch) => {
-  dispatch({
-    type: JOBS_LOADING,
-  });
-
-  try {
-    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobsByCompany(company);
+    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(contentType, content);
 
     dispatch({
       payload: Jobs,

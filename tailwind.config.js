@@ -1,26 +1,53 @@
 /* eslint-disable quotes */
 module.exports = {
   content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-  darkMode: 'class',
   theme: {
     extend: {
       backgroundImage: {
         'hero-pattern': "url('/img/hero-pattern.png')",
       },
       colors: {
-        accent: {
-          100: '#6791ff',
-          500: '#6872ff',
-          800: '#2b3298',
+        primary: {
+          100: '#C9E8E7',
+          200: '#97D7D6',
+          300: '#54CFCF',
+          400: '#35C4C7',
+          500: '#1CBAC1',
+          600: '#1BAAAF',
+          700: '#1B9597',
+          800: '#198180',
+          900: '#165D58',
         },
-        notice: {
-          'danger-100': '#ff5c49',
-          'danger-200': '#cb3903',
-          'danger-300': '#b60000',
-          info: '#6791ff',
-          success: '#00d6c0',
-          warn: '#ffc549',
+        secondary: {
+          100: '#FDD2D6',
+          200: '#ECA3A2',
+          300: '#E2817F',
+          400: '#EC675F',
+          500: '#F25D49',
+          600: '#E35447',
+          700: '#D04A40',
+          800: '#C3453A',
+          900: '#B23D30',
         },
+        gray: {
+          100: '#F8F9FA',
+          200: '#E9ECEF',
+          300: '#DEE2E6',
+          400: '#CED4DA',
+          500: '#ADB5BD',
+          600: '#6C757D',
+          700: '#495057',
+          800: '#343A40',
+          900: '#212529',
+        },
+        error: {
+          100: '#ff5c49',
+          200: '#cb3903',
+          300: '#b60000',
+        },
+        info: '#6791ff',
+        success: '#00d6c0',
+        warning: '#ffc549',
       },
       maxWidth: {
         hero: '76.25rem',
@@ -28,7 +55,4 @@ module.exports = {
     },
   },
   plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
-  variants: {
-    extend: {},
-  },
 };

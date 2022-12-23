@@ -91,74 +91,22 @@ const getJobsQuery = async (ref) => {
  * const jobs = Client.getJobs()
  *
  */
-const getJobs = async () => {
-  const ref = await JobsApi();
-  return getJobsQuery(ref);
-};
-
-/**
- * @title Gets all Jobs by type
- * @returns {Promise<Array>}
- * @memberof Firebase
- * @example
- * const jobs = Client.getJobsByType()
- *
- */
-const getJobsByType = async (type) => {
-  const ref = await JobsApi().where('jobType', '==', type);
-  return getJobsQuery(ref);
-};
-
-/**
- * @title Gets all Jobs by type
- * @returns {Promise<Array>}
- * @memberof Firebase
- * @example
- * const jobs = Client.getJobsByCategory()
- *
- */
-const getJobsByCategory = async (category) => {
-  const ref = await JobsApi().where('jobCategory', '==', category);
-  return getJobsQuery(ref);
-};
-
-/**
- * @title Gets all Jobs by Location
- * @returns {Promise<Array>}
- * @memberof Firebase
- * @example
- * const jobs = Client.getJobsByLocation()
- *
- */
-const getJobsByLocation = async (location) => {
-  const ref = await JobsApi().where('location', '==', location);
-  return getJobsQuery(ref);
-};
-
-/**
- * @title Gets all Jobs by Tag
- * @returns {Promise<Array>}
- * @memberof Firebase
- * @example
- * const jobs = Client.getJobsByTag()
- *
- */
-const getJobsByTag = async (tag) => {
-  const ref = await JobsApi().where('jobTags', 'array-contains', tag);
-  return getJobsQuery(ref);
-};
-
-/**
- * @title Gets all Jobs by Company
- * @returns {Promise<Array>}
- * @memberof Firebase
- * @example
- * const jobs = Client.getJobsByCompany()
- *
- */
-const getJobsByCompany = async (company) => {
-  const ref = JobsApi().where('companySlug', '==', company);
-  return getJobsQuery(ref);
+const getJobs = async (contentType, content) => {
+  const ref = JobsApi();
+  switch (true) {
+    case contentType === 'jobType':
+      return getJobsQuery(ref.where('jobType', '==', content));
+    case contentType === 'jobCategory':
+      return getJobsQuery(ref.where('jobCategory', '==', content));
+    case contentType === 'location':
+      return getJobsQuery(ref.where('location', '==', content));
+    case contentType === 'jobTags':
+      return getJobsQuery(ref.where('jobTags', 'array-contains', content));
+    case contentType === 'companySlug':
+      return getJobsQuery(ref.where('companySlug', '==', content));
+    default:
+      return getJobsQuery(ref);
+  }
 };
 
 /**
@@ -523,11 +471,6 @@ const Firebase = () => ({
   getCompany,
   getJob,
   getJobs,
-  getJobsByType,
-  getJobsByCategory,
-  getJobsByLocation,
-  getJobsByTag,
-  getJobsByCompany,
   searchJobs,
   removeCategory,
   removeJob,

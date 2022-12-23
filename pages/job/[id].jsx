@@ -9,10 +9,10 @@ import { getJob } from '@/store/actions/jobAction';
 
 function Job() {
   const dispatch = useDispatch();
-  const jobsList = useSelector((state) => state.jobsList);
+  const { loading, error, job } = useSelector((state) => state.jobsList);
   const router = useRouter();
-  const { id } = router.query;
-  const { loading, error, job } = jobsList;
+  // Set default value for id to an empty string
+  const { id = '' } = router.query;
 
   useEffect(() => {
     if (id) {
@@ -22,8 +22,9 @@ function Job() {
 
   return (
     <>
-      <Head title={`${job.jobTitle} Job`} />
-      {(error && error.message) || (loading ? <Loader /> : <JobCard job={job} />)}
+      {job && <Head title={`${job.jobTitle} Job`} />}
+      {error && error.message}
+      {loading ? <Loader /> : job ? <JobCard job={job} /> : null}
     </>
   );
 }

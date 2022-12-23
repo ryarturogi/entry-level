@@ -1,45 +1,59 @@
+import { PROVIDERS } from '@/constants/index';
+import Provider from '@/utils/initDatabase';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
-
-import Provider from '@/utils/initDatabase';
 
 const providerName = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
 const currentProvider = Provider(providerName);
 
 export const UserContext = createContext();
 
-const AuthStateChanged = (setSession, setUser) => {
-  if (providerName === 'supabase') {
-    const currSession = currentProvider.Auth.getCurrentSession();
-    const currentUser = currentProvider.Auth.getCurrentUser();
+const AuthStateChanged = async (setSession, setUser) => {
+  if (providerName === PROVIDERS.SUPABASE) {
+    try {
+      const currSession = currentProvider.Auth.getCurrentSession();
+      const currentUser = currentProvider.Auth.getCurrentUser();
 
-    setSession(currSession);
-    setUser(currentUser ? currentUser : false);
+      setSession(currSession);
+      setUser(currentUser ? currentUser : false);
 
-    const { data: authListener } = currentProvider.Client.auth.onAuthStateChange(
-      // eslint-disable-next-line no-shadow
-      async (_event, session) => {
-        setSession(session ?? false);
-        setUser(session?.user ?? false);
-      }
-    );
+      const { data: authListener } = currentProvider.Client.auth.onAuthStateChange(
+        // eslint-disable-next-line no-shadow
+        async (_event, session) => {
+          setSession(session ?? false);
+          setUser(session?.user ?? false);
+        }
+      );
 
-    return { authListener };
-  } else if (providerName === 'firebase') {
-    const unsubscribe = currentProvider.Auth.auth.onAuthStateChanged((user) => {
-      if (user) {
-        user.getIdTokenResult().then((idTokenResult) => {
-          setSession(idTokenResult.claims.auth_time * 1000 ?? false);
-        });
-        setUser(user ?? false);
-      }
-    });
+      return { authListener };
+    } catch (error) {
+      console.error(error);
+      return {};
+    }
+  } else if (providerName === PROVIDERS.FIREBASE) {
+    try {
+      const unsubscribe = currentProvider.Auth.auth.onAuthStateChanged((user) => {
+        if (user) {
+          user.getIdTokenResult().then((idTokenResult) => {
+            setSession({
+              user,
+              token: idTokenResult.token,
+              expiresAt: idTokenResult.claims.auth_time * 1000,
+            });
+          });
+          setUser(user ?? false);
+        }
+      });
 
-    const authListener = {
-      unsubscribe,
-    };
+      const authListener = {
+        unsubscribe,
+      };
 
-    return { authListener };
+      return { authListener };
+    } catch (error) {
+      console.error(error);
+      return {};
+    }
   }
 
   return {};
@@ -52,9 +66,7 @@ export function AuthProvider(props) {
   useEffect(() => {
     const { authListener } = AuthStateChanged(setSession, setUser);
 
-    return () => {
-      authListener.unsubscribe();
-    };
+    return () => authListener?.unsubscribe();
   }, [user, session]);
 
   // eslint-disable-next-line react/jsx-no-constructed-context-values

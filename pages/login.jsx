@@ -1,4 +1,4 @@
-import { BookmarkIcon, LoginIcon } from '@heroicons/react/solid';
+import { BookmarkIcon } from '@heroicons/react/solid';
 
 import Head from '@/components/partials/Head';
 import Button from '@/components/UI/Button';
@@ -7,7 +7,7 @@ import Provider from '@/utils/initDatabase';
 
 const currentProvider = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
 
-function Login() {
+const Login = () => {
   AuthRedirect();
 
   const { Auth } = Provider(currentProvider);
@@ -18,7 +18,7 @@ function Login() {
     <>
       <Head title="Login" />
 
-      <div className="relative flex items-center justify-center h-full min-h-[250px] max-w-sm p-5 m-auto bg-gray-100 top-40 rounded-xl">
+      <div className="relative flex items-center justify-center h-full max-w-sm p-5 m-auto bg-gray-100 min-h-250px top-40 rounded-xl">
         <div className="flex flex-col items-center w-full space-y-5 ">
           <section className="space-y-2.5 w-full">
             <h1 className="flex justify-center w-full text-2xl font-bold text-left text-gray-800">
@@ -27,24 +27,24 @@ function Login() {
             <nav className="space-y-3 text-base text-gray-400 list-none">
               <li>
                 <Button
+                  color="success"
                   icon={<BookmarkIcon />}
                   iconSize="md"
-                  color="success"
-                  styles="bg-[#DB4437] hover:bg-[#cb3e32] focus:bg-[#DB4437]"
                   onClick={() => login('google')}
                   size="md"
+                  styles="bg-DB4437 hover:bg-cb3e32 focus:bg-DB4437"
                 >
                   Login with Google
                 </Button>
               </li>
               <li>
                 <Button
+                  color="success"
                   icon={<BookmarkIcon />}
                   iconSize="md"
-                  color="success"
-                  styles="bg-[#333] hover:bg-[#282727] focus:bg-[#333]"
                   onClick={() => login('github')}
                   size="md"
+                  styles="bg-333 hover:bg-282727 focus:bg-333"
                 >
                   Login with Github
                 </Button>
@@ -94,6 +94,6 @@ function Login() {
       </div>
     </>
   );
-}
+};
 
 export default Login;
