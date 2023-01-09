@@ -8,11 +8,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import JobSearch from '@/components/Jobs/JobSearch';
 import JobsList from '@/components/Jobs/JobsList';
-import Head from '@/components/partials/Head';
 import Hero from '@/components/UI/Hero';
+import Head from '@/components/partials/Head';
+import { useRouter } from 'next/router';
 
 function Home() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { user } = useUser();
   const { loading, error, jobs } = useSelector((state) => state.jobsList);
 
@@ -35,7 +37,9 @@ function Home() {
       <Head />
       <Hero
         action={{
-          handler: handleOnSearch,
+          handler: () => {
+            router.push('/jobs/new');
+          },
         }}
       ></Hero>
 
