@@ -5,9 +5,7 @@ import {
   removeJob,
   saveJob,
 } from '@/store/actions/savedJobsAction';
-import { BookmarkIcon } from '@heroicons/react/outline';
-import { ArrowRightIcon } from '@heroicons/react/solid';
-import Link from 'next/link';
+import { BookmarkIcon } from '@heroicons/react/24/outline';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,13 +15,12 @@ const JobActions = (props) => {
   const userID = props.user?.id || props.user?.uid;
   const dispatch = useDispatch();
   const { savedJobs } = useSelector((state) => state.savedJobs);
-  const [isSaved, setIsSaved] = useState(
-    savedJobs?.length > 0 ? savedJobs?.some((savedJob) => savedJob.id === props.id) : false
-  );
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
-    if (savedJobs) {
-      setIsSaved(Boolean(savedJobs?.find((j) => j.id === props.id)));
+    if (savedJobs?.length > 0) {
+      const isSaved = savedJobs.find((job) => job.id === props.id);
+      setIsSaved(isSaved);
     }
   }, [savedJobs, props.id]);
 
@@ -36,20 +33,20 @@ const JobActions = (props) => {
     };
 
     return (
-      <div className="flex w-full items-center sm:max-w-[8rem] space-x-5 justify-center sm:pl-5">
-        <button
-          className={'p-2 text-white rounded-full w-9 h-9 bg-primary-800 hover:bg-primary-500'}
+      <div className="absolute bottom-2.5 right-3">
+        <Button
+          className={`w-10 h-10 flex items-end justify-end  ${
+            isSaved
+              ? 'text-primary-700 hover:text-error-300'
+              : 'text-gray-500 hover:text-primary-700'
+          }`}
           onClick={handleSavedJobWithoutLogin}
-          type="button"
+          title={isSaved ? 'Remove' : 'Save'}
         >
-          <BookmarkIcon />
-        </button>
-        <Link
-          className="p-2 text-white rounded-full w-9 h-9 bg-error-100 hover:bg-primary-500"
-          href={`/job/${props.id}`}
-        >
-          <ArrowRightIcon />
-        </Link>
+          <div className="w-5 h-5">
+            <BookmarkIcon />
+          </div>
+        </Button>
       </div>
     );
   }
@@ -63,7 +60,7 @@ const JobActions = (props) => {
       toast.success('Job saved!');
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.error(error);
     } finally {
       dispatch(getSavedJobs());
       dispatch(getSavedJobsCount());
@@ -77,7 +74,7 @@ const JobActions = (props) => {
       toast.warn('Job removed!');
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.error(error);
     } finally {
       dispatch(getSavedJobsCount());
       setIsSaved(false);
@@ -85,30 +82,25 @@ const JobActions = (props) => {
   };
 
   return (
-    <div className="flex w-full items-center sm:max-w-[8rem] space-x-5 justify-center sm:pl-5">
+    <div className="absolute bottom-3 right-3.5">
       <Button
-        className={`p-2 text-white rounded-full w-9 h-9  ${
-          isSaved ? 'bg-primary-500 hover:bg-error-300' : 'bg-primary-800 hover:bg-primary-500'
+        className={`w-10 h-10 flex items-end justify-end  ${
+          isSaved ? 'text-primary-700 hover:text-error-300' : 'text-gray-500 hover:text-primary-800'
         }`}
         onClick={() => (isSaved ? handleRemoveSavedJob() : handleSaveJob())}
         title={isSaved ? 'Remove' : 'Save'}
       >
-        <BookmarkIcon />
+        <div className="w-5 h-5">
+          <BookmarkIcon />
+        </div>
       </Button>
-
-      <Link
-        className="p-2 text-white rounded-full w-9 h-9 bg-error-100 hover:bg-primary-500"
-        href={`/job/${props.id}`}
-      >
-        <ArrowRightIcon />
-      </Link>
     </div>
   );
 };
 
-export default JobActions;
-
 JobActions.propTypes = {
   id: PropTypes.string.isRequired,
-  user: PropTypes.object,
+  user: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
+
+export default JobActions;

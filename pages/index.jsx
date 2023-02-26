@@ -1,48 +1,83 @@
-import { useUser } from '@/hooks/useAuthUser';
-import { getJobs, searchJobs } from '@/store/actions/jobAction';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { getSavedJobs } from '@/store/actions/savedJobsAction';
-import 'react-toastify/dist/ReactToastify.css';
-
-import JobSearch from '@/components/Jobs/JobSearch';
+import Filters from '@/components/Jobs/Filters';
 import JobsList from '@/components/Jobs/JobsList';
+import JobsSortBy from '@/components/Jobs/JobsSortBy';
 import Head from '@/components/partials/Head';
 import Hero from '@/components/UI/Hero';
+import Client from '@/utils/initDatabase';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 
-function Home() {
-  const dispatch = useDispatch();
-  const { user } = useUser();
-  const { loading, error, jobs } = useSelector((state) => state.jobsList);
+const PROVIDER_NAME = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
 
-  const handleOnSearch = (search) => {
-    if (search.length > 2) {
-      dispatch(searchJobs(search));
-    } else {
-      dispatch(getJobs());
+const Home = ({ jobs = [], error = false }) => {
+  const router = useRouter();
+  const [currentJobs, setCurrentJobs] = useState(jobs);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState(error || '');
+
+  const handleFiltersChange = async (filters) => {
+    setLoading(true);
+
+    try {
+      const filteredJobs = await Client(PROVIDER_NAME).getFilteredJobs(filters);
+      setCurrentJobs(filteredJobs);
+    } catch (error) {
+      setErrors(error?.response?.data?.message || error.message);
     }
+    setLoading(false);
   };
-
-  useEffect(() => {
-    if (user) {
-      dispatch(getSavedJobs());
-    }
-  }, [user, dispatch]);
 
   return (
     <div className="min-h-screen mb-20">
       <Head />
       <Hero
         action={{
-          handler: handleOnSearch,
+          handler: () => {
+            router.push('/jobs/new');
+          },
         }}
-      ></Hero>
+      />
 
-      <JobSearch loading={loading} onSearch={handleOnSearch} />
-      <JobsList error={error} jobs={jobs} loading={loading} />
+      <section className="flex flex-col w-full gap-10 mx-auto max-w-8xl sm:grid sm:grid-cols-12">
+        <section className="col-span-12 lg:col-span-8">
+          <header className="flex flex-col items-center justify-between pb-6 pl-5 sm:flex-row">
+            <h2 className="text-lg font-semibold sm:text-xl md:text-2xl">Job postings</h2>
+
+            <JobsSortBy onChange={handleFiltersChange} />
+          </header>
+          <JobsList error={errors} jobs={currentJobs} loading={loading} />
+        </section>
+
+        <Filters onChange={handleFiltersChange} />
+      </section>
     </div>
   );
+};
+
+export async function getServerSideProps() {
+  try {
+    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs();
+
+    return {
+      props: {
+        jobs: Jobs,
+        error: false,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        jobs: [],
+        error: error?.response?.data?.message || error.message,
+      },
+    };
+  }
 }
+
+Home.propTypes = {
+  jobs: PropTypes.array,
+  error: PropTypes.bool,
+};
 
 export default Home;
