@@ -4,6 +4,19 @@ const SavedJobsApi = () => {
   return db.collection('saved-jobs').orderBy('createdAt', 'desc');
 };
 
+/**
+ * @title Get current user
+ * @returns {Promise<Object>}
+ * @memberof Firebase
+ * @example
+ * const user = Client.Auth.getCurrentUser()
+ */
+const getCurrentUser = () => {
+  const { currentUser } = auth;
+
+  return currentUser;
+};
+
 const getSavedJobsQuery = async (ref) => {
   const user = await getCurrentUser();
   const userId = user?.uid;
@@ -160,19 +173,6 @@ const logout = async () => {
 
     return { error, errorCode, errorMessage };
   }
-};
-
-/**
- * @title Get current user
- * @returns {Promise<Object>}
- * @memberof Firebase
- * @example
- * const user = Client.Auth.getCurrentUser()
- */
-const getCurrentUser = () => {
-  const { currentUser } = auth;
-
-  return currentUser;
 };
 
 /**

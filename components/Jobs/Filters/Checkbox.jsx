@@ -60,7 +60,12 @@ Checkbox.propTypes = {
       name: PropTypes.string,
     })
   ),
-  optionsSelected: PropTypes.array,
+  optionsSelected: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+    })
+  ),
   title: PropTypes.string,
   onChange: PropTypes.func,
 };

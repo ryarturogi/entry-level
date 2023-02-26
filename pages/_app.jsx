@@ -31,7 +31,9 @@ const App = ({ Component, pageProps }) => {
 
 App.propTypes = {
   Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired,
+  pageProps: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])
+  ),
 };
 
 export default App;
