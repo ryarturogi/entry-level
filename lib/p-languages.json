@@ -1,0 +1,498 @@
+[
+  {
+    "id": "javascript",
+    "name": "JavaScript"
+  },
+  {
+    "id": "python",
+    "name": "Python"
+  },
+  {
+    "id": "java",
+    "name": "Java"
+  },
+  {
+    "id": "csharp",
+    "name": "C#"
+  },
+  {
+    "id": "html",
+    "name": "HTML"
+  },
+  {
+    "id": "css",
+    "name": "CSS"
+  },
+  {
+    "id": "sql",
+    "name": "SQL"
+  },
+  {
+    "id": "nodejs",
+    "name": "Node.js"
+  },
+  {
+    "id": "react",
+    "name": "React"
+  },
+  {
+    "id": "angular",
+    "name": "Angular"
+  },
+  {
+    "id": "vuejs",
+    "name": "Vue.js"
+  },
+  {
+    "id": "django",
+    "name": "Django"
+  },
+  {
+    "id": "flask",
+    "name": "Flask"
+  },
+  {
+    "id": "express",
+    "name": "Express"
+  },
+  {
+    "id": "mongodb",
+    "name": "MongoDB"
+  },
+  {
+    "id": "graphql",
+    "name": "GraphQL"
+  },
+  {
+    "id": "aws",
+    "name": "AWS"
+  },
+  {
+    "id": "linux",
+    "name": "Linux"
+  },
+  {
+    "id": "windows",
+    "name": "Windows"
+  },
+  {
+    "id": "macos",
+    "name": "macOS"
+  },
+  {
+    "id": "kanban",
+    "name": "Kanban"
+  },
+  {
+    "id": "jira",
+    "name": "Jira"
+  },
+  {
+    "id": "confluence",
+    "name": "Confluence"
+  },
+  {
+    "id": "continuousintegration",
+    "name": "Continuous Integration"
+  },
+  {
+    "id": "continuousdelivery",
+    "name": "Continuous Delivery"
+  },
+  {
+    "id": "continuousdeployment",
+    "name": "Continuous Deployment"
+  },
+  {
+    "id": "travis",
+    "name": "Travis CI"
+  },
+  {
+    "id": "teamcity",
+    "name": "TeamCity"
+  },
+  {
+    "id": "chef",
+    "name": "Chef"
+  },
+  {
+    "id": "puppet",
+    "name": "Puppet"
+  },
+  {
+    "id": "ansible",
+    "name": "Ansible"
+  },
+  {
+    "id": "terraform",
+    "name": "Terraform"
+  },
+  {
+    "id": "kafka",
+    "name": "Kafka"
+  },
+  {
+    "id": "haproxy",
+    "name": "HAProxy"
+  },
+  {
+    "id": "logstash",
+    "name": "Logstash"
+  },
+  {
+    "id": "kibana",
+    "name": "Kibana"
+  },
+  {
+    "id": "prometheus",
+    "name": "Prometheus"
+  },
+  {
+    "id": "grafana",
+    "name": "Grafana"
+  },
+  {
+    "id": "splunk",
+    "name": "Splunk"
+  },
+  {
+    "id": "datadog",
+    "name": "Datadog"
+  },
+  {
+    "id": "newrelic",
+    "name": "New Relic"
+  },
+  {
+    "id": "jenkinsx",
+    "name": "Jenkins X"
+  },
+  {
+    "id": "istio",
+    "name": "Istio"
+  },
+  {
+    "id": "linkerd",
+    "name": "Linkerd"
+  },
+  {
+    "id": "ambassador",
+    "name": "Ambassador"
+  },
+  {
+    "id": "grpc",
+    "name": "gRPC"
+  },
+  {
+    "id": "protobuf",
+    "name": "Protocol Buffers"
+  },
+  {
+    "id": "openapi",
+    "name": "OpenAPI"
+  },
+  {
+    "id": "swagger",
+    "name": "Swagger"
+  },
+  {
+    "id": "jwt",
+    "name": "JSON Web Tokens"
+  },
+  {
+    "id": "oauth",
+    "name": "OAuth"
+  },
+  {
+    "id": "openid",
+    "name": "OpenID Connect"
+  },
+  {
+    "id": "ssl",
+    "name": "SSL/TLS"
+  },
+  {
+    "id": "dns",
+    "name": "DNS"
+  },
+  {
+    "id": "tcpip",
+    "name": "TCP/IP"
+  },
+  {
+    "id": "http",
+    "name": "HTTP/HTTPS"
+  },
+  {
+    "id": "rest",
+    "name": "REST"
+  },
+  {
+    "id": "soap",
+    "name": "SOAP"
+  },
+  {
+    "id": "redux",
+    "name": "Redux"
+  },
+  {
+    "id": "mobx",
+    "name": "MobX"
+  },
+  {
+    "id": "rxjs",
+    "name": "RxJS"
+  },
+  {
+    "id": "webpack",
+    "name": "Webpack"
+  },
+  {
+    "id": "gulp",
+    "name": "Gulp"
+  },
+  {
+    "id": "grunt",
+    "name": "Grunt"
+  },
+  {
+    "id": "rollup",
+    "name": "Rollup"
+  },
+  {
+    "id": "yarn",
+    "name": "Yarn"
+  },
+  {
+    "id": "npm",
+    "name": "npm"
+  },
+  {
+    "id": "babel",
+    "name": "Babel"
+  },
+  {
+    "id": "typescript",
+    "name": "TypeScript"
+  },
+  {
+    "id": "es6",
+    "name": "ES6"
+  },
+  {
+    "id": "sass",
+    "name": "Sass"
+  },
+  {
+    "id": "less",
+    "name": "Less"
+  },
+  {
+    "id": "postcss",
+    "name": "PostCSS"
+  },
+  {
+    "id": "styledcomponents",
+    "name": "Styled Components"
+  },
+  {
+    "id": "tailwindcss",
+    "name": "Tailwind CSS"
+  },
+  {
+    "id": "antdesign",
+    "name": "Ant Design"
+  },
+  {
+    "id": "materialui",
+    "name": "Material-UI"
+  },
+  {
+    "id": "bootstrap",
+    "name": "Bootstrap"
+  },
+  {
+    "id": "jquery",
+    "name": "jQuery"
+  },
+  {
+    "id": "reactnative",
+    "name": "React Native"
+  },
+  {
+    "id": "ionic",
+    "name": "Ionic"
+  },
+  {
+    "id": "cordova",
+    "name": "Apache Cordova"
+  },
+  {
+    "id": "flutter",
+    "name": "Flutter"
+  },
+  {
+    "id": "swift",
+    "name": "Swift"
+  },
+  {
+    "id": "objective-c",
+    "name": "Objective-C"
+  },
+  {
+    "id": "kotlin",
+    "name": "Kotlin"
+  },
+  {
+    "id": "c",
+    "name": "C"
+  },
+  {
+    "id": "c++",
+    "name": "C++"
+  },
+  {
+    "id": "ruby",
+    "name": "Ruby"
+  },
+  {
+    "id": "php",
+    "name": "PHP"
+  },
+  {
+    "id": "go",
+    "name": "Go"
+  },
+  {
+    "id": "rust",
+    "name": "Rust"
+  },
+  {
+    "id": "elixir",
+    "name": "Elixir"
+  },
+  {
+    "id": "erlang",
+    "name": "Erlang"
+  },
+  {
+    "id": "haskell",
+    "name": "Haskell"
+  },
+  {
+    "id": "clojure",
+    "name": "Clojure"
+  },
+  {
+    "id": "scala",
+    "name": "Scala"
+  },
+  {
+    "id": "groovy",
+    "name": "Groovy"
+  },
+  {
+    "id": "lua",
+    "name": "Lua"
+  },
+  {
+    "id": "perl",
+    "name": "Perl"
+  },
+  {
+    "id": "bash",
+    "name": "Bash"
+  },
+  {
+    "id": "powershell",
+    "name": "PowerShell"
+  },
+  {
+    "id": "docker",
+    "name": "Docker"
+  },
+  {
+    "id": "kubernetes",
+    "name": "Kubernetes"
+  },
+  {
+    "id": "azure",
+    "name": "Azure"
+  },
+  {
+    "id": "gcp",
+    "name": "Google Cloud Platform"
+  },
+  {
+    "id": "firebase",
+    "name": "Firebase"
+  },
+  {
+    "id": "mysql",
+    "name": "MySQL"
+  },
+  {
+    "id": "postgresql",
+    "name": "PostgreSQL"
+  },
+  {
+    "id": "sqlite",
+    "name": "SQLite"
+  },
+  {
+    "id": "redis",
+    "name": "Redis"
+  },
+  {
+    "id": "elasticsearch",
+    "name": "Elasticsearch"
+  },
+  {
+    "id": "rabbitmq",
+    "name": "RabbitMQ"
+  },
+  {
+    "id": "apache",
+    "name": "Apache"
+  },
+  {
+    "id": "nginx",
+    "name": "NGINX"
+  },
+  {
+    "id": "jenkins",
+    "name": "Jenkins"
+  },
+  {
+    "id": "git",
+    "name": "Git"
+  },
+  {
+    "id": "svn",
+    "name": "SVN"
+  },
+  {
+    "id": "mercurial",
+    "name": "Mercurial"
+  },
+  {
+    "id": "tdd",
+    "name": "TDD"
+  },
+  {
+    "id": "bdd",
+    "name": "BDD"
+  },
+  {
+    "id": "devops",
+    "name": "DevOps"
+  },
+  {
+    "id": "agile",
+    "name": "Agile"
+  },
+  {
+    "id": "scrum",
+    "name": "Scrum"
+  }
+]
