@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const HomeTitle = 'EntryLevelDevs.io - Jobs for Entry level heros';
 const HomeDescription = 'Jobs for Entry level heros';
 
-function Head({ title = HomeTitle, description = HomeDescription }) {
+const Head = ({ title = HomeTitle, description = HomeDescription }) => {
   return (
     <HeadContainer>
       <title>{(title !== HomeTitle && `${title} - EntreLevelDevs.io`) || title}</title>
@@ -12,11 +12,11 @@ function Head({ title = HomeTitle, description = HomeDescription }) {
       <meta content="initial-scale=1.0, width=device-width" name="viewport" />
     </HeadContainer>
   );
-}
-
-export default Head;
+};
 
 Head.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  description: PropTypes.string,
 };
+
+export default Head;
