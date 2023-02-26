@@ -1,6 +1,6 @@
 import { formatDate, isToday, timeSince } from '@/utils/formatDate';
 import { Tab } from '@headlessui/react';
-import { CheckCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { Fragment, useState } from 'react';
 
 import Head from '@/components/partials/Head';
@@ -8,7 +8,7 @@ import Avatar from '@/components/UI/Avatar';
 import { PROVIDERS } from '@/constants/index';
 import { RequireAuth, useUser } from '@/hooks/useAuthUser';
 
-export default function Profile() {
+const Profile = () => {
   RequireAuth();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { user } = useUser();
@@ -118,4 +118,6 @@ export default function Profile() {
       )}
     </>
   );
-}
+};
+
+export default Profile;

@@ -14,8 +14,8 @@ function MenuNotLoggedIn({ classes }) {
   );
 }
 
-export default MenuNotLoggedIn;
-
 MenuNotLoggedIn.propTypes = {
-  classes: PropTypes.string.isRequired,
+  classes: PropTypes.string,
 };
+
+export default MenuNotLoggedIn;

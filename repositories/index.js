@@ -1,13 +1,16 @@
-class RepositoryProgram {
-  constructor(clientName) {
-    this.clientName = clientName;
-  }
+const RepositoryProgram = (clientName) => {
+  const repository = {
+    clientName,
 
-  init(databaseStrategy) {
-    return databaseStrategy;
-  }
-}
-// Instantiate the `RepositoryProgram` with an service name
-const Repository = (clientName) => new RepositoryProgram(clientName);
+    init: (databaseStrategy) => {
+      return databaseStrategy;
+    },
+  };
+
+  return repository;
+};
+
+// Instantiate the `RepositoryProgram` with a client name
+const Repository = (clientName) => RepositoryProgram(clientName);
 
 export default Repository();

@@ -179,13 +179,12 @@ const saveJob = async (jobs, job) => {
       });
 
       return { error, data };
-    } else {
-      const { data, error } = await Client.auth.update({
-        data: { savedJobs: [job] },
-      });
-
-      return { error, data };
     }
+    const { data, error } = await Client.auth.update({
+      data: { savedJobs: [job] },
+    });
+
+    return { error, data };
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -232,9 +231,9 @@ const removeJob = (jobs, job) => {
  * @example
  * const savedJobs = Client.Auth.getSavedJobs()
  */
-const getSavedJobs = async () => {
+const getSavedJobs = () => {
   try {
-    const savedJobs = Client.auth.currentSession?.user.user_metadata?.savedJobs;
+    const savedJobs = Client.auth.currentSession?.user?.user_metadata?.savedJobs;
 
     if (savedJobs?.length > 0) {
       return savedJobs;
@@ -289,9 +288,8 @@ const getSavedJobsCount = () => {
 
     if (savedJobs?.length > 0) {
       return savedJobs.length;
-    } else {
-      return 0;
     }
+    return 0;
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;

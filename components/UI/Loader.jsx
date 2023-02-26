@@ -13,9 +13,9 @@ function Loader({ text = 'Loading...', className = '' }) {
   );
 }
 
-export default Loader;
-
 Loader.propTypes = {
   text: PropTypes.string,
   className: PropTypes.string,
 };
+
+export default Loader;

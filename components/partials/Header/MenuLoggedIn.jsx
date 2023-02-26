@@ -1,7 +1,7 @@
 import { SignOut } from '@/hooks/useAuthUser';
 import classNames from '@/utils/classsesNames';
 import { Menu, Transition } from '@headlessui/react';
-import { UserCircleIcon } from '@heroicons/react/outline';
+import { UserCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { useSelector } from 'react-redux';

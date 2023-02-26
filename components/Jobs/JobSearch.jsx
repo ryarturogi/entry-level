@@ -1,22 +1,24 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { useDebounce } from 'react-use';
+import { useEffect, useState } from 'react';
 import Loader from '../UI/Loader';
 
 function JobSearch({ onSearch, loading }) {
   const [search, setSearch] = useState('');
+  let timeoutId = null;
 
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
 
-  useDebounce(
-    async () => {
+  useEffect(() => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
       onSearch(search);
-    },
-    300,
-    [search]
-  );
+    }, 300);
+    return () => clearTimeout(timeoutId);
+  }, [search, onSearch]);
 
   if (loading) {
     return (
@@ -50,9 +52,9 @@ function JobSearch({ onSearch, loading }) {
   );
 }
 
-export default JobSearch;
-
 JobSearch.propTypes = {
   onSearch: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };
+
+export default JobSearch;

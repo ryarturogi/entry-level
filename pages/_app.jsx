@@ -1,11 +1,12 @@
 import '@/styles/globals.css';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Layout from '@/components/Layout';
 import { AuthProvider } from '@/hooks/useAuthUser';
 import { store } from '@/store/index';
-import { toast, ToastContainer } from 'react-toastify';
 
 const App = ({ Component, pageProps }) => {
   return (

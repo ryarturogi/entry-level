@@ -1,11 +1,11 @@
 /* eslint-disable default-param-last */
 import {
-  SAVE_JOB,
-  REMOVE_SAVED_JOB,
   GET_SAVED_JOBS,
+  REMOVE_SAVED_JOB,
   SAVED_JOBS_COUNT,
   SAVED_JOBS_ERROR,
   SAVED_JOBS_LOADING,
+  SAVE_JOB,
 } from '../types';
 
 const initialState = {
