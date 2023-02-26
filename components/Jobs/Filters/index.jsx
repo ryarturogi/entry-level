@@ -1,6 +1,5 @@
 import Fallback from '@/components/UI/Fallback';
 import useCountries from '@/hooks/useCountries';
-import useLocalJsonFile from '@/hooks/useLocalJsonFile';
 import PropTypes from 'prop-types';
 import { Suspense, useEffect, useState } from 'react';
 import AutoCompleteField from './AutoCompleteField';
@@ -29,9 +28,8 @@ const experienceLevelsOptions = [
   { id: 'expert', name: 'Expert' },
 ];
 
-const Filters = ({ onChange }) => {
+const Filters = ({ onChange, allSkills = [] }) => {
   const allCountries = useCountries();
-  const allSkills = useLocalJsonFile('p-languages');
 
   const [skillsSelected, setskillsSelected] = useState([]);
   const [locationsSelected, setLocationsSelected] = useState([]);
@@ -149,8 +147,29 @@ const Filters = ({ onChange }) => {
   );
 };
 
+export const getStaticProps = async () => {
+  const allSkills = await fetch('/api/p-languages')
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
+
+  return {
+    props: {
+      allSkills,
+    },
+  };
+};
+
 Filters.propTypes = {
   onChange: PropTypes.func.isRequired,
+  allSkills: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 export default Filters;

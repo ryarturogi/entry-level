@@ -58,10 +58,12 @@ const Home = ({ jobs = [], error = false }) => {
 export async function getServerSideProps() {
   try {
     const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs();
+    const Skills = await fetch('/api/p-languages').then((res) => res.json());
 
     return {
       props: {
         jobs: Jobs,
+        skills: Skills,
         error: false,
       },
     };
