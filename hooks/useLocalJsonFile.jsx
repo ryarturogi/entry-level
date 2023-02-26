@@ -1,3 +1,4 @@
+import path from 'path';
 import { useEffect, useState } from 'react';
 
 function useLocalJsonFile(filePath) {
@@ -5,7 +6,7 @@ function useLocalJsonFile(filePath) {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`/api/${filePath}`);
+      const response = await fetch(`/${path.join('api', filePath)}`);
       const jsonData = await response.json();
       setData(jsonData);
     }
