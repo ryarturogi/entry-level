@@ -123,7 +123,6 @@ const NewJobForm = () => {
                 Example: “Senior Designer”. Titles must describe one position.
               </small>
             </div>
-
             {/* Category */}
             <div className="sm:col-span-3">
               <label className="block text-sm font-medium text-gray-700" htmlFor="categories">
@@ -150,7 +149,6 @@ const NewJobForm = () => {
                 )}
               </div>
             </div>
-
             {/* Skills */}
             <div className="sm:col-span-3">
               <label className="block text-sm font-medium text-gray-700" htmlFor="skills">
