@@ -18,7 +18,6 @@ const App = ({ Component, pageProps }) => {
       </AuthProvider>
       <ToastContainer
         autoClose={1800}
-        className="text-base"
         closeOnClick
         hideProgressBar
         limit={10}
@@ -32,7 +31,9 @@ const App = ({ Component, pageProps }) => {
 
 App.propTypes = {
   Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired,
+  pageProps: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])
+  ),
 };
 
 export default App;

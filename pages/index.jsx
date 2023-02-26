@@ -76,7 +76,16 @@ export async function getServerSideProps() {
 }
 
 Home.propTypes = {
-  jobs: PropTypes.array,
+  jobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      companySlug: PropTypes.string,
+      company: PropTypes.string,
+      location: PropTypes.string,
+      description: PropTypes.string,
+    })
+  ),
   error: PropTypes.bool,
 };
 

@@ -35,7 +35,7 @@ function Job({ job, companyJobs, error }) {
   return (
     <>
       <Head title={job ? `${job.jobTitle} Job` : 'Job'} />
-      <section className="mx-auto mt-8 max-w-8xl">
+      <section className="pt-8 mx-auto max-w-8xl">
         {job && <JobCard job={{ ...job, companyJobs }} />}
       </section>
     </>
@@ -78,7 +78,16 @@ export async function getServerSideProps({ params }) {
 
 Job.propTypes = {
   job: PropTypes.object.isRequired,
-  companyJobs: PropTypes.array.isRequired,
+  companyJobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      jobDescription: PropTypes.string,
+      companySlug: PropTypes.string,
+      company: PropTypes.string,
+      location: PropTypes.string,
+    })
+  ),
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 

@@ -135,8 +135,18 @@ const AutoCompleteField = ({ options, optionsSelected, onSelect, title, placehol
 };
 
 AutoCompleteField.propTypes = {
-  options: PropTypes.array,
-  optionsSelected: PropTypes.array,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+    })
+  ),
+  optionsSelected: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+    })
+  ),
   onSelect: PropTypes.func,
   title: PropTypes.string,
   placeholder: PropTypes.string,

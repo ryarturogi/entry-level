@@ -86,8 +86,18 @@ export async function getServerSideProps({ params }) {
 }
 
 JobsByCompany.propTypes = {
-  jobs: PropTypes.arrayOf(PropTypes.object).isRequired,
-  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+  jobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      jobDescription: PropTypes.string,
+      companySlug: PropTypes.string,
+      companyLogo: PropTypes.string,
+      companyName: PropTypes.string,
+      location: PropTypes.string,
+    })
+  ).isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 export default JobsByCompany;

@@ -51,7 +51,7 @@ const JobActions = (props) => {
     );
   }
 
-  const handleSaveJob = async () => {
+  const handleSaveJob = () => {
     if (!userID) {
       return toast.error('You must be logged in to save jobs');
     }
@@ -68,7 +68,7 @@ const JobActions = (props) => {
     }
   };
 
-  const handleRemoveSavedJob = async () => {
+  const handleRemoveSavedJob = () => {
     try {
       dispatch(removeJob(savedJobs?.length > 0 ? savedJobs : [], props));
       toast.warn('Job removed!');
