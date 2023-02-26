@@ -17,6 +17,6 @@ function Head({ title = HomeTitle, description = HomeDescription }) {
 export default Head;
 
 Head.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  description: PropTypes.string,
 };
