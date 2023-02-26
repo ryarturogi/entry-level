@@ -70,43 +70,23 @@ const Supabase = () => {
     jobTypeOptions = [],
     experienceLevels = [],
   }) => {
-    // Get cached filters if they exist, otherwise create new object
-    const cachedFilters = localStorage.getItem('cachedFilters')
-      ? JSON.parse(localStorage.getItem('cachedFilters'))
-      : {};
-
-    // Merge new filters with cached filters
-    const filters = {
-      jobType: jobType !== 'all' ? jobType : cachedFilters.jobType || 'all',
-      locations: locations.length > 0 ? locations : cachedFilters.locations || [],
-      skills: skills.length > 0 ? skills : cachedFilters.skills || [],
-      sortBy: sortBy ? sortBy : cachedFilters.sortBy || 'newest',
-      jobTypeOptions:
-        jobTypeOptions.length > 0 ? jobTypeOptions : cachedFilters.jobTypeOptions || [],
-      experienceLevels:
-        experienceLevels.length > 0 ? experienceLevels : cachedFilters.experienceLevels || [],
-    };
-
-    // Store filters in local storage
-    localStorage.setItem('cachedFilters', JSON.stringify(filters));
-
     let baseQuery = Client.from('jobs').select('*');
 
-    if (filters.locations.length > 0) {
-      const filteredLocations = filters.locations
+    if (locations.length > 0) {
+      const filteredLocations = locations
         .filter(Boolean)
         .map((value) => String(value.toLowerCase()));
       baseQuery = baseQuery.in('location', filteredLocations);
     }
 
-    if (filters.skills.length > 0) {
-      const filteredSkills = filters.skills.filter(Boolean).map(String);
+    if (skills.length > 0) {
+      const filteredSkills = skills.filter(Boolean).map(String);
       const jobTagsQuery = filteredSkills.map((skill) => `jobTags.ilike.%${skill}%`).join(' or ');
       baseQuery = baseQuery.or(jobTagsQuery);
     }
 
-    if (filters.experienceLevels.length > 0) {
-      const filteredExperienceLevels = filters.experienceLevels
+    if (experienceLevels.length > 0) {
+      const filteredExperienceLevels = experienceLevels
         .filter(Boolean)
         .map((value) => String(value.id));
       const experienceLevelsQuery = filteredExperienceLevels
@@ -115,8 +95,8 @@ const Supabase = () => {
       baseQuery = baseQuery.or(experienceLevelsQuery);
     }
 
-    if (filters.jobTypeOptions.length > 0) {
-      const filteredExperienceLevels = filters.jobTypeOptions
+    if (jobTypeOptions.length > 0) {
+      const filteredExperienceLevels = jobTypeOptions
         .filter(Boolean)
         .map((value) => String(value.id));
       const jobTypeOptionsQuery = filteredExperienceLevels
@@ -125,12 +105,12 @@ const Supabase = () => {
       baseQuery = baseQuery.or(jobTypeOptionsQuery);
     }
 
-    if (filters.jobType !== 'all') {
-      baseQuery = baseQuery.eq('jobType', filters.jobType);
+    if (jobType !== 'all') {
+      baseQuery = baseQuery.eq('jobType', jobType);
     }
 
     try {
-      const sortedBy = filters.sortBy !== 'newest';
+      const sortedBy = sortBy !== 'newest';
       const { data: Jobs } = await baseQuery.order('createdAt', {
         ascending: sortedBy,
       });
