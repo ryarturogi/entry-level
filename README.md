@@ -17,6 +17,7 @@ npm install or yarn install
 Copy the .env-example file and renamed to .env
 Add the necesary enviroment variables
 </code></pre>
+
 <p>Then, start the development server:</p>
 <pre><code>npm run dev or yarn dev
 </code></pre>
