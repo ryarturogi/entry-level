@@ -1,15 +1,21 @@
+import Footer from '@/components/partials//Footer';
 import Header from '@/components/partials/Header';
 import PropTypes from 'prop-types';
 
-export default function Layout({ children }) {
+const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <main role="main">{children}</main>
+      <main className="min-h-screen px-2 pb-8 bg-gray-100 sm:px-4" role="main">
+        {children}
+      </main>
+      <Footer />
     </>
   );
-}
+};
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
 };
+
+export default Layout;

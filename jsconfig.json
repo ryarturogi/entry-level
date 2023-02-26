@@ -6,6 +6,7 @@
       "@/pages/*": ["pages/*"],
       "@/api/*": ["pages/api/*"],
       "@/store/*": ["store/*"],
+      "@/lib/*": ["lib/*"],
       "@/utils/*": ["utils/*"],
       "@/constants/*": ["constants/*"],
       "@/repositories/*": ["repositories/*"],

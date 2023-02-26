@@ -1,10 +1,12 @@
 import Head from '@/components/partials/Head';
 
-export default function Resources() {
+const Resources = () => {
   return (
     <>
       <Head title="Resources" />
       <div className="">Resources</div>
     </>
   );
-}
+};
+
+export default Resources;

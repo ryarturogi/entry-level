@@ -1,4 +1,4 @@
-import { BookmarkIcon } from '@heroicons/react/solid';
+import { BookmarkIcon } from '@heroicons/react/24/solid';
 
 import Head from '@/components/partials/Head';
 import Button from '@/components/UI/Button';

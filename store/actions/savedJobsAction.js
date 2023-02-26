@@ -1,12 +1,13 @@
 import Client from '@/utils/initDatabase';
 
 import {
-  SAVE_JOB,
-  REMOVE_SAVED_JOB,
   GET_SAVED_JOBS,
+  REMOVE_ALL_SAVED_JOBS,
+  REMOVE_SAVED_JOB,
+  SAVE_JOB,
+  SAVED_JOBS_COUNT,
   SAVED_JOBS_ERROR,
   SAVED_JOBS_LOADING,
-  SAVED_JOBS_COUNT,
 } from '../types';
 
 export const getSavedJobs = () => async (dispatch) => {

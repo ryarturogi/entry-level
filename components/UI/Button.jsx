@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 const COLOR_MAP = {
   primary: 'bg-primary-500 hover:bg-primary-800',
-  secondary: 'bg-primary-100 hover:bg-gray-500',
+  secondary: 'bg-secondary-500 hover:bg-primary-700',
   success: 'bg-success hover:bg-primary-700',
   danger: 'bg-error-200 hover:bg-error-300',
   warning: 'bg-warning hover:bg-orange-700',
@@ -35,7 +35,7 @@ const ICON_SIZE_MAP = {
   lg: 'w-8 h-8',
 };
 
-function Button(props) {
+const Button = (props) => {
   const {
     color = 'primary',
     size = 'md',
@@ -46,6 +46,7 @@ function Button(props) {
     displayType = 'inline-block w-full',
     children,
     styles,
+    fullWidth = false,
     ...rest
   } = props;
 
@@ -59,11 +60,13 @@ function Button(props) {
     <button
       className={`
         text-white font-semibold flex items-center justify-center
+        transition-colors duration-300 ease-in-out
         ${displayTypeClass}
         ${roundedClass}
         ${colorClass}
         ${sizeClass}
         ${styles}
+        ${fullWidth ? 'w-full' : ''}
       `}
       type="button"
       {...rest}
@@ -73,9 +76,7 @@ function Button(props) {
       {icon && iconPosition === 'right' && <i className={`${iconSizeClass} ml-1`}>{icon}</i>}
     </button>
   );
-}
-
-export default Button;
+};
 
 Button.propTypes = {
   color: PropTypes.string,
@@ -87,4 +88,7 @@ Button.propTypes = {
   displayType: PropTypes.string,
   children: PropTypes.node,
   styles: PropTypes.string,
+  fullWidth: PropTypes.bool,
 };
+
+export default Button;

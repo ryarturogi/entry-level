@@ -32,9 +32,9 @@ function JobTags({ tags, theme }) {
   );
 }
 
-export default JobTags;
-
 JobTags.propTypes = {
-  tags: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
-  theme: PropTypes.string.isRequired,
+  tags: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+  theme: PropTypes.string,
 };
+
+export default JobTags;

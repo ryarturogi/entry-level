@@ -145,9 +145,9 @@ const onAuthStateChange = () => {
     let authSession = null;
     let authUser = null;
 
-    let authState = Client.auth.onAuthStateChange(async (_event, session) => {
-      authSession = session || null;
-      authUser = session?.user || null;
+    let authState = Client.auth.onAuthStateChange((_, session) => {
+      authSession = session ?? false;
+      authUser = session?.user ?? false;
     });
 
     authState = { ...authState, authSession, authUser };
@@ -174,18 +174,17 @@ const onAuthStateChange = () => {
 const saveJob = async (jobs, job) => {
   try {
     if (jobs?.length > 0) {
-      const { data, error } = Client.auth.update({
+      const { data, error } = await Client.auth.update({
         data: { savedJobs: jobs.concat(job) },
       });
 
       return { error, data };
-    } else {
-      const { data, error } = await Client.auth.update({
-        data: { savedJobs: [job] },
-      });
-
-      return { error, data };
     }
+    const { data, error } = await Client.auth.update({
+      data: { savedJobs: [job] },
+    });
+
+    return { error, data };
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -205,9 +204,9 @@ const saveJob = async (jobs, job) => {
  * const user = Client.Auth.removeJob(job)
  */
 
-const removeJob = (jobs, job) => {
+const removeJob = async (jobs, job) => {
   try {
-    const { data, error } = Client.auth.update({
+    const { data, error } = await Client.auth.update({
       data: {
         savedJobs: jobs?.length > 0 ? jobs.filter((j) => j.id !== job.id) : [],
       },
@@ -232,9 +231,9 @@ const removeJob = (jobs, job) => {
  * @example
  * const savedJobs = Client.Auth.getSavedJobs()
  */
-const getSavedJobs = async () => {
+const getSavedJobs = () => {
   try {
-    const savedJobs = Client.auth.currentSession?.user.user_metadata?.savedJobs;
+    const savedJobs = Client.auth.currentSession?.user?.user_metadata?.savedJobs;
 
     if (savedJobs?.length > 0) {
       return savedJobs;
@@ -258,9 +257,9 @@ const getSavedJobs = async () => {
  * @example
  * const user = Client.Auth.removeAllJobs()
  */
-const removeAllJobs = () => {
+const removeAllJobs = async () => {
   try {
-    const { user, error } = Client.auth.update({
+    const { user, error } = await Client.auth.update({
       savedJobs: [],
     });
 
@@ -289,9 +288,8 @@ const getSavedJobsCount = () => {
 
     if (savedJobs?.length > 0) {
       return savedJobs.length;
-    } else {
-      return 0;
     }
+    return 0;
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;

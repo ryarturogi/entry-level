@@ -3,7 +3,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 
 const CompanyLogo = ({ hasCompanyLogo, companySlug, companyLogo }) => (
-  <div className="self-center">
+  <div>
     {hasCompanyLogo && (
       <Link href={`/company/${companySlug}`}>
         <Avatar avatar={companyLogo} size="md" />
@@ -12,10 +12,10 @@ const CompanyLogo = ({ hasCompanyLogo, companySlug, companyLogo }) => (
   </div>
 );
 
-export default CompanyLogo;
-
 CompanyLogo.propTypes = {
   hasCompanyLogo: PropTypes.bool.isRequired,
   companySlug: PropTypes.string.isRequired,
   companyLogo: PropTypes.string.isRequired,
 };
+
+export default CompanyLogo;

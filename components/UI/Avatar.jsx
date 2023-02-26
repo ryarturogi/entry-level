@@ -11,11 +11,11 @@ const SIZE_TO_CLASS_MAP = {
 
 function Avatar({ avatar, isRounded = false, size = 'default' }) {
   const sizeClass = SIZE_TO_CLASS_MAP[size];
-  const roundedClass = isRounded ? 'rounded-full' : 'rounded-sm';
+  const roundedClass = isRounded ? 'rounded-full' : 'rounded-lg';
 
   return (
     <div
-      className={`relative flex items-center justify-center overflow-hidden ring-2 ring-gray-100 px-2 ${roundedClass} ${sizeClass}`}
+      className={`relative flex items-center justify-center overflow-hidden  bg-gray-100 px-2 ${roundedClass} ${sizeClass}`}
     >
       {isRounded ? (
         <Image alt="avatar" className="object-contain object-center" fill src={avatar} />
@@ -32,9 +32,10 @@ function Avatar({ avatar, isRounded = false, size = 'default' }) {
   );
 }
 
-export default Avatar;
 Avatar.propTypes = {
   avatar: PropTypes.string.isRequired,
   isRounded: PropTypes.bool,
   size: PropTypes.string,
 };
+
+export default Avatar;
