@@ -1,9 +1,9 @@
-import QUESTIONS from '@/constants/questions';
+import QUESTIONS from '@/constants/coach-questions';
 import generateDescription from '@/lib/openai';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 
-const ResumeBuilder = () => {
+const CareerCoach = () => {
   const [answers, setAnswers] = useState([]);
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState({});
@@ -60,47 +60,18 @@ const ResumeBuilder = () => {
       }, '');
 
       const resume = await generateDescription(
-        `act as resume builder: take this questionare and create an expert resume, modern and formal, this is the format for the resume.
+        `act as life coach / career coach: take this questionare and create an expert consulting advices, modern and formal.
 
         Formatter rules:
-        - contact info, all in one line
-        - personal info, in two lines uppercased
-        - summary, in multiple lines, 3-5 sentences
-        - Work experiences(3-5), in multiple lines, 3-5 sentences, and 3-5 bullets of responsibilities and key accomplishments, each bullet in a new line
-        - Technologies list separated by commas
-        - Soft-Skills list separated by commas
-        - Education in 3 lines
+        - Coach name, in one lines uppercased
+        - Response, in multiple lines, 5-8 sentences
         - Headings in bold
         
         Format:
-        "email
-        phone
-        Twitter
-        Linkedin
-        Portfolio
-        location
+        Couch Name: ${response.name}
+        RESPONSE
 
-        FULL NAME
-        JOB TITLE
-
-        SUMMARY
-
-        MOST RECENT WORK EXPERIENCES:
-        RESPONSIBILITIES:
-        KEY ACCOMPLISHMENTS:
-
-        TECHNOLOGIES
-        
-        SOFT-SKILLS
-        
-        EDUCATION
-        Institution (degree)
-        date(start - end) • Location
-
-        LANGUAGES
-        Language - Fluency - Level"
-
-        This is the questionaire to create the resume: ${questionaire}`
+       Questions and answers, write some advices after understanding the data: ${questionaire}`
       );
       setResume(resume);
     }
@@ -204,7 +175,7 @@ const ResumeBuilder = () => {
           </form>
         ) : (
           <>
-            <p className="mb-8 text-xl font-semibold">Resume</p>
+            <p className="mb-8 text-xl font-semibold">Consult</p>
             {isLoading && (
               <p className="flex items-center space-x-2">
                 <svg
@@ -228,10 +199,10 @@ const ResumeBuilder = () => {
             )}
             {!isLoading && (
               <div className="w-full max-w-xl p-8 bg-white rounded-lg shadow-md">
-                <pre
+                <p
                   className="font-sans text-sm text-gray-800 whitespace-pre-wrap"
                   dangerouslySetInnerHTML={{ __html: resume }}
-                ></pre>
+                ></p>
               </div>
             )}
           </>
@@ -241,4 +212,4 @@ const ResumeBuilder = () => {
   );
 };
 
-export default ResumeBuilder;
+export default CareerCoach;
