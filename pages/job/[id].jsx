@@ -35,7 +35,7 @@ function Job({ job, companyJobs, error }) {
   return (
     <>
       <Head title={job ? `${job.jobTitle} Job` : 'Job'} />
-      <section className="mx-auto mt-8 max-w-8xl">
+      <section className="pt-8 mx-auto max-w-8xl">
         {job && <JobCard job={{ ...job, companyJobs }} />}
       </section>
     </>

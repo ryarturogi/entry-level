@@ -35,7 +35,7 @@ function JobsByTags() {
             <Loader />
           </li>
         )) ||
-          (jobs ? jobs.map((job, idx) => <JobCard job={job} key={idx} />) : null)}
+          (jobs ? jobs.map((job) => <JobCard job={job} key={job.id} />) : null)}
       </ul>
     </section>
   );

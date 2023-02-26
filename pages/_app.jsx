@@ -18,7 +18,6 @@ const App = ({ Component, pageProps }) => {
       </AuthProvider>
       <ToastContainer
         autoClose={1800}
-        className="text-base"
         closeOnClick
         hideProgressBar
         limit={10}

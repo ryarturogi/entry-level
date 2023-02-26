@@ -56,8 +56,8 @@ function MenuLoggedIn() {
               className="absolute w-48 mt-10 font-medium origin-top-right bg-white rounded-md shadow-lg -right-1 ring-1 ring-black ring-opacity-5 focus:outline-none"
               static
             >
-              {Navigation.map((item, index) => (
-                <Menu.Item key={index}>
+              {Navigation.map((item) => (
+                <Menu.Item key={item.label}>
                   {({ active }) => (
                     <Link
                       className={classNames(
@@ -80,12 +80,14 @@ function MenuLoggedIn() {
                 </Menu.Item>
               ))}
               <Menu.Item>
-                <a
+                <button
                   className="block px-4 py-2 text-sm text-gray-800 cursor-pointer hover:bg-gray-100"
+                  name="logout"
                   onClick={() => logout()}
+                  type="button"
                 >
                   Sign out
-                </a>
+                </button>
               </Menu.Item>
             </Menu.Items>
           </Transition>

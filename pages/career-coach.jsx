@@ -11,7 +11,7 @@ const CareerCoach = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const initializeChat = async () => {
+    const initializeChat = () => {
       setPrompt(QUESTIONS[0]);
     };
 
@@ -199,10 +199,10 @@ const CareerCoach = () => {
             )}
             {!isLoading && (
               <div className="w-full max-w-xl p-8 bg-white rounded-lg shadow-md">
-                <p
+                <pre
                   className="font-sans text-sm text-gray-800 whitespace-pre-wrap"
                   dangerouslySetInnerHTML={{ __html: resume }}
-                ></p>
+                />
               </div>
             )}
           </>

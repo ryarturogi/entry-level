@@ -46,6 +46,7 @@ const Button = (props) => {
     displayType = 'inline-block w-full',
     children,
     styles,
+    fullWidth = false,
     ...rest
   } = props;
 
@@ -65,6 +66,7 @@ const Button = (props) => {
         ${colorClass}
         ${sizeClass}
         ${styles}
+        ${fullWidth ? 'w-full' : ''}
       `}
       type="button"
       {...rest}
@@ -86,6 +88,7 @@ Button.propTypes = {
   displayType: PropTypes.string,
   children: PropTypes.node,
   styles: PropTypes.string,
+  fullWidth: PropTypes.bool,
 };
 
 export default Button;

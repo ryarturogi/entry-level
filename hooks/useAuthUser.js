@@ -11,15 +11,14 @@ export const UserContext = createContext();
 const AuthStateChanged = async (setSession, setUser) => {
   if (providerName === PROVIDERS.SUPABASE) {
     try {
-      const currSession = currentProvider.Auth.getCurrentSession();
-      const currentUser = currentProvider.Auth.getCurrentUser();
+      const currSession = await currentProvider.Auth.getCurrentSession();
+      const currentUser = await currentProvider.Auth.getCurrentUser();
 
       setSession(currSession);
       setUser(currentUser ? currentUser : false);
 
-      const { data: authListener } = currentProvider.Client.auth.onAuthStateChange(
-        // eslint-disable-next-line no-shadow
-        async (_event, session) => {
+      const { data: authListener } = await currentProvider.Client.auth.onAuthStateChange(
+        (_, session) => {
           setSession(session ?? false);
           setUser(session?.user ?? false);
         }
@@ -32,7 +31,7 @@ const AuthStateChanged = async (setSession, setUser) => {
     }
   } else if (providerName === PROVIDERS.FIREBASE) {
     try {
-      const unsubscribe = currentProvider.Auth.auth.onAuthStateChanged((user) => {
+      const unsubscribe = await currentProvider.Auth.auth.onAuthStateChanged((user) => {
         if (user) {
           user.getIdTokenResult().then((idTokenResult) => {
             setSession({
@@ -69,7 +68,6 @@ export function AuthProvider(props) {
     return () => authListener?.unsubscribe();
   }, [user, session]);
 
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
   const value = {
     session,
     user,

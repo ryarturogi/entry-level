@@ -11,7 +11,7 @@ const ResumeBuilder = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const initializeChat = async () => {
+    const initializeChat = () => {
       setPrompt(QUESTIONS[0]);
     };
 
@@ -231,7 +231,7 @@ const ResumeBuilder = () => {
                 <pre
                   className="font-sans text-sm text-gray-800 whitespace-pre-wrap"
                   dangerouslySetInnerHTML={{ __html: resume }}
-                ></pre>
+                />
               </div>
             )}
           </>

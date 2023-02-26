@@ -85,7 +85,7 @@ const Filters = ({ onChange }) => {
   ]);
 
   return (
-    <section className="col-span-12 px-8 py-6 bg-white lg:col-span-4 rounded-xl">
+    <aside className="col-span-12 px-8 py-6 bg-white lg:col-span-4 rounded-xl">
       <header>
         <h2 className="mb-5 text-2xl font-semibold leading-6 text-gray-900">Filters</h2>
       </header>
@@ -145,7 +145,7 @@ const Filters = ({ onChange }) => {
           title="Experience Level"
         />
       </Suspense>
-    </section>
+    </aside>
   );
 };
 

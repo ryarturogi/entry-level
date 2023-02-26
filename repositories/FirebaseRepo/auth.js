@@ -1,7 +1,7 @@
 import { auth, db, GithubAuthProvider, GoogleAuthProvider, signOut } from './FirebaseConfig';
 
-const SavedJobsApi = async () => {
-  return await db.collection('saved-jobs').orderBy('createdAt', 'desc');
+const SavedJobsApi = () => {
+  return db.collection('saved-jobs').orderBy('createdAt', 'desc');
 };
 
 const getSavedJobsQuery = async (ref) => {
@@ -41,7 +41,7 @@ const getSavedJobsQuery = async (ref) => {
  * const newUser = Client.Auth.signUp(userData)
  */
 const signUp = async (email, password) => {
-  auth
+  await auth
     .createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       // Signed in
@@ -66,7 +66,7 @@ const signUp = async (email, password) => {
  * const user = Client.Auth.signIn(email, password)
  */
 const signIn = async (email, password) => {
-  auth
+  await auth
     .signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
       // Signed in
@@ -105,13 +105,13 @@ const signInWithProvider = async (providerName) => {
       provider = new GithubAuthProvider();
   }
 
-  return auth.signInWithPopup(provider).catch((err) => {
+  return auth.signInWithPopup(provider).catch(async (err) => {
     if (err.code === 'auth/account-exists-with-different-credential') {
       const pendingCred = err.credential;
       const email = err.email;
-      auth
+      await auth
         .fetchSignInMethodsForEmail(email)
-        .then((methods) => {
+        .then(async (methods) => {
           const getProviderForProviderId = (providerId) => {
             switch (providerId) {
               case 'google.com':
@@ -124,7 +124,7 @@ const signInWithProvider = async (providerName) => {
           };
 
           const provider = getProviderForProviderId(methods[0]);
-          auth.signInWithPopup(provider).then((result) => {
+          await auth.signInWithPopup(provider).then((result) => {
             result.user.linkWithCredential(pendingCred).then((usercred) => {
               return usercred;
             });
@@ -169,7 +169,7 @@ const logout = async () => {
  * @example
  * const user = Client.Auth.getCurrentUser()
  */
-const getCurrentUser = async () => {
+const getCurrentUser = () => {
   const { currentUser } = auth;
 
   return currentUser;
