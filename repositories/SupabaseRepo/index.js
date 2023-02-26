@@ -38,7 +38,7 @@ const Supabase = () => {
       case contentType === 'location':
         jobsApi.eq('location', content);
         break;
-      case contentType === 'company':
+      case contentType === 'companySlug':
         jobsApi.eq('companySlug', content);
         break;
       case contentType === 'jobTags':
@@ -53,6 +53,92 @@ const Supabase = () => {
     const { data: Jobs } = await jobsApi.order('createdAt', { ascending: false });
 
     return Jobs;
+  };
+
+  /**
+   * @title Get Filtered Jobs
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example
+   * const jobs = Client.getFilteredJobs
+   **/
+  const getFilteredJobs = async ({
+    jobType = 'all',
+    locations = [],
+    skills = [],
+    sortBy = 'newest',
+    jobTypeOptions = [],
+    experienceLevels = [],
+  }) => {
+    // Get cached filters if they exist, otherwise create new object
+    const cachedFilters = localStorage.getItem('cachedFilters')
+      ? JSON.parse(localStorage.getItem('cachedFilters'))
+      : {};
+
+    // Merge new filters with cached filters
+    const filters = {
+      jobType: jobType !== 'all' ? jobType : cachedFilters.jobType || 'all',
+      locations: locations.length > 0 ? locations : cachedFilters.locations || [],
+      skills: skills.length > 0 ? skills : cachedFilters.skills || [],
+      sortBy: sortBy ? sortBy : cachedFilters.sortBy || 'newest',
+      jobTypeOptions:
+        jobTypeOptions.length > 0 ? jobTypeOptions : cachedFilters.jobTypeOptions || [],
+      experienceLevels:
+        experienceLevels.length > 0 ? experienceLevels : cachedFilters.experienceLevels || [],
+    };
+
+    // Store filters in local storage
+    localStorage.setItem('cachedFilters', JSON.stringify(filters));
+
+    let baseQuery = Client.from('jobs').select('*');
+
+    if (filters.locations.length > 0) {
+      const filteredLocations = filters.locations
+        .filter(Boolean)
+        .map((value) => String(value.toLowerCase()));
+      baseQuery = baseQuery.in('location', filteredLocations);
+    }
+
+    if (filters.skills.length > 0) {
+      const filteredSkills = filters.skills.filter(Boolean).map(String);
+      const jobTagsQuery = filteredSkills.map((skill) => `jobTags.ilike.%${skill}%`).join(' or ');
+      baseQuery = baseQuery.or(jobTagsQuery);
+    }
+
+    if (filters.experienceLevels.length > 0) {
+      const filteredExperienceLevels = filters.experienceLevels
+        .filter(Boolean)
+        .map((value) => String(value.id));
+      const experienceLevelsQuery = filteredExperienceLevels
+        .map((level) => `experienceLevels.ilike.%${level}%`)
+        .join(' or ');
+      baseQuery = baseQuery.or(experienceLevelsQuery);
+    }
+
+    if (filters.jobTypeOptions.length > 0) {
+      const filteredExperienceLevels = filters.jobTypeOptions
+        .filter(Boolean)
+        .map((value) => String(value.id));
+      const jobTypeOptionsQuery = filteredExperienceLevels
+        .map((type) => `jobTypesOptions.ilike.%${type}%`)
+        .join(' or ');
+      baseQuery = baseQuery.or(jobTypeOptionsQuery);
+    }
+
+    if (filters.jobType !== 'all') {
+      baseQuery = baseQuery.eq('jobType', filters.jobType);
+    }
+
+    try {
+      const sortedBy = filters.sortBy !== 'newest';
+      const { data: Jobs } = await baseQuery.order('createdAt', {
+        ascending: sortedBy,
+      });
+      return Jobs;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
   };
 
   /**
@@ -307,6 +393,7 @@ const Supabase = () => {
     getCompany,
     getJob,
     getJobs,
+    getFilteredJobs,
     searchJobs,
     removeCategory,
     removeJob,
