@@ -28,12 +28,11 @@ body {
 .loading {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  position: fixed;
+  position: absolute;
   height: 100%;
   width: 100%;
-  top: 0;
+  top: 5rem;
   left: 0;
   background-color: rgba(255, 255, 255, 0.3);
 }

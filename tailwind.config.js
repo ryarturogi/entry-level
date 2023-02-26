@@ -6,8 +6,12 @@ module.exports = {
       backgroundImage: {
         'hero-pattern': "url('/img/hero-pattern.png')",
       },
+      fontFamily: {
+        sans: ['Lexend', 'sans-serif'],
+      },
       colors: {
         primary: {
+          50: '#CCE2E4',
           100: '#C9E8E7',
           200: '#97D7D6',
           300: '#54CFCF',
@@ -17,6 +21,7 @@ module.exports = {
           700: '#1B9597',
           800: '#198180',
           900: '#165D58',
+          1000: '#093232',
         },
         secondary: {
           100: '#FDD2D6',
@@ -30,9 +35,9 @@ module.exports = {
           900: '#B23D30',
         },
         gray: {
-          100: '#F8F9FA',
-          200: '#E9ECEF',
-          300: '#DEE2E6',
+          100: '#F5F5F5',
+          200: '#F7F7F7',
+          300: '#DCEAEA',
           400: '#CED4DA',
           500: '#ADB5BD',
           600: '#6C757D',
@@ -50,7 +55,17 @@ module.exports = {
         warning: '#ffc549',
       },
       maxWidth: {
-        hero: '76.25rem',
+        '8xl': '76.25rem',
+      },
+      screens: {
+        xs: '480px',
+        '2xl': '1536px',
+      },
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '2.5rem',
+        '6xl': '3rem',
+        '7xl': '3.5rem',
       },
     },
   },
