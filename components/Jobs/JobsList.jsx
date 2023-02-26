@@ -3,40 +3,32 @@ import Loader from '../UI/Loader';
 import JobCard from './JobCard';
 
 function JobsList({ loading, error, jobs }) {
-  if (loading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  }
-
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>{error}</div>;
   }
 
   return (
-    <section className="flex flex-col items-center justify-center mx-auto w-[96%]">
-      {jobs?.length > 0 && (
-        <ul className="flex flex-col items-center justify-center w-full space-y-4 max-w-hero">
-          {jobs?.map((job, idx) => {
+    <section className="relative flex flex-col items-center justify-center col-span-12 mx-auto max-w-8xl sm:col-span-8">
+      <ul className="grid w-full grid-cols-1 gap-5">
+        {jobs?.length > 0 &&
+          jobs.map((job, idx) => {
             return (
               <li className="w-full" key={idx}>
                 <JobCard job={job} />
               </li>
             );
           })}
-        </ul>
-      )}
+      </ul>
       {jobs?.length === 0 && <div className="text-2xl font-bold text-gray-600">No jobs found</div>}
+      {loading && <Loader />}
     </section>
   );
 }
 
-export default JobsList;
-
 JobsList.propTypes = {
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
-  jobs: PropTypes.array.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+  jobs: PropTypes.array,
 };
+
+export default JobsList;

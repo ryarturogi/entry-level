@@ -1,6 +1,6 @@
 import Head from '@/components/partials/Head';
 
-export default function Careers() {
+const Careers = () => {
   return (
     <>
       <Head title="Careers" />
@@ -10,4 +10,6 @@ export default function Careers() {
       </main>
     </>
   );
-}
+};
+
+export default Careers;

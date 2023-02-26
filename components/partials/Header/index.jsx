@@ -1,5 +1,5 @@
 import { Disclosure } from '@headlessui/react';
-import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import { Bars3Icon, XIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -10,9 +10,9 @@ import MenuLoggedIn from './MenuLoggedIn';
 import MenuNotLoggedIn from './MenuNotLoggedIn';
 import Navigation from './navigation';
 
-export default function Header() {
+const Header = () => {
   return (
-    <Disclosure as="nav" className="bg-white">
+    <Disclosure as="nav" className="bg-white border-b border-gray-400">
       {({ open }) => {
         return (
           <>
@@ -25,14 +25,14 @@ export default function Header() {
                     {open ? (
                       <XIcon aria-hidden="true" className="block w-6 h-6" />
                     ) : (
-                      <MenuIcon aria-hidden="true" className="block w-6 h-6" />
+                      <Bars3Icon aria-hidden="true" className="block w-6 h-6" />
                     )}
                   </Disclosure.Button>
                 </div>
 
                 <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
                   <Link className="flex items-center flex-shrink-0 text-white" href="/">
-                    <Image alt="entry level devs" height={120} src="/logo.svg" width={120} />
+                    <Image alt="entry level devs" height={22.5} src="/logo.svg" width={82} />
                   </Link>
                 </div>
                 <div className="hidden sm:block sm:ml-6">
@@ -44,7 +44,7 @@ export default function Header() {
                           item.current
                             ? 'bg-gray-800 text-white'
                             : 'text-gray-800 hover:bg-primary-500 hover:text-white',
-                          'px-3 py-2 rounded text-sm font-medium'
+                          'px-3 py-2 rounded text-base font-medium'
                         )}
                         href={item.href}
                         key={item.name}
@@ -87,4 +87,6 @@ export default function Header() {
       }}
     </Disclosure>
   );
-}
+};
+
+export default Header;

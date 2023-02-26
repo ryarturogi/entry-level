@@ -22,13 +22,13 @@ function JobsByCategory() {
   }, [category, dispatch]);
 
   return (
-    <section className="flex flex-col items-center justify-center mx-auto w-[96%]">
+    <section className="flex flex-col items-center justify-center mx-auto max-w-8xl">
       <Head>
         <title>{`${categoryCapitalize} Category`} | EntryLevelDevs</title>
         <meta content="initial-scale=1.0, width=device-width" name="viewport" />
       </Head>
-      <Hero />
-      <ul className="w-full space-y-5 max-w-hero">
+      <Hero title={`${categoryCapitalize} Category`} />
+      <ul className="w-full space-y-5 max-w-8xl">
         {error && error.message}
         {(loading && !error && (
           <li className="flex items-center justify-center w-full ">
