@@ -14,17 +14,17 @@ const App = ({ Component, pageProps }) => {
       <AuthProvider>
         <Layout>
           <Component {...pageProps} />
+          <ToastContainer
+            autoClose={1800}
+            closeOnClick
+            hideProgressBar
+            limit={10}
+            pauseOnHover
+            position={toast.POSITION.BOTTOM_RIGHT}
+            role="alert"
+          />
         </Layout>
       </AuthProvider>
-      <ToastContainer
-        autoClose={1800}
-        closeOnClick
-        hideProgressBar
-        limit={10}
-        pauseOnHover
-        position={toast.POSITION.BOTTOM_RIGHT}
-        role="alert"
-      />
     </Provider>
   );
 };

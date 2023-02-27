@@ -73,35 +73,26 @@ const Supabase = () => {
     let baseQuery = Client.from('jobs').select('*');
 
     if (locations.length > 0) {
-      const filteredLocations = locations
-        .filter(Boolean)
-        .map((value) => String(value.toLowerCase()));
-      baseQuery = baseQuery.in('location', filteredLocations);
+      baseQuery = baseQuery.in(
+        'location',
+        locations.map((location) => location.toLowerCase())
+      );
     }
 
     if (skills.length > 0) {
-      const filteredSkills = skills.filter(Boolean).map(String);
-      const jobTagsQuery = filteredSkills.map((skill) => `jobTags.ilike.%${skill}%`).join(' or ');
-      baseQuery = baseQuery.or(jobTagsQuery);
+      const skillsQuery = skills.map((skill) => `jobTags.ilike.%${skill}%`);
+      baseQuery = baseQuery.or(skillsQuery);
     }
 
     if (experienceLevels.length > 0) {
-      const filteredExperienceLevels = experienceLevels
-        .filter(Boolean)
-        .map((value) => String(value.id));
-      const experienceLevelsQuery = filteredExperienceLevels
-        .map((level) => `experienceLevels.ilike.%${level}%`)
-        .join(' or ');
-      baseQuery = baseQuery.or(experienceLevelsQuery);
+      const levels = experienceLevels.map((level) => level.id);
+      baseQuery = baseQuery.in('experienceLevels', levels);
     }
 
     if (jobTypeOptions.length > 0) {
-      const filteredExperienceLevels = jobTypeOptions
-        .filter(Boolean)
-        .map((value) => String(value.id));
-      const jobTypeOptionsQuery = filteredExperienceLevels
-        .map((type) => `jobTypesOptions.ilike.%${type}%`)
-        .join(' or ');
+      const jobTypeOptionsQuery = jobTypeOptions.map(
+        (jobTypeOption) => `jobTypesOptions.ilike.%${jobTypeOption.id}%`
+      );
       baseQuery = baseQuery.or(jobTypeOptionsQuery);
     }
 
