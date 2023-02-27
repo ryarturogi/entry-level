@@ -86,7 +86,7 @@ Home.propTypes = {
       description: PropTypes.string,
     })
   ),
-  error: PropTypes.bool,
+  error: PropTypes.string,
 };
 
 export default Home;

@@ -19,6 +19,8 @@ const jobTypes = [
   { id: 'part-time', name: 'Part-Time' },
   { id: 'contract', name: 'Contract' },
   { id: 'temporary', name: 'Temporary' },
+  { id: 'internship', name: 'Internship' },
+  { id: 'freelance', name: 'Freelance' },
 ];
 
 const experienceLevelsOptions = [

@@ -7,7 +7,7 @@ const X_RAPIDAPI_API_URL = String(process.env.NEXT_PUBLIC_X_RAPIDAPI_API_URL);
 const useCountries = () => {
   const [countries, setCountries] = useState([]);
 
-  useEffect(() => {
+  const fetchCountries = async () => {
     const options = {
       method: 'GET',
       headers: {
@@ -16,7 +16,8 @@ const useCountries = () => {
       },
     };
 
-    fetch(X_RAPIDAPI_API_URL, options)
+    // fetch all countries
+    await fetch(X_RAPIDAPI_API_URL, options)
       .then((response) => response.json())
       .then((response) => {
         // use flatMap to flatten the array of arrays
@@ -29,11 +30,16 @@ const useCountries = () => {
           })
           .sort((a, b) => a.name.localeCompare(b.name));
 
+        // add a global location
         const globalLocations = [{ id: 'remote', name: 'Remote' }];
 
         setCountries([...countryObjects, ...globalLocations]);
       })
       .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    fetchCountries();
   }, []);
 
   return countries;
