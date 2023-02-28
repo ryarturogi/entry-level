@@ -1,500 +1,361 @@
+import TextareaField from '@/components/Form/TextareaField';
+import TextField from '@/components/Form/TextField';
 import Head from '@/components/partials/Head';
-import { POST_JOB_SELECTION_OPTIONS } from '@/constants/index';
+import { AvatarUpload } from '@/components/UI/AvatarUpload';
+import Button from '@/components/UI/Button';
+import HeadingTitle from '@/components/UI/HeadingTitle';
+import Client from '@/utils/initDatabase';
+import { BriefcaseIcon, BuildingOffice2Icon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import { IconPenTool } from '@supabase/ui';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
-import generateDescription from '@/lib/openai';
-import { useId, useState } from 'react';
-import Select from 'react-select';
+const PROVIDER_NAME = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
 
-const NewJobForm = () => {
-  const [formData, setFormData] = useState({
-    jobTitle: '',
-    jobDescription: '',
-    jobLink: '',
-    categories: '',
-    skills: '',
+const INITIAL_VALUES =
+  {
     companyName: '',
-    companyDescription: '',
     companyWebsite: '',
-    companyLogo: '',
-    companyEmail: '',
-    companyHQ: '',
-    worldwide: false,
-  });
-  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
-  const id = useId();
+    companyDescription: '',
+    companyLogo: null,
+    companyPhone: '',
+    jobTitle: '',
+    seniority: '',
+    jobCategory: '',
+    jobDescription: '',
+    jobLocation: '',
+    jobType: '',
+    jobSalary: '',
+    jobSkills: [],
+    howToApply: '',
+  } || {};
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+const SchemaValidation = {
+  companyName: Yup.string().required('The company name is required'),
+  companyWebsite: Yup.string()
+    .url('The company website is not valid')
+    .required('The company website is required'),
+  companyDescription: Yup.string()
+    .required('The company description is required')
+    .max(500, 'Must be 500 characters or less')
+    .min(200, 'Must be 200 characters or more'),
+  companyLogo: Yup.string().required('The company logo is required'),
+  companyHQ: Yup.string().required('The company HQ is required'),
+  jobTitle: Yup.string().required('The job title is required'),
+  seniority: Yup.string().required('The seniority is required'),
+  jobCategory: Yup.string().required('The job category is required'),
+  jobDescription: Yup.string()
+    .required('The job description is required')
+    .max(2000, 'Must be 2000 characters or less')
+    .min(500, 'Must be 500 characters or more'),
+  jobLocation: Yup.string().required('The job location is required'),
+  jobType: Yup.string().required('The job type is required'),
+  jobSalary: Yup.string().required('The job salary is required'),
+  jobSkills: Yup.string().required('The job skills is required'),
+  howToApply: Yup.string().required('The how to apply is required'),
+};
 
-  const handleGenerateDescription = async (e, field) => {
-    e.preventDefault();
+const COMPANY_FIELDS = [
+  {
+    name: 'companyName',
+    label: 'Company Name',
+    placeholder: 'What is the name of your company?',
+    required: true,
+  },
+  {
+    name: 'companyWebsite',
+    label: 'Company Website',
+    placeholder: 'What is the website of your company?',
+    required: true,
+  },
+  {
+    name: 'companyHQ',
+    label: 'Company HQ',
+    placeholder: 'What is the HQ of your company?',
+    required: true,
+  },
+];
+
+const JOB_FIELDS = [
+  {
+    name: 'jobTitle',
+    label: 'Job Title',
+    placeholder: 'What is the title of the job?',
+    required: true,
+  },
+  {
+    name: 'seniority',
+    label: 'Seniority',
+    placeholder: 'What is the seniority of the job?',
+    required: true,
+  },
+  {
+    name: 'jobCategory',
+    label: 'Job Category',
+    placeholder: 'What is the category of the job?',
+    required: true,
+  },
+  {
+    name: 'jobLocation',
+    label: 'Job Location',
+    placeholder: 'What is the location of the job?',
+    required: true,
+  },
+  {
+    name: 'jobType',
+    label: 'Job Type',
+    placeholder: 'What is the type of the job?',
+    required: true,
+  },
+  {
+    name: 'jobSalary',
+    label: 'Job Salary',
+    placeholder: 'What is the salary of the job?',
+    required: true,
+  },
+  {
+    name: 'jobSkills',
+    label: 'Job Skills',
+    placeholder: 'What are the skills of the job?',
+    required: true,
+  },
+  {
+    name: 'howToApply',
+    label: 'How to Apply',
+    placeholder: 'How to apply for the job?',
+    required: true,
+  },
+];
+
+const JOB_TITLE_FIELD = [
+  {
+    name: 'jobTitle',
+    label: 'Job Title',
+    placeholder: 'What is the title of the job?',
+    required: true,
+  },
+];
+
+const NewJob = () => {
+  const _onSave = async (values) => {
+    console.log(values);
     try {
-      setIsGeneratingDescription(true);
+      // Upload the logo for the company
+      const { data: logoData, error: logoError } = await Client(PROVIDER_NAME).uploadLogo(
+        'company-logos',
+        values.companyLogo
+      );
 
-      let prompt;
-      if (field === 'jobDescription') {
-        prompt = `${formData.jobTitle} - Job Description:`;
-      } else if (field === 'companyDescription') {
-        prompt = `${formData.companyName} - Company Description:`;
+      if (logoError) {
+        console.error('Error uploading logo: ', logoError.message);
+        return;
       }
 
-      const description = await generateDescription(prompt);
-      setFormData({
-        ...formData,
-        [field]: description,
-      });
-      setIsGeneratingDescription(false);
+      // Add the company logo key/value to the values object
+      const job = {
+        ...values,
+        companyLogo: logoData.Key,
+      };
+
+      const { data: newJobData, error: newJobError } = await Client(PROVIDER_NAME).createJob(job);
+
+      if (newJobError) {
+        console.error('Error creating new job: ', newJobError.message);
+        return;
+      }
+
+      // Do something with the new job data
+      console.log('New job created: ', newJobData);
     } catch (error) {
-      console.error(error);
-      setIsGeneratingDescription(false);
-    }
-  };
-
-  const handleCategorySelect = (selectedOption) => {
-    setFormData({
-      ...formData,
-      categories: selectedOption.value,
-    });
-  };
-
-  const handleSkillSelect = (selectedOption) => {
-    setFormData({
-      ...formData,
-      skills: selectedOption.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Submit form data to server
-    const response = await fetch('/api/jobs', {
-      method: 'POST',
-      body: JSON.stringify(formData),
-    });
-
-    // Handle server response
-    if (response.ok) {
-      // Form submitted successfully
-    } else {
-      // Form submission failed
+      console.error('Error: ', error.message);
     }
   };
 
   return (
-    <div className="max-w-6xl min-h-screen p-8 mx-auto my-10 mb-20 bg-white rounded-xl">
+    <section className="min-h-screen p-8 mx-auto mb-20 max-w-7xl rounded-xl">
       <Head />
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <div>
-            <h3 className="text-lg font-medium leading-6 text-gray-900">Post a Job</h3>
-            <p className="mt-1 text-sm text-gray-500">
-              Welcome to the job posting form! Please fill out the following fields to post a new
-              job opportunity.
-            </p>
-          </div>
+      <Formik
+        initialValues={INITIAL_VALUES}
+        onSubmit={(values) => _onSave(values)}
+        validationSchema={Yup.object(SchemaValidation)}
+      >
+        {({
+          values,
+          errors,
+          setFieldValue,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            {JSON.stringify(errors)}
+            <section className="grid grid-cols-1 gap-10">
+              <section className="flex flex-col w-full max-w-6xl gap-10 p-10 mx-auto bg-white rounded-xl">
+                <HeadingTitle>
+                  <BuildingOffice2Icon className="w-10 h-10 mr-3 text-primary-600" />
+                  Company Information *
+                </HeadingTitle>
 
-          <div className="grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-6">
-            {/* Job Title */}
-            <div className="sm:col-span-4">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="jobTitle">
-                Job Title:
-              </label>
-              <div className="flex mt-1 rounded-md shadow-sm">
-                <span className="inline-flex items-center px-3 text-gray-500 border border-r-0 border-gray-300 rounded-l-md bg-gray-50 sm:text-sm">
-                  Position
-                </span>
-                <input
-                  autoComplete="new-password"
-                  className="flex-1 block w-full min-w-0 border-gray-300 rounded-none rounded-r-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                  id="job-title"
-                  name="jobTitle"
-                  onChange={handleChange}
-                  type="text"
-                  value={formData.jobTitle}
-                />
-              </div>
-              <small className="text-gray-500">
-                Example: “Senior Designer”. Titles must describe one position.
-              </small>
-            </div>
-            {/* Category */}
-            <div className="sm:col-span-3">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="categories">
-                Categories
-              </label>
-              <div className="mt-1">
-                <Select
-                  id="categories"
-                  instanceId={id}
-                  name="categories"
-                  onChange={handleCategorySelect}
-                  options={POST_JOB_SELECTION_OPTIONS.categories.map((category) => ({
-                    value: category,
-                    label: category,
-                  }))}
-                  value={formData.categories}
-                />
-                {formData.categories && (
-                  <div className="mt-2">
-                    <span className="inline-block px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-full">
-                      {formData.categories}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-            {/* Skills */}
-            <div className="sm:col-span-3">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="skills">
-                Skills
-              </label>
-              <div className="mt-1">
-                <Select
-                  id="skills"
-                  instanceId={id}
-                  isMulti
-                  name="skills"
-                  onChange={handleSkillSelect}
-                  options={POST_JOB_SELECTION_OPTIONS.skills.map((skill) => ({
-                    value: skill,
-                    label: skill,
-                  }))}
-                  value={formData.skills}
-                />
-                {formData.skills && (
-                  <div className="mt-2">
-                    <span className="inline-block px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-full">
-                      {formData.skills}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
+                {/* Avatar Upload */}
+                <div className="flex flex-col w-full">
+                  <AvatarUpload
+                    id="companyLogo"
+                    name="companyLogo"
+                    onAvatarChange={async (uploadedAvatar) => {
+                      setFieldValue('companyLogo', uploadedAvatar);
+                    }}
+                  />
+                </div>
+                <div className="grid w-full grid-cols-12 gap-6">
+                  {COMPANY_FIELDS.map((field) => (
+                    <div className="col-span-6" key={field.name}>
+                      <TextField
+                        error={errors[field.name] && touched[field.name] && errors[field.name]}
+                        label={field.label}
+                        name={field.name}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        placeholder={field.placeholder}
+                        required={field.required}
+                        success={!errors[field.name] && touched[field.name] ? 'Valid' : ''}
+                        title={field.label}
+                        type="text"
+                        value={values[field.name]}
+                      />
+                    </div>
+                  ))}
+                </div>
 
-            {/* Open-World-Wide */}
-            <div className="sm:col-span-3">
-              <div className="space-y-4">
-                <div className="relative flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                      id="worldwide"
-                      name="worldwide"
+                <div className="-mt-5">
+                  <TextareaField
+                    error={
+                      errors.companyDescription &&
+                      touched.companyDescription &&
+                      errors.companyDescription
+                    }
+                    label="Company Description"
+                    maxLength={200}
+                    name="companyDescription"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder="A short description of your company."
+                    required
+                    rows={3}
+                    success={
+                      !errors.companyDescription && touched.companyDescription ? 'Valid' : ''
+                    }
+                    type="text"
+                    value={values.companyDescription}
+                  />
+                </div>
+              </section>
+
+              <section className="grid grid-cols-1 gap-10">
+                <div className="flex flex-col w-full max-w-6xl gap-10 p-10 mx-auto bg-white rounded-xl">
+                  <HeadingTitle>
+                    <BriefcaseIcon className="w-10 h-10 mr-3 text-primary-600" />
+                    Job Detail *
+                  </HeadingTitle>
+
+                  <div className="grid w-full grid-cols-12 gap-6">
+                    {JOB_FIELDS.map((field) => (
+                      <div className="col-span-6" key={field.name}>
+                        <TextField
+                          error={errors[field.name] && touched[field.name] && errors[field.name]}
+                          label={field.label}
+                          name={field.name}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          placeholder={field.placeholder}
+                          required={field.required}
+                          success={!errors[field.name] && touched[field.name] ? 'Valid' : ''}
+                          title={field.label}
+                          type="text"
+                          value={values[field.name]}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="-mt-5">
+                    <TextareaField
+                      error={
+                        errors.jobDescription && touched.jobDescription && errors.jobDescription
+                      }
+                      label="Job Description"
+                      maxLength={5000}
+                      minLength={2000}
+                      name="jobDescription"
+                      onBlur={handleBlur}
                       onChange={handleChange}
-                      type="checkbox"
-                      value={formData.worldwide}
+                      placeholder="A detailed description of the job."
+                      required
+                      rows={10}
+                      success={!errors.jobDescription && touched.jobDescription ? 'Valid' : ''}
+                      type="text"
+                      value={values.jobDescription}
                     />
                   </div>
-                  <div className="ml-3 text-sm">
-                    <label className="font-medium text-gray-700" htmlFor="worldwide">
-                      Is This Role Open Worldwide?
-                    </label>
-                    <p className="text-gray-500">
-                      Selecting &apos;Yes&apos; means your future hire can work anywhere in the
-                      world without any location or time zone restrictions!
-                    </p>
-                  </div>
                 </div>
-              </div>
-            </div>
+              </section>
 
-            <div className="sm:col-span-3">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="jobType">
-                Job Type
-              </label>
-              <div className="mt-1">
-                {/* radio input 2 options: Full-Time, Contract */}
-                <div className="flex items-center">
-                  <input
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                    id="full-time"
-                    name="jobType"
-                    onChange={handleChange}
-                    type="radio"
-                    value="full-time"
-                  />
-                  <label className="ml-3" htmlFor="full-time">
-                    <span className="block text-sm text-gray-700">Full-Time</span>
-                  </label>
+              <section className="grid grid-cols-1 gap-10">
+                <div className="flex flex-col w-full max-w-6xl p-10 mx-auto bg-white gap-x-10 gap-y-8 rounded-xl">
+                  <HeadingTitle>
+                    <IconPenTool className="w-10 h-10 mr-3 text-primary-600" />
+                    Job title *
+                  </HeadingTitle>
 
-                  <input
-                    className="w-4 h-4 ml-6 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                    id="contract"
-                    name="jobType"
-                    onChange={handleChange}
-                    type="radio"
-                    value="contract"
-                  />
-                  <label className="ml-3" htmlFor="contract">
-                    <span className="block text-sm text-gray-700">Contract</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            {/* Job Description */}
-            <div className="sm:col-span-6">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="jobDescription">
-                Job Description
-              </label>
-              <div className="mt-1">
-                <textarea
-                  className="block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                  defaultValue={''}
-                  id="job-description"
-                  name="jobDescription"
-                  onChange={handleChange}
-                  rows={3}
-                  value={formData.jobDescription}
-                />
-                <div className="float-right mt-2">
-                  <button
-                    className={`${
-                      isGeneratingDescription || !formData.jobTitle || formData.jobDescription
-                        ? 'bg-gray-300 text-gray-500'
-                        : 'bg-blue-500 hover:bg-blue-700 text-white focus:ring-blue-500 cursor-pointer '
-                    } px-4 py-2 font-medium text-sm rounded-md
-                      inline-flex justify-center ml-3 border border-transparent shadow-sm focus:outline-none focus:ring-2  focus:ring-offset-2
-                      `}
-                    disabled={
-                      isGeneratingDescription || !formData.jobTitle || formData.jobDescription
-                    }
-                    onClick={(e) => handleGenerateDescription(e, 'jobDescription')}
-                    type="button"
-                  >
-                    {(!isGeneratingDescription && <span>Generate Job Description</span>) || (
-                      <div className="flex items-center space-x-2">
-                        <svg
-                          className="w-5 h-5 mr-3 -ml-1 text-blue-500 animate-spin"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            d="M4 12a8 8 0 018-8v8z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                        Generating description...
+                  <div className="grid w-full grid-cols-12 gap-6">
+                    {JOB_TITLE_FIELD.map((field) => (
+                      <div className="col-span-6" key={field.name}>
+                        <TextField
+                          error={errors[field.name] && touched[field.name] && errors[field.name]}
+                          name={field.name}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          placeholder={field.placeholder}
+                          required={field.required}
+                          success={!errors[field.name] && touched[field.name] ? 'Valid' : ''}
+                          title={field.label}
+                          type="text"
+                          value={values[field.name]}
+                        />
                       </div>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
+                    ))}
 
-            {/* Application Link or Email ●
-             */}
-            <div className="sm:col-span-6">
-              <label className="block text-sm font-medium text-gray-700" htmlFor="applicationLink">
-                Application Link or Email
-              </label>
-              <div className="mt-1">
-                <input
-                  autoComplete="new-password"
-                  className="block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                  id="application-link"
-                  name="applicationLink"
-                  onChange={handleChange}
-                  type="text"
-                  value={formData.applicationLink}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-8">
-            <div>
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Tell Us More About Your Company
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                <strong>Posted before?</strong> Just enter your <strong>email</strong>, all other
-                info will be pulled in from your last position!
-              </p>
-            </div>
-            <div className="grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-6">
-              <div className="sm:col-span-3">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="companyName">
-                  Company name
-                </label>
-                <div className="mt-1">
-                  <input
-                    autoComplete="new-password"
-                    className="block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    id="company-name"
-                    name="companyName"
-                    onChange={handleChange}
-                    type="text"
-                    value={formData.companyName}
-                  />
-                </div>
-                <small className="text-gray-500">Enter your company or organization’s name.</small>
-              </div>
-
-              <div className="sm:col-span-3">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="companyHQ">
-                  Company HQ
-                </label>
-                <div className="mt-1">
-                  <input
-                    autoComplete="new-password"
-                    className="block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    id="company-hq"
-                    name="companyHQ"
-                    onChange={handleChange}
-                    type="text"
-                    value={formData.companyHQ}
-                  />
-                </div>
-                <small className="text-gray-500">
-                  Where your company is officially headquartered.
-                </small>
-              </div>
-
-              <div className="sm:col-span-3">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="email">
-                  Email address
-                </label>
-                <div className="mt-1">
-                  <input
-                    autoComplete="new-password"
-                    className="block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    id="email"
-                    name="email"
-                    onChange={handleChange}
-                    type="email"
-                    value={formData.email}
-                  />
-                </div>
-                <small className="text-gray-500">
-                  We’ll send your receipt and confirmation email here.
-                </small>
-              </div>
-
-              <div className="sm:col-span-3">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="companyWebsite">
-                  Company&apos;s Website URL
-                </label>
-                <div className="mt-1">
-                  <input
-                    autoComplete="new-password"
-                    className="block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    id="company-website"
-                    name="companyWebsite"
-                    onChange={handleChange}
-                    type="text"
-                    value={formData.companyWebsite}
-                  />
-                </div>
-                <small className="text-gray-500">Example: https://mybusiness.com/</small>
-              </div>
-
-              {/* Company Description */}
-              <div className="sm:col-span-6">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="companyDescription"
-                >
-                  Company Description
-                </label>
-                <div className="mt-1">
-                  <textarea
-                    className="block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    defaultValue={''}
-                    id="company-description"
-                    name="companyDescription"
-                    onChange={handleChange}
-                    rows={3}
-                    value={formData.companyDescription}
-                  />
-                  <div className="float-right mt-2">
-                    <button
-                      className={`${
-                        isGeneratingDescription ||
-                        !formData.companyName ||
-                        formData.companyDescription
-                          ? 'bg-gray-300 text-gray-500'
-                          : 'bg-blue-500 hover:bg-blue-700 text-white focus:ring-blue-500 cursor-pointer '
-                      } px-4 py-2 font-medium text-sm rounded-md
-                      inline-flex justify-center ml-3 border border-transparent shadow-sm focus:outline-none focus:ring-2  focus:ring-offset-2
-                      `}
-                      disabled={
-                        isGeneratingDescription ||
-                        !formData.companyName ||
-                        formData.companyDescription
-                      }
-                      onClick={(e) => handleGenerateDescription(e, 'companyDescription')}
-                      type="button"
-                    >
-                      {(!isGeneratingDescription && <span>Generate Company Description</span>) || (
-                        <div className="flex items-center space-x-2">
-                          <svg
-                            className="w-5 h-5 mr-3 -ml-1 text-blue-500 animate-spin"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            />
-                            <path
-                              className="opacity-75"
-                              d="M4 12a8 8 0 018-8v8z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                          Generating description...
-                        </div>
-                      )}
-                    </button>
+                    <div className="self-start w-full col-span-6">
+                      <Button
+                        color={isSubmitting ? 'disabled' : 'secondary'}
+                        disabled={isSubmitting}
+                        fullWidth
+                        onClick={handleSubmit}
+                        rounded="md"
+                        styles={`h-[48px] text-base font-lexend font-semibold ${
+                          isSubmitting ? 'cursor-not-allowed' : ''
+                        }`}
+                        type="submit"
+                      >
+                        {(isSubmitting && (
+                          <div className="relative flex items-center justify-center w-full h-full">
+                            <ArrowPathIcon className="absolute w-6 h-6 text-white animate-spin" />
+                          </div>
+                        )) || <span>POST JOB</span>}
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-5">
-          <div className="flex justify-end">
-            <button
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              type="button"
-            >
-              Cancel
-            </button>
-            <button
-              className="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              onClick={handleSubmit}
-              type="submit"
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
+              </section>
+            </section>
+          </form>
+        )}
+      </Formik>
+    </section>
   );
 };
 
-export default NewJobForm;
+export default NewJob;

@@ -104,28 +104,29 @@ const signIn = async (email, password) => {
  * const user = Client.Auth.signInWithProvider()
  */
 const signInWithProvider = async (providerName) => {
-  let provider = null;
+  let providerInstance = null;
   let errorMessage = null;
 
   switch (providerName) {
     case 'google':
-      provider = new GoogleAuthProvider();
+      providerInstance = new GoogleAuthProvider();
       break;
     case 'github':
-      provider = new GithubAuthProvider();
+      providerInstance = new GithubAuthProvider();
       break;
     default:
-      provider = new GithubAuthProvider();
+      providerInstance = new GithubAuthProvider();
   }
 
-  return auth.signInWithPopup(provider).catch(async (err) => {
+  return auth.signInWithPopup(providerInstance).catch(async (err) => {
     if (err.code === 'auth/account-exists-with-different-credential') {
       const pendingCred = err.credential;
       const email = err.email;
+
       await auth
         .fetchSignInMethodsForEmail(email)
         .then(async (methods) => {
-          const getProviderForProviderId = (providerId) => {
+          const getForProviderId = (providerId) => {
             switch (providerId) {
               case 'google.com':
                 return new GoogleAuthProvider();
@@ -136,8 +137,8 @@ const signInWithProvider = async (providerName) => {
             }
           };
 
-          const provider = getProviderForProviderId(methods[0]);
-          await auth.signInWithPopup(provider).then((result) => {
+          const providerId = getForProviderId(methods[0]);
+          await auth.signInWithPopup(providerId).then((result) => {
             result.user.linkWithCredential(pendingCred).then((usercred) => {
               return usercred;
             });

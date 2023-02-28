@@ -15,17 +15,43 @@ const Home = ({ jobs = [], error = false }) => {
   const [currentJobs, setCurrentJobs] = useState(jobs);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(error || '');
+  const [cachedFilters, setCachedFilters] = useState({});
 
   const handleFiltersChange = async (filters) => {
     setLoading(true);
+    setCachedFilters((prevState) => ({ ...prevState, ...filters }));
 
     try {
-      const filteredJobs = await Client(PROVIDER_NAME).getFilteredJobs(filters);
+      let filteredJobs;
+
+      // Cache filters
+      if (!isCachedFiltersEmpty(cachedFilters)) {
+        const mergedFilters = { ...cachedFilters, ...filters };
+        filteredJobs = await Client(PROVIDER_NAME).getFilteredJobs(mergedFilters);
+      } else {
+        filteredJobs = await Client(PROVIDER_NAME).getFilteredJobs(filters);
+      }
+
       setCurrentJobs(filteredJobs);
     } catch (error) {
-      setErrors(error?.response?.data?.message || error.message);
+      const errorMessage = error?.response?.data?.message || error.message;
+      setErrors(errorMessage);
     }
     setLoading(false);
+  };
+
+  const isCachedFiltersEmpty = (obj) => {
+    const keys = Object.keys(obj);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const value = obj[key];
+      if (typeof value === 'object') {
+        if (Object.keys(value).length > 0) {
+          return true;
+        }
+      }
+    }
+    return false;
   };
 
   return (
@@ -66,10 +92,11 @@ export async function getServerSideProps() {
       },
     };
   } catch (error) {
+    const errorMessage = error?.response?.data?.message || error.message;
     return {
       props: {
         jobs: [],
-        error: error?.response?.data?.message || error.message,
+        error: errorMessage,
       },
     };
   }
