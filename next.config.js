@@ -10,6 +10,7 @@ const nextConfig = {
       'remotive.com',
       'remoteok.io',
       'lh3.googleusercontent.com',
+      'via.placeholder.com',
     ],
   },
   webpack(config) {

@@ -6,7 +6,7 @@ export const RadioField = ({ options, optionSelected, title, onChange }) => {
       <legend className="text-base font-semibold leading-6 text-gray-900">{title}</legend>
       <div className="mt-4">
         {options.map((type) => (
-          <div className="relative flex items-start py-2.5" key={type.id}>
+          <div className="relative flex items-start py-2" key={type.id}>
             <div className="flex items-center h-5 mr-3">
               <input
                 checked={optionSelected === type.id}
