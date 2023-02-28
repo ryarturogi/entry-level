@@ -8,6 +8,7 @@ const COLOR_MAP = {
   warning: 'bg-warning hover:bg-orange-700',
   info: 'bg-info hover:bg-primary-800',
   link: 'bg-transparent text-gray-800 hover:text-primary-500',
+  disabled: 'bg-gray-300 text-gray-500 cursor-not-allowed',
 };
 
 const SIZE_MAP = {

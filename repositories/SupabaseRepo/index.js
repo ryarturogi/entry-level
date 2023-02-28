@@ -1,4 +1,4 @@
-import { slugify } from '@/utils/slugify';
+import { decode } from 'base64-arraybuffer';
 
 import Auth from './auth';
 import Client from './SupabaseConfig';
@@ -64,6 +64,7 @@ const Supabase = () => {
    **/
   const getFilteredJobs = async ({
     jobType = 'all',
+    categories = [],
     locations = [],
     skills = [],
     sortBy = 'newest',
@@ -72,10 +73,10 @@ const Supabase = () => {
   }) => {
     let baseQuery = Client.from('jobs').select('*');
 
-    if (locations.length > 0) {
+    if (categories.length > 0) {
       baseQuery = baseQuery.in(
-        'location',
-        locations.map((location) => location.toLowerCase())
+        'jobCategory',
+        categories.map((category) => category.toLowerCase())
       );
     }
 
@@ -84,9 +85,15 @@ const Supabase = () => {
       baseQuery = baseQuery.or(skillsQuery);
     }
 
-    if (experienceLevels.length > 0) {
-      const levels = experienceLevels.map((level) => level.id);
-      baseQuery = baseQuery.in('experienceLevels', levels);
+    if (locations.length > 0) {
+      baseQuery = baseQuery.in(
+        'location',
+        locations.map((location) => location.toLowerCase())
+      );
+    }
+
+    if (jobType !== 'all') {
+      baseQuery = baseQuery.eq('jobType', jobType);
     }
 
     if (jobTypeOptions.length > 0) {
@@ -95,9 +102,9 @@ const Supabase = () => {
       );
       baseQuery = baseQuery.or(jobTypeOptionsQuery);
     }
-
-    if (jobType !== 'all') {
-      baseQuery = baseQuery.eq('jobType', jobType);
+    if (experienceLevels.length > 0) {
+      const levels = experienceLevels.map((level) => level.id);
+      baseQuery = baseQuery.in('experienceLevels', levels);
     }
 
     try {
@@ -212,10 +219,22 @@ const Supabase = () => {
    * const job = Client.uploadLogo(company, file)
    *
    */
-  const uploadLogo = async (company, file) => {
+  const uploadLogo = async (slug, file) => {
+    const slugify = (str) => {
+      return str
+        .toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]/g, '-')
+        .replace(/-+/g, '-');
+    };
+
     const { data, error } = await Client.storage
-      .from('company-logos')
-      .upload(`public/img/logos/${slugify(company)}.png`, file, {
+      .from(`${slug}-images`)
+      .upload(`public/img/${slugify(slug)}.png`, decode(file), {
+        contentType: 'image/png',
         cacheControl: '3600',
         upsert: true,
       });
