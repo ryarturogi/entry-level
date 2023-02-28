@@ -117,14 +117,14 @@ const AutoCompleteField = ({ options, optionsSelected, onSelect, title, placehol
         {optionsSelected.map((option) => (
           <li key={option.id}>
             <button
-              className="inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-extralight bg-primary-100 text-black"
+              className="inline-flex items-center pl-3 pr-2.5 py-1.5 rounded-full text-xs font-light bg-primary-100 text-black"
               onClick={() => handleOnRemove(option)}
               type="button"
             >
               <span>{option.name}</span>
               <span className="flex-shrink-0 ml-1.5 inline-flex text-black focus:outline-none">
                 <span className="sr-only">Remove</span>
-                <XMarkIcon aria-hidden="true" className="w-5 h-5 text-black" />
+                <XMarkIcon aria-hidden="true" className="w-4 h-4 text-black" />
               </span>
             </button>
           </li>

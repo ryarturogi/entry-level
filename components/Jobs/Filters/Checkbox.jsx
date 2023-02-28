@@ -27,7 +27,7 @@ export default function Checkbox({ options, optionsSelected, title = 'others', o
       <div className="mt-4">
         {optionsList?.length > 0 &&
           optionsList.map((option) => (
-            <div className="relative flex items-start py-2.5" key={option.id}>
+            <div className="relative flex items-start py-2" key={option.id}>
               <div className="flex items-center h-5 mr-3">
                 <input
                   checked={selected.includes(option.id)}
