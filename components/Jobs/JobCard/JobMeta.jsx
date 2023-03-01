@@ -7,7 +7,7 @@ const JobMeta = (props) => {
   const router = useRouter();
 
   return (
-    <nav className="flex flex-col xs:flex-row gap-2 sm:gap-8 place-items-start sm:mt-0.5 mb-0.5 text-sm">
+    <nav className="flex flex-col xs:flex-row gap-2 sm:gap-8 place-items-start sm:mt-0.5 mb-0.5 text-sm list-none">
       {location && (
         <li>
           <button
