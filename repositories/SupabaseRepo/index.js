@@ -1,5 +1,3 @@
-import { decode } from 'base64-arraybuffer';
-
 import Auth from './auth';
 import Client from './SupabaseConfig';
 
@@ -98,13 +96,13 @@ const Supabase = () => {
 
     if (jobTypeOptions.length > 0) {
       const jobTypeOptionsQuery = jobTypeOptions.map(
-        (jobTypeOption) => `jobTypesOptions.ilike.%${jobTypeOption.id}%`
+        (jobTypeOption) => `jobLocationType.ilike.%${jobTypeOption.id}%`
       );
       baseQuery = baseQuery.or(jobTypeOptionsQuery);
     }
     if (experienceLevels.length > 0) {
       const levels = experienceLevels.map((level) => level.id);
-      baseQuery = baseQuery.in('experienceLevels', levels);
+      baseQuery = baseQuery.in('experienceLevel', levels);
     }
 
     try {
@@ -174,9 +172,9 @@ const Supabase = () => {
    *
    */
   const createJob = async (job) => {
-    const { data: Job } = await Client.from('messages').upsert(job);
+    const { data: JobData, error: jobError } = await Client.from('jobs').upsert(job);
 
-    return Job;
+    return { JobData, jobError };
   };
 
   /**
@@ -219,7 +217,7 @@ const Supabase = () => {
    * const job = Client.uploadLogo(company, file)
    *
    */
-  const uploadLogo = async (slug, file) => {
+  const uploadLogo = async ({ slug, file, filename }) => {
     const slugify = (str) => {
       return str
         .toString()
@@ -232,18 +230,13 @@ const Supabase = () => {
     };
 
     const { data, error } = await Client.storage
-      .from(`${slug}-images`)
-      .upload(`public/img/${slugify(slug)}.png`, decode(file), {
-        contentType: 'image/png',
+      .from(`${slug}`)
+      .upload(`public/${slugify(filename)}`, file, {
         cacheControl: '3600',
         upsert: true,
       });
 
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    return data;
+    return { data, error };
   };
 
   // Companies
