@@ -36,10 +36,12 @@ import { PROVIDER_NAME } from '@/constants/supabase';
 import useCountries from '@/hooks/useCountries';
 import useSkills from '@/hooks/useSkills';
 import Client from '@/utils/initDatabase';
+import { useRouter } from 'next/router';
 
 const ClientApi = Client(PROVIDER_NAME);
 
 const NewJob = () => {
+  const router = useRouter();
   const allSkills = useSkills();
   const allCountries = useCountries();
 
@@ -113,13 +115,20 @@ const NewJob = () => {
       throw new Error(`Error creating new job: ${newJobError.message}`);
     }
 
-    console.log('New job created: ', newJobData);
+    return newJobData;
   };
 
   const onSubmitHandler = async (values) => {
     try {
       const companyLogoURL = await uploadLogoHandler(values);
-      await createJobHandler(values, companyLogoURL);
+      const jobData = await createJobHandler(values, companyLogoURL);
+
+      if (Object.keys(jobData).length > 0) {
+        console.log('Job created successfully', jobData);
+        router.push(`/jobs/${jobData.companySlug}`);
+      } else {
+        throw new Error('Error creating new job');
+      }
     } catch (error) {
       console.error('Error: ', error.message);
     }
