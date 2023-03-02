@@ -1,4 +1,5 @@
 import Avatar from '@/components/UI/Avatar';
+import Button from '@/components/UI/Button';
 import Rating from '@/components/UI/Rating';
 import { timeSince } from '@/utils/formatDate';
 import { EyeIcon } from '@heroicons/react/24/outline';
@@ -6,7 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import Button from '../UI/Button';
 
 const JobCard = ({ job }) => {
   const router = useRouter();
@@ -76,7 +76,16 @@ const JobCard = ({ job }) => {
         <div className="flex items-center w-full space-x-4">
           <Link href={`/company/${job.companySlug}`}>
             <div className="mb-2">
-              {job.hasCompanyLogo && <Avatar avatar={job.companyLogo} size="md" />}
+              {job.hasCompanyLogo && (
+                <Avatar
+                  avatar={
+                    job.companyLogo.includes('company-logos')
+                      ? `${process.env.NEXT_PUBLIC_SUPABASE_UPLOAD_IMAGE_PATH}/${job.companyLogo}`
+                      : job.companyLogo
+                  }
+                  size="md"
+                />
+              )}
             </div>
           </Link>
           <div>
