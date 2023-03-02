@@ -73,7 +73,7 @@ const Button = (props) => {
       {...rest}
     >
       {icon && iconPosition === 'left' && <i className={`${iconSizeClass} mr-1`}>{icon}</i>}
-      {children}
+      <div>{children}</div>
       {icon && iconPosition === 'right' && <i className={`${iconSizeClass} ml-1`}>{icon}</i>}
     </button>
   );

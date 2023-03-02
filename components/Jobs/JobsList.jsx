@@ -4,7 +4,7 @@ import JobCard from './JobCard';
 
 function JobsList({ loading, error, jobs }) {
   if (error) {
-    return <div>{error}</div>;
+    return <div>{error?.message || error}</div>;
   }
 
   return (
@@ -20,27 +20,31 @@ function JobsList({ loading, error, jobs }) {
           })}
       </ul>
       {jobs?.length === 0 && <div className="text-2xl font-bold text-gray-600">No jobs found</div>}
-      {loading && <Loader />}
+      {loading && (
+        <div className="hidden lg:block">
+          <Loader />
+        </div>
+      )}
     </section>
   );
 }
 
 JobsList.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   jobs: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      company: PropTypes.string.isRequired,
-      location: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      companyLogo: PropTypes.string.isRequired,
-      companySlug: PropTypes.string.isRequired,
-      jobSlug: PropTypes.string.isRequired,
+      id: PropTypes.string,
+      title: PropTypes.string,
+      company: PropTypes.string,
+      location: PropTypes.string,
+      type: PropTypes.string,
+      description: PropTypes.string,
+      companyLogo: PropTypes.string,
+      companySlug: PropTypes.string,
+      jobSlug: PropTypes.string,
     })
-  ).isRequired,
+  ),
 };
 
 export default JobsList;

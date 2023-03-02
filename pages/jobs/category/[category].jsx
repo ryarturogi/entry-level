@@ -1,25 +1,25 @@
-import { getJobs } from '@/store/actions/jobAction';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import JobCard from '@/components/Jobs/JobCard';
 import Hero from '@/components/UI/Hero';
+import useJobs from '@/hooks/useJobs';
 import Loader from 'components/UI/Loader';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 
 function JobsByCategory() {
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const { loading, error, jobs } = useSelector((state) => state.jobsList);
-  const { category } = router.query;
+  const { query } = useRouter();
+  const { category } = query;
+
+  const { jobs, loading, error } = useJobs('jobCategory', category);
   const categoryCapitalize = category?.charAt(0)?.toUpperCase() + category?.slice(1) || '';
 
-  useEffect(() => {
-    if (category) {
-      dispatch(getJobs('jobCategory', category));
-    }
-  }, [category, dispatch]);
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error?.message) {
+    return <div>{error.message}</div>;
+  }
 
   return (
     <section className="flex flex-col items-center justify-center mx-auto max-w-8xl">
@@ -28,17 +28,18 @@ function JobsByCategory() {
         <meta content="initial-scale=1.0, width=device-width" name="viewport" />
       </Head>
       <Hero title={`${categoryCapitalize} Category`} />
-      <ul className="w-full space-y-5 max-w-8xl">
-        {error && error.message}
-        {(loading && !error && (
-          <li className="flex items-center justify-center w-full ">
-            <Loader />
-          </li>
-        )) ||
-          (jobs ? jobs.map((job) => <JobCard job={job} key={job.id} />) : null)}
-      </ul>
+      <div className="w-full space-y-5 max-w-8xl">
+        {jobs && !loading && jobs.map((job) => <JobCard job={job} key={job.id} />)}
+      </div>
     </section>
   );
 }
+
+JobsByCategory.propTypes = {
+  category: PropTypes.string,
+  jobs: PropTypes.array,
+  error: PropTypes.object,
+  loading: PropTypes.bool,
+};
 
 export default JobsByCategory;

@@ -1,25 +1,24 @@
-import { getJobs } from '@/store/actions/jobAction';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import JobCard from '@/components/Jobs/JobCard';
 import Hero from '@/components/UI/Hero';
-import Loader from 'components/UI/Loader';
+import Loader from '@/components/UI/Loader';
+import useJobs from '@/hooks/useJobs';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 
-function JobsByTags() {
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const { loading, error, jobs } = useSelector((state) => state.jobsList);
-  const { tag } = router.query;
+function JobsByLocation() {
+  const { query } = useRouter();
+  const { tag } = query;
+  const { jobs, loading, error } = useJobs('jobTags', tag);
+
   const tagCapitalize = tag?.charAt(0)?.toUpperCase() + tag?.slice(1);
 
-  useEffect(() => {
-    if (tag) {
-      dispatch(getJobs('jobTags', tag));
-    }
-  }, [tag, dispatch]);
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error?.message) {
+    return <div>{error.message}</div>;
+  }
 
   return (
     <section className="flex flex-col items-center justify-center mx-auto max-w-8xl">
@@ -27,18 +26,12 @@ function JobsByTags() {
         <title>{`${tagCapitalize} Jobs`} | EntryLevelDevs</title>
         <meta content="initial-scale=1.0, width=device-width" name="viewport" />
       </Head>
-      <Hero title={`${tagCapitalize} Jobs`} />
+      <Hero title={`Jobs listing at ${tagCapitalize} `} />
       <ul className="w-full space-y-5 max-w-8xl">
-        {error && error.message}
-        {(loading && !error && (
-          <li className="flex items-center justify-center w-full ">
-            <Loader />
-          </li>
-        )) ||
-          (jobs ? jobs.map((job) => <JobCard job={job} key={job.id} />) : null)}
+        {jobs && !loading && jobs.map((job) => <JobCard job={job} key={job.id} />)}
       </ul>
     </section>
   );
 }
 
-export default JobsByTags;
+export default JobsByLocation;

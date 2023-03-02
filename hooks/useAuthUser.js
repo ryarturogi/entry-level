@@ -3,12 +3,12 @@ import Provider from '@/utils/initDatabase';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-const providerName = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
-const currentProvider = Provider(providerName);
-
 export const UserContext = createContext();
 
 const AuthStateChanged = async (setSession, setUser) => {
+  const providerName = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
+  const currentProvider = Provider(providerName);
+
   if (providerName === PROVIDERS.SUPABASE) {
     try {
       const currSession = await currentProvider.Auth.getCurrentSession();
@@ -66,7 +66,7 @@ export function AuthProvider(props) {
     const { authListener } = AuthStateChanged(setSession, setUser);
 
     return () => authListener?.unsubscribe();
-  }, [user, session]);
+  }, []);
 
   const value = {
     session,
@@ -109,7 +109,19 @@ export const AuthRedirect = () => {
 };
 
 export const SignOut = async () => {
-  await currentProvider.Auth.signOut();
+  const providerName = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
+  const currentProvider =
+    providerName === PROVIDERS.SUPABASE
+      ? Provider(PROVIDERS.SUPABASE)
+      : Provider(PROVIDERS.FIREBASE);
+
+  if (providerName === PROVIDERS.SUPABASE) {
+    await currentProvider.Auth.signOut();
+  }
+
+  if (providerName === PROVIDERS.FIREBASE) {
+    await currentProvider.Auth.auth.signOut();
+  }
 };
 
 const AuthUser = () => {

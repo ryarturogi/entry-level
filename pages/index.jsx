@@ -1,58 +1,15 @@
 import Filters from '@/components/Jobs/Filters';
 import JobsList from '@/components/Jobs/JobsList';
-import JobsSortBy from '@/components/Jobs/JobsSortBy';
+// import JobsSortBy from '@/components/Jobs/JobsSortBy';
 import Head from '@/components/partials/Head';
 import Hero from '@/components/UI/Hero';
-import Client from '@/utils/initDatabase';
+import useFilteredJobs from '@/hooks/useFilteredJobs';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 
-const PROVIDER_NAME = String(process.env.NEXT_PUBLIC_PROVIDER_NAME);
-
-const Home = ({ jobs = [], error = false }) => {
+const Home = () => {
   const router = useRouter();
-  const [currentJobs, setCurrentJobs] = useState(jobs);
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState(error || '');
-  const [cachedFilters, setCachedFilters] = useState({});
-
-  const handleFiltersChange = async (filters) => {
-    setLoading(true);
-    setCachedFilters((prevState) => ({ ...prevState, ...filters }));
-
-    try {
-      let filteredJobs;
-
-      // Cache filters
-      if (!isCachedFiltersEmpty(cachedFilters)) {
-        const mergedFilters = { ...cachedFilters, ...filters };
-        filteredJobs = await Client(PROVIDER_NAME).getFilteredJobs(mergedFilters);
-      } else {
-        filteredJobs = await Client(PROVIDER_NAME).getFilteredJobs(filters);
-      }
-
-      setCurrentJobs(filteredJobs);
-    } catch (error) {
-      const errorMessage = error?.response?.data?.message || error.message;
-      setErrors(errorMessage);
-    }
-    setLoading(false);
-  };
-
-  const isCachedFiltersEmpty = (obj) => {
-    const keys = Object.keys(obj);
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const value = obj[key];
-      if (typeof value === 'object') {
-        if (Object.keys(value).length > 0) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
+  const [jobs, loading, error, handleFiltersChange] = useFilteredJobs();
 
   return (
     <div className="min-h-screen mb-20">
@@ -70,9 +27,9 @@ const Home = ({ jobs = [], error = false }) => {
           <header className="flex flex-col items-center justify-between pb-6 pl-5 sm:flex-row">
             <h2 className="text-lg font-semibold sm:text-xl md:text-2xl">Job postings</h2>
 
-            <JobsSortBy onChange={handleFiltersChange} />
+            {/* <JobsSortBy onChange={handleFiltersChange} /> */}
           </header>
-          <JobsList error={errors} jobs={currentJobs} loading={loading} />
+          <JobsList error={error} jobs={jobs} loading={loading} />
         </section>
 
         <Filters onChange={handleFiltersChange} />
@@ -80,27 +37,6 @@ const Home = ({ jobs = [], error = false }) => {
     </div>
   );
 };
-
-export async function getServerSideProps() {
-  try {
-    const Jobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs();
-
-    return {
-      props: {
-        jobs: Jobs,
-        error: false,
-      },
-    };
-  } catch (error) {
-    const errorMessage = error?.response?.data?.message || error.message;
-    return {
-      props: {
-        jobs: [],
-        error: errorMessage,
-      },
-    };
-  }
-}
 
 Home.propTypes = {
   jobs: PropTypes.arrayOf(

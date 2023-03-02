@@ -26,19 +26,19 @@ const JobContent = (props) => (
 );
 
 JobContent.propTypes = {
-  companyName: PropTypes.string.isRequired,
-  companySlug: PropTypes.string.isRequired,
-  createdAt: PropTypes.string.isRequired,
-  hasCompanyColor: PropTypes.shape({
-    color: PropTypes.string.isRequired,
-    isActive: PropTypes.bool.isRequired,
-  }).isRequired,
-  hasCompanyLogo: PropTypes.bool.isRequired,
-  id: PropTypes.string.isRequired,
-  isFeatured: PropTypes.bool.isRequired,
-  isGuaranteed: PropTypes.bool.isRequired,
+  id: PropTypes.string,
+  createdAt: PropTypes.string,
+  isFeatured: PropTypes.bool,
+  isGuaranteed: PropTypes.bool,
+  jobTitle: PropTypes.string,
   jobTags: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
-  jobTitle: PropTypes.string.isRequired,
+  companyName: PropTypes.string,
+  companySlug: PropTypes.string,
+  hasCompanyLogo: PropTypes.bool,
+  hasCompanyColor: PropTypes.shape({
+    color: PropTypes.string,
+    isActive: PropTypes.bool,
+  }),
 };
 
 export default JobContent;
