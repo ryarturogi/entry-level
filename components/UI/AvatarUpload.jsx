@@ -3,7 +3,7 @@ import Image from 'next/image';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 
-export const AvatarUpload = ({ onAvatarChange, id, name }) => {
+const AvatarUpload = ({ onChange, id, name, placeholder, src }) => {
   const [avatar, setAvatar] = useState(null);
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState(null);
@@ -26,21 +26,27 @@ export const AvatarUpload = ({ onAvatarChange, id, name }) => {
 
   const handleFileInputChange = (e) => {
     const fileInput = e.target;
+
     if (fileInput.files && fileInput.files.length > 0) {
       const file = fileInput.files[0];
+
       if (file.type.startsWith('image/')) {
         const reader = new FileReader();
+
         reader.onload = async (e) => {
           const imageData = e.target.result;
+
           setPreview(imageData);
-          setAvatar(file);
-          onAvatarChange(imageData);
+          setAvatar(imageData);
+          onChange(file);
           setError('');
           fileInput.value = ''; // reset input value
         };
+
         reader.onerror = () => {
           setError('Error reading file. Please try again.');
         };
+
         reader.readAsDataURL(file);
       } else {
         setError('Please choose an image file.');
@@ -55,13 +61,13 @@ export const AvatarUpload = ({ onAvatarChange, id, name }) => {
         htmlFor={id || 'companyLogo'}
         onClick={handleImageClick}
       >
-        {preview ? (
+        {src || preview ? (
           <Image
             alt="avatar preview"
             className="object-cover w-20 h-20"
             height={80}
-            key={preview}
-            src={preview}
+            key={src || preview}
+            src={src || preview}
             width={80}
           />
         ) : (
@@ -81,15 +87,19 @@ export const AvatarUpload = ({ onAvatarChange, id, name }) => {
         type="file"
       />
       {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
-      <p className="mt-2 text-base font-semibold text-gray-800 uppercase">Upload your logo</p>
+      <p className="mt-2 text-base font-semibold text-gray-800 uppercase">
+        {placeholder || 'Upload your avatar'}
+      </p>
     </div>
   );
 };
 
 AvatarUpload.propTypes = {
-  onAvatarChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   id: PropTypes.string,
   name: PropTypes.string,
+  src: PropTypes.string,
+  placeholder: PropTypes.string,
 };
 
 export default AvatarUpload;
