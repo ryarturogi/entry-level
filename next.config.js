@@ -4,6 +4,7 @@ const nextConfig = {
   },
   images: {
     domains: [
+      'localhost',
       'assets.landing.jobs',
       'avatars.githubusercontent.com',
       'remoteok.com',
@@ -11,6 +12,8 @@ const nextConfig = {
       'remoteok.io',
       'lh3.googleusercontent.com',
       'via.placeholder.com',
+      'assets.landing.jobs',
+      'claggldspplsjasuzzze.supabase.co',
     ],
   },
   webpack(config) {

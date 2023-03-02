@@ -46,16 +46,16 @@ function JobCard({ job }) {
 
 JobCard.propTypes = {
   job: PropTypes.shape({
-    companyLogo: PropTypes.string.isRequired,
-    companySlug: PropTypes.string.isRequired,
+    isFeatured: PropTypes.bool,
+    isGuaranteed: PropTypes.bool,
+    companySlug: PropTypes.string,
+    companyLogo: PropTypes.string,
+    hasCompanyLogo: PropTypes.bool,
     hasCompanyColor: PropTypes.shape({
-      color: PropTypes.string.isRequired,
-      isActive: PropTypes.bool.isRequired,
-    }).isRequired,
-    hasCompanyLogo: PropTypes.bool.isRequired,
-    isFeatured: PropTypes.bool.isRequired,
-    isGuaranteed: PropTypes.bool.isRequired,
-  }).isRequired,
+      color: PropTypes.string,
+      isActive: PropTypes.bool,
+    }),
+  }),
 };
 
 export default JobCard;

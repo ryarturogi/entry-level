@@ -5,8 +5,8 @@ const JobsSortBy = ({ onChange }) => {
   const [sortBy, setSortBy] = useState({ sortBy: 'newest' });
 
   const handleOnChange = (e) => {
-    onChange({ sortBy: e.target.value });
-    setSortBy({ sortBy: e.target.value });
+    setSortBy({ ...cachedFilters, sortBy: e.target.value });
+    const cachedFilters = onChange({ ...cachedFilters, sortBy: e.target.value });
   };
 
   return (
