@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const RadioField = ({ options, optionSelected, title, onChange }) => {
+const RadioField = ({ options, optionSelected, title, onChange }) => {
   return (
     <fieldset>
       <legend className="text-base font-semibold leading-6 text-gray-900">{title}</legend>
@@ -19,7 +19,7 @@ export const RadioField = ({ options, optionSelected, title, onChange }) => {
                 type="radio"
               />
             </div>
-            <div className="flex-1 min-w-0 text-sm">
+            <div className="flex-1 min-w-0 text-base">
               <label
                 className="font-medium text-gray-700 cursor-pointer select-none"
                 htmlFor={`type-${type.id}`}
@@ -45,3 +45,5 @@ RadioField.propTypes = {
   title: PropTypes.string,
   onChange: PropTypes.func,
 };
+
+export default RadioField;
