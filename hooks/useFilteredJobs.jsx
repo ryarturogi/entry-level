@@ -1,12 +1,10 @@
 import Client from '@/utils/initDatabase';
-import { useUser } from '@supabase/auth-helpers-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const PROVIDER_NAME = process.env.NEXT_PUBLIC_PROVIDER_NAME;
 const ClientApi = Client(PROVIDER_NAME);
 
 const useFilteredJobs = () => {
-  const user = useUser();
   const [jobs, setJobs] = useState([]);
   const [errors, setErrors] = useState(null);
   const [cachedFilters, setCachedFilters] = useState({});
@@ -35,11 +33,6 @@ const useFilteredJobs = () => {
   }, [cachedFilters]);
 
   useEffect(() => {
-    if (!user?.id) {
-      setLoading(false);
-      return;
-    }
-
     const fetchJobs = async () => {
       try {
         const { data: jobs, error } = await ClientApi.getJobs();
@@ -58,7 +51,7 @@ const useFilteredJobs = () => {
     };
 
     fetchJobs();
-  }, [user?.id]);
+  }, []);
 
   return [jobs, loading, errors, handleFiltersChange, memoizedFilters];
 };
