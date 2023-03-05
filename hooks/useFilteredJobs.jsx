@@ -1,53 +1,66 @@
 import Client from '@/utils/initDatabase';
-import { useEffect, useState } from 'react';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
 const PROVIDER_NAME = process.env.NEXT_PUBLIC_PROVIDER_NAME;
 const ClientApi = Client(PROVIDER_NAME);
 
 const useFilteredJobs = () => {
+  const user = useUser();
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState(null);
   const [cachedFilters, setCachedFilters] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const handleFiltersChange = async (filters) => {
-    setLoading(true);
-    setCachedFilters(filters);
+  const handleFiltersChange = useCallback(
+    async (filters) => {
+      setCachedFilters(filters);
+      setLoading(true);
 
-    try {
-      // Cache filters
-      const mergedFilters = {
-        ...cachedFilters,
-        ...filters,
-      };
-      const filteredJobs = await ClientApi.getFilteredJobs(mergedFilters);
+      try {
+        const mergedFilters = { ...cachedFilters, ...filters };
+        const filteredJobs = await ClientApi.getFilteredJobs(mergedFilters);
+        setJobs(filteredJobs);
+      } catch (error) {
+        setErrors(error?.response?.data?.message || error.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [cachedFilters]
+  );
 
-      setJobs(filteredJobs);
-      setLoading(false);
-      return cachedFilters;
-    } catch (error) {
-      const errorMessage = error?.response?.data?.message || error.message;
-      setErrors(errorMessage);
-      setLoading(false);
-    }
-  };
+  const memoizedFilters = useMemo(() => {
+    return { ...cachedFilters };
+  }, [cachedFilters]);
 
   useEffect(() => {
+    if (!user?.id) {
+      setLoading(false);
+      return;
+    }
+
     const fetchJobs = async () => {
       try {
-        const jobs = await ClientApi.getJobs();
+        const { data: jobs, error } = await ClientApi.getJobs();
+
+        if (error) {
+          setErrors(error?.message || 'Something went wrong');
+          return;
+        }
 
         setJobs(jobs);
-        setLoading(false);
       } catch (error) {
-        setErrors(error);
+        setErrors(error?.response?.data?.message || error.message);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchJobs();
-  }, []);
+  }, [user?.id]);
 
-  return [jobs, loading, errors, handleFiltersChange];
+  return [jobs, loading, errors, handleFiltersChange, memoizedFilters];
 };
 
-export default useFilteredJobs;
+export { useFilteredJobs };

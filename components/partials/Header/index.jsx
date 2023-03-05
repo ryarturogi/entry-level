@@ -1,16 +1,16 @@
+import classNames from '@/utils/classsesNames';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XIcon } from '@heroicons/react/24/outline';
+import { useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import Link from 'next/link';
-
-import AuthUser from '@/hooks/useAuthUser';
-import classNames from '@/utils/classsesNames';
-
 import MenuLoggedIn from './MenuLoggedIn';
 import MenuNotLoggedIn from './MenuNotLoggedIn';
 import Navigation from './navigation';
 
 const Header = () => {
+  const user = useUser();
+
   return (
     <Disclosure as="nav" className="bg-white border-b border-gray-400">
       {({ open }) => {
@@ -35,16 +35,16 @@ const Header = () => {
                     <Image alt="entry level devs" height={22.5} src="/logo.svg" width={82} />
                   </Link>
                 </div>
-                <div className="hidden sm:block sm:ml-6">
-                  <div className="flex space-x-4">
+                <div className="hidden sm:block sm:ml-2">
+                  <div className="flex space-x-2">
                     {Navigation.map((item) => (
                       <Link
                         aria-current={item.current ? 'page' : false}
                         className={classNames(
                           item.current
                             ? 'bg-gray-800 text-white'
-                            : 'text-gray-800 hover:bg-primary-500 hover:text-white',
-                          'px-3 py-2 rounded text-base font-medium'
+                            : 'text-gray-800 hover:bg-primary-700 hover:text-white',
+                          'px-3 py-2 rounded text-sm'
                         )}
                         href={item.href}
                         key={item.name}
@@ -57,8 +57,7 @@ const Header = () => {
 
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   {/** Notifications */}
-
-                  {AuthUser() ? <MenuLoggedIn /> : <MenuNotLoggedIn />}
+                  {user ? <MenuLoggedIn /> : <MenuNotLoggedIn />}
                 </div>
               </div>
             </div>
