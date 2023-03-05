@@ -9,26 +9,24 @@ const SIZE_TO_CLASS_MAP = {
   default: 'w-20 h-20',
 };
 
+const AVATAR_SIZE_MAP = {
+  height: 100,
+  width: 100,
+};
+
 function Avatar({ avatar, isRounded = false, size = 'default' }) {
   const sizeClass = SIZE_TO_CLASS_MAP[size];
   const roundedClass = isRounded ? 'rounded-full' : 'rounded-lg';
 
   return (
-    <div
-      className={`relative flex items-center justify-center overflow-hidden  bg-gray-100 px-2 ${roundedClass} ${sizeClass}`}
-    >
-      {isRounded ? (
-        <Image alt="avatar" className="object-contain object-center" fill src={avatar} />
-      ) : (
-        <Image
-          alt="avatar"
-          className="object-contain object-center"
-          height="100"
-          src={avatar}
-          width="100"
-        />
-      )}
-    </div>
+    <Image
+      alt="avatar"
+      className={`relative flex items-center justify-center overflow-hidden  
+        object-cover object-center bg-gray-100 px-2 ${roundedClass} ${sizeClass}`}
+      height={AVATAR_SIZE_MAP.height}
+      src={avatar || '/img/logo.png'}
+      width={AVATAR_SIZE_MAP.width}
+    />
   );
 }
 
