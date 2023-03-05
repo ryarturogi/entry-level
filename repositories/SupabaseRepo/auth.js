@@ -36,7 +36,11 @@ const signUp = async (email, password) => {
  */
 const signIn = async (email, password) => {
   try {
-    const { user, session, error } = await Client.auth.signIn({
+    const {
+      data: { user },
+      session,
+      error,
+    } = await Client.auth.signInWithPassword({
       email,
       password,
     });
@@ -62,12 +66,14 @@ const signIn = async (email, password) => {
  */
 const signInWithProvider = async (providerName) => {
   try {
-    const { user, session, error } = await Client.auth.signIn({
+    const { data: user, error } = await Client.auth.signInWithOAuth({
       provider: providerName || 'google',
-      redirectTo: 'http://localhost:3000',
+      options: {
+        redirectTo: 'http://localhost:3000',
+      },
     });
 
-    return { error, session, user };
+    return { error, user };
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -88,7 +94,7 @@ const signInWithProvider = async (providerName) => {
  */
 
 const signOut = async () => {
-  return Client.auth.signOut();
+  return await Client.auth.signOut();
 };
 
 /**
@@ -98,9 +104,11 @@ const signOut = async () => {
  * @example
  * const user = Client.Auth.getCurrentUser()
  */
-const getCurrentUser = () => {
+const getCurrentUser = async () => {
   try {
-    return Client.auth.currentUser;
+    const { data: user } = await Client.auth.getUser();
+
+    return user;
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -121,175 +129,9 @@ const getCurrentUser = () => {
  */
 const getCurrentSession = () => {
   try {
-    return Client.auth.session();
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+    const { data: session } = Client.auth.getSession();
 
-    // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
-
-    return { error, errorCode, errorMessage };
-  }
-};
-
-/**
- * @title On Auth state change
- * @returns {Promise<Object>}
- * @memberof Supabase
- * @example
- * const authState = Client.Auth.onAuthStateChange()
- */
-const onAuthStateChange = () => {
-  try {
-    let authSession = null;
-    let authUser = null;
-
-    let authState = Client.auth.onAuthStateChange((_, session) => {
-      authSession = session ?? false;
-      authUser = session?.user ?? false;
-    });
-
-    authState = { ...authState, authSession, authUser };
-
-    return authState;
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-
-    // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
-
-    return { error, errorCode, errorMessage };
-  }
-};
-
-/**
- * @title Update current user
- * @returns {Promise<Object>}
- * @memberof Supabase
- * @example
- * const user = Client.Auth.getCurrentUser()
- */
-const saveJob = async (jobs, job) => {
-  try {
-    if (jobs?.length > 0) {
-      const { data, error } = await Client.auth.update({
-        data: { savedJobs: jobs.concat(job) },
-      });
-
-      return { error, data };
-    }
-    const { data, error } = await Client.auth.update({
-      data: { savedJobs: [job] },
-    });
-
-    return { error, data };
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-
-    // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
-
-    return { error, errorCode, errorMessage };
-  }
-};
-
-/**
- * @title Remove Job from saved jobs
- * @returns {Promise<Object>}
- * @memberof Supabase
- * @example
- * const user = Client.Auth.removeJob(job)
- */
-
-const removeJob = async (jobs, job) => {
-  try {
-    const { data, error } = await Client.auth.update({
-      data: {
-        savedJobs: jobs?.length > 0 ? jobs.filter((j) => j.id !== job.id) : [],
-      },
-    });
-
-    return { error, data };
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-
-    // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
-
-    return { error, errorCode, errorMessage };
-  }
-};
-
-/**
- * @title Get saved jobs
- * @returns {Promise<Object>}
- * @memberof Supabase
- * @example
- * const savedJobs = Client.Auth.getSavedJobs()
- */
-const getSavedJobs = () => {
-  try {
-    const savedJobs = Client.auth.currentSession?.user?.user_metadata?.savedJobs;
-
-    if (savedJobs?.length > 0) {
-      return savedJobs;
-    }
-    return [];
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-
-    // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
-
-    return { error, errorCode, errorMessage };
-  }
-};
-
-/**
- * @title Remove all saved jobs
- * @returns {Promise<Object>}
- * @memberof Supabase
- * @example
- * const user = Client.Auth.removeAllJobs()
- */
-const removeAllJobs = async () => {
-  try {
-    const { user, error } = await Client.auth.update({
-      savedJobs: [],
-    });
-
-    return { error, user };
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-
-    // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
-
-    return { error, errorCode, errorMessage };
-  }
-};
-
-/**
- * @title Get saved jobs count
- * @returns {string}
- * @memberof Supabase
- * @example
- * const savedJobsCount = Client.Auth.savedJobsCount()
- */
-const getSavedJobsCount = () => {
-  try {
-    const savedJobs = Client.auth.currentSession?.user.user_metadata?.savedJobs;
-
-    if (savedJobs?.length > 0) {
-      return savedJobs.length;
-    }
-    return 0;
+    return session;
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -306,15 +148,9 @@ const Auth = () => ({
   signUp,
   getCurrentSession,
   getCurrentUser,
-  onAuthStateChange,
   signIn,
   signInWithProvider,
   signOut,
-  saveJob,
-  removeJob,
-  removeAllJobs,
-  getSavedJobs,
-  getSavedJobsCount,
 });
 
 export default Auth();
