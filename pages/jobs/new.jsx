@@ -14,6 +14,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
 
+import Checkbox from '@/components/Jobs/Filters/Checkbox';
 import {
   experienceLevelsOptions,
   jobCategories,
@@ -28,15 +29,13 @@ import {
   JOB_TITLE_FIELD,
   SchemaValidation,
 } from '@/constants/new-job';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-
-import Checkbox from '@/components/Jobs/Filters/Checkbox';
 import { PROVIDER_NAME } from '@/constants/supabase';
 import useCountries from '@/hooks/useCountries';
 import useSkills from '@/hooks/useSkills';
 import Client from '@/utils/initDatabase';
+import { Formik } from 'formik';
 import { useRouter } from 'next/router';
+import * as Yup from 'yup';
 
 const ClientApi = Client(PROVIDER_NAME);
 
@@ -56,7 +55,7 @@ const NewJob = () => {
       case 'jobCategory':
         return jobCategories;
       case 'jobLocationType':
-        return jobLocationTypes;
+        return jobLocationTypes.slice(1);
       case 'experienceLevel':
         return experienceLevelsOptions;
       default:
@@ -68,7 +67,7 @@ const NewJob = () => {
     const params = {
       slug: 'company-logos',
       file: values.companyLogo,
-      filename: values.companyName.toLowerCase().replace(/ /g, '-'),
+      filename: `${values.companyName.toLowerCase().replace(/ /g, '-')}-logo`,
     };
 
     const { data: companyLogoURL, error: companyLogoURLError } = await ClientApi.uploadLogo(params);
@@ -77,7 +76,7 @@ const NewJob = () => {
       throw new Error(`Error uploading company logo: ${companyLogoURLError.message}`);
     }
 
-    return companyLogoURL.Key || '';
+    return `/company-logos/${companyLogoURL.path || companyLogoURL.Key || companyLogoURL || ''}`;
   };
 
   const createJobHandler = async (values, companyLogoURL) => {
@@ -109,13 +108,13 @@ const NewJob = () => {
       createdAt: new Date().toISOString(),
     };
 
-    const { data: newJobData, error: newJobError } = await ClientApi.createJob(job);
+    const { data, error } = await ClientApi.createJob(job);
 
-    if (newJobError) {
-      throw new Error(`Error creating new job: ${newJobError.message}`);
+    if (error) {
+      throw new Error(error?.message || 'Error creating new job');
     }
 
-    return newJobData;
+    return data;
   };
 
   const onSubmitHandler = async (values) => {
@@ -124,11 +123,11 @@ const NewJob = () => {
       const jobData = await createJobHandler(values, companyLogoURL);
 
       if (Object.keys(jobData).length > 0) {
-        console.log('Job created successfully', jobData);
-        router.push(`/jobs/${jobData.companySlug}`);
-      } else {
-        throw new Error('Error creating new job');
+        router.push('/');
+        return;
       }
+
+      throw new Error('Error creating new job');
     } catch (error) {
       console.error('Error: ', error.message);
     }
@@ -214,6 +213,7 @@ const NewJob = () => {
                 />
               </div>
             </section>
+
             {/* Job Detail */}
             <section className="grid grid-cols-1 gap-10">
               <div className="flex flex-col w-full max-w-6xl gap-10 p-10 mx-auto bg-white rounded-xl">
@@ -278,6 +278,7 @@ const NewJob = () => {
                 </div>
               </div>
             </section>
+
             {/* Extra Features */}
             <section className="flex flex-col w-full max-w-6xl p-10 mx-auto bg-white rounded-xl">
               <HeadingTitle>
@@ -305,6 +306,7 @@ const NewJob = () => {
                 ))}
               </ul>
             </section>
+
             {/* Submit */}
             <section className="grid grid-cols-1 gap-10">
               <div className="flex flex-col w-full max-w-6xl p-10 mx-auto bg-white gap-x-10 gap-y-8 rounded-xl">

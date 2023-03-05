@@ -1,10 +1,12 @@
-import { SignOut } from '@/hooks/useAuthUser';
+import useStore from '@/lib/store';
 import classNames from '@/utils/classsesNames';
 import { Menu, Transition } from '@headlessui/react';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Fragment } from 'react';
-import { useSelector } from 'react-redux';
 
 const Navigation = [
   {
@@ -18,11 +20,14 @@ const Navigation = [
 ];
 
 function MenuLoggedIn() {
-  const { savedJobsCount } = useSelector((state) => state.savedJobs);
+  const user = useUser();
+  const router = useRouter();
+  const supabaseClient = useSupabaseClient();
+  const savedJobsCount = useStore((state) => state.savedJobsCount);
 
   const logout = () => {
-    if (typeof window !== 'undefined' && SignOut()) {
-      window.location.reload();
+    if (typeof window !== 'undefined' && supabaseClient.auth.signOut()) {
+      router.push('/');
     }
   };
 
@@ -32,15 +37,23 @@ function MenuLoggedIn() {
         <div className="relative flex justify-start">
           <Menu.Button className="flex items-center pr-2 py-1 rounded-md text-sm font-medium space-x-1.5 text-gray-500 focus:outline-none transition-colors ease-linear duration-100 relative">
             <span className="sr-only">Open user menu</span>
-            <UserCircleIcon className="w-7 h-7" />
-            {/* {savedJobsCount > 0 && (
+            {(user?.user_metadata?.avatar_url && (
+              <Image
+                alt="avatar"
+                className="w-8 h-8 rounded-full"
+                height={28}
+                src={user.user_metadata.avatar_url}
+                width={28}
+              />
+            )) || <UserCircleIcon className="w-8 h-8" />}
+            {savedJobsCount > 0 && (
               <div
+                className="absolute grid w-3.5 h-3.5 p-1.5 text-[10px] font-normal rounded-full place-content-center bottom-0 right-0 bg-primary-700 text-white"
                 title={`${savedJobsCount} saved job${savedJobsCount > 1 ? 's' : ''}`}
-                className="absolute grid w-3.5 h-3.5 p-2 text-xs font-bold rounded-full place-content-center bottom-0 right-0 bg-primary-500 text-white"
               >
                 {savedJobsCount}
               </div>
-            )} */}
+            )}
           </Menu.Button>
           <Transition
             as={Fragment}
@@ -72,7 +85,7 @@ function MenuLoggedIn() {
                           className=" grid w-3.5 h-3.5 p-2 text-xs font-bold rounded-full place-content-center bg-primary-500 text-white"
                           title={`${savedJobsCount} saved job${savedJobsCount > 1 ? 's' : ''}`}
                         >
-                          {savedJobsCount}
+                          {savedJobsCount} <span className="sr-only">saved jobs</span>
                         </div>
                       )}
                     </Link>
@@ -80,14 +93,19 @@ function MenuLoggedIn() {
                 </Menu.Item>
               ))}
               <Menu.Item>
-                <button
-                  className="block px-4 py-2 text-sm text-gray-800 cursor-pointer hover:bg-gray-100"
-                  name="logout"
-                  onClick={() => logout()}
-                  type="button"
-                >
-                  Sign out
-                </button>
+                {({ active }) => (
+                  <button
+                    className={classNames(
+                      active ? 'bg-primary-500 text-white' : 'text-gray-800 hover:bg-gray-100',
+                      'pl-4 pr-2 py-2 text-sm relative w-full text-left'
+                    )}
+                    name="logout"
+                    onClick={() => logout()}
+                    type="button"
+                  >
+                    <span>Logout</span>
+                  </button>
+                )}
               </Menu.Item>
             </Menu.Items>
           </Transition>

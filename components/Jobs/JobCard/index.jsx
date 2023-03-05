@@ -1,5 +1,3 @@
-import { useUser } from '@/hooks/useAuthUser';
-
 import PropTypes from 'prop-types';
 import CompanyLogo from './CompanyLogo';
 import JobActions from './JobActions';
@@ -21,8 +19,6 @@ import JobContent from './JobContent';
 // }
 
 function JobCard({ job }) {
-  const { user } = useUser();
-
   return (
     <div
       className={`
@@ -37,7 +33,7 @@ function JobCard({ job }) {
         />
         <div className="flex flex-col justify-between w-full lg:items-center lg:flex-row">
           <JobContent {...job} />
-          <JobActions {...job} user={user} />
+          <JobActions {...job} />
         </div>
       </div>
     </div>

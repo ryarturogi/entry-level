@@ -1,9 +1,8 @@
 import Filters from '@/components/Jobs/Filters';
 import JobsList from '@/components/Jobs/JobsList';
-// import JobsSortBy from '@/components/Jobs/JobsSortBy';
-import Head from '@/components/partials/Head';
 import Hero from '@/components/UI/Hero';
-import useFilteredJobs from '@/hooks/useFilteredJobs';
+import Head from '@/components/partials/Head';
+import { useFilteredJobs } from '@/hooks/useFilteredJobs';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
