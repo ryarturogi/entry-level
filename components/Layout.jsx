@@ -1,8 +1,16 @@
 import Footer from '@/components/partials//Footer';
 import Header from '@/components/partials/Header';
+import useStore from '@/lib/store';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
 const Layout = ({ children }) => {
+  const setInitialState = useStore((state) => state.setInitialState);
+
+  useEffect(() => {
+    setInitialState();
+  }, []);
+
   return (
     <>
       <Header />
