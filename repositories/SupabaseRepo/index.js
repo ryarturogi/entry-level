@@ -2,9 +2,8 @@ import Auth from './auth';
 import Client from './SupabaseConfig';
 
 const Supabase = () => {
-  // Jobs
   /**
-   * @title Get Jobs API
+   * @title Get Jobs Api
    * @returns {Promise<Array>}
    * @memberof Supabase
    * @example
@@ -16,7 +15,7 @@ const Supabase = () => {
   };
 
   /**
-   * @title Get Jobs API
+   * @title Get Jobs by content type
    * @returns {Promise<Array>}
    * @memberof Supabase
    * @example
@@ -44,13 +43,11 @@ const Supabase = () => {
           config: 'english',
         });
         break;
-      default:
-        break;
     }
 
-    const { data: Jobs } = await jobsApi.order('createdAt', { ascending: false });
+    const { data, error } = await jobsApi.order('createdAt', { ascending: false }).select();
 
-    return Jobs;
+    return { data, error };
   };
 
   /**
@@ -91,12 +88,12 @@ const Supabase = () => {
     }
 
     if (jobType !== 'all') {
-      baseQuery = baseQuery.eq('jobType', jobType);
+      baseQuery = baseQuery.eq('jobLocationType', jobType);
     }
 
     if (jobTypeOptions.length > 0) {
       const jobTypeOptionsQuery = jobTypeOptions.map(
-        (jobTypeOption) => `jobLocationType.ilike.%${jobTypeOption.id}%`
+        (jobTypeOption) => `jobType.ilike.%${jobTypeOption.id}%`
       );
       baseQuery = baseQuery.or(jobTypeOptionsQuery);
     }
@@ -107,44 +104,18 @@ const Supabase = () => {
 
     try {
       const sortedBy = sortBy !== 'newest';
-      const { data: Jobs } = await baseQuery.order('createdAt', {
+      const { data: Jobs, error: JobsError } = await baseQuery.order('createdAt', {
         ascending: sortedBy,
       });
-      return Jobs;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
 
-  /**
-   * @title Search jobs by keyword
-   * @param {string} keyword
-   * @returns {Promise<Array>}
-   * @memberof Supabase
-   * @example
-   * const jobs = Client.searchJobs('developer')
-   **/
-  const searchJobs = async (searchValue) => {
-    const { data: jobs } = await Client.from('jobs').select('*');
-    return jobs.filter((job) => {
-      const isValid = (str) => {
-        return str.toLowerCase().includes(searchValue.toLowerCase());
-      };
-
-      const isSearchQueryValid =
-        isValid(job.jobTitle) ||
-        isValid(job.jobType) ||
-        isValid(job.jobCategory) ||
-        isValid(job.companyName) ||
-        isValid(job.location);
-
-      if (!isSearchQueryValid) {
-        return;
+      if (JobsError) {
+        throw Error(JobsError?.message) || new Error('Error getting jobs');
       }
 
-      return job;
-    });
+      return Jobs;
+    } catch (error) {
+      throw error?.response?.data?.message || new Error('Error getting jobs');
+    }
   };
 
   /**
@@ -157,24 +128,31 @@ const Supabase = () => {
    *
    */
   const getJob = async (jobId) => {
-    const { data: Job } = await Client.from('jobs').select('*').eq('id', jobId);
+    try {
+      const { data, error } = await Client.from('jobs').select('*').match({ id: jobId }).single();
 
-    return Job[0];
+      return { data, error };
+    } catch (error) {
+      console.error(`Error getting job ${jobId}: ${error}`);
+      throw error;
+    }
   };
 
   /**
    * @title Create job
-   * @param {string} slug
+   * @param {object} job
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const job = Client.createJob('jobSlug')
-   *
+   * const newJob = Client.createJob(job)
+   * const { data, error } = newJob
    */
   const createJob = async (job) => {
-    const { data: JobData, error: jobError } = await Client.from('jobs').upsert(job);
+    const { data, error } = await Client.from('jobs')
+      .insert(job, { returning: 'minimal' })
+      .select();
 
-    return { JobData, jobError };
+    return { data, error };
   };
 
   /**
@@ -184,13 +162,14 @@ const Supabase = () => {
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const newJob = Client.updateJob(jobId, job)
+   * const updatedJob = Client.updateJob(jobId, job)
+   * const { data, error } = updatedJob
    *
    */
   const updateJob = async (jobId, job) => {
-    const { data: Job } = await Client.from('jobs').update(job).match({ id: jobId });
+    const { data, error } = await Client.from('jobs').update(job).match({ id: jobId }).select();
 
-    return Job;
+    return { data, error };
   };
 
   /**
@@ -200,41 +179,187 @@ const Supabase = () => {
    * @memberof Supabase
    * @example
    * const removedJob = Client.removeJob('jobId')
-   *
+   *  const { data, error } = removedJob
    */
-  const removeJob = async (jobId) => {
-    const { data: Job } = await Client.from('jobs').delete().match({ id: jobId });
+  const removeJob = async (id) => {
+    const { data, error } = await Client.from('jobs').delete().match({ id }).select();
 
-    return Job;
+    return { data, error };
   };
 
   /**
-   * @title Upload job logo
+   * @title Search jobs by keyword on job title, job type, job category, company name, location
+   * @param {string} keyword
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example
+   * const jobs = Client.searchJobs('developer')
+   **/
+  const searchJobs = async (searchValue) => {
+    const { data: jobs, error: jobsError } = await Client.from('jobs')
+      .select()
+      .textSearch('jobTitle,jobType,jobCategory,companyName,location', searchValue);
+
+    if (jobsError) {
+      throw Error(jobsError?.message) || new Error('Error getting jobs');
+    }
+
+    return jobs;
+  };
+
+  /**
+   * @title Get jobs by ids
+   * @param {Array} ids
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example const jobs = Client.getJobsByIds(['jobId1', 'jobId2'])
+   * const { data, error } = jobs
+   **/
+  const getJobsByIds = async (ids) => {
+    try {
+      const { data: jobs, error } = await Client.from('jobs').select('*').in('id', ids);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return { jobs, error: null, count: jobs.length };
+    } catch (error) {
+      return { jobs: null, error: error.message, count: 0 };
+    }
+  };
+
+  /**
+   * @title Get saved jobs
+   * @param {string} userId
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example const savedJobs = Client.getSavedJobs('userId')
+   * const { data, error } = savedJobs
+   **/
+  const getSavedJobs = async (userId) => {
+    try {
+      const { data: savedJobIds, error: savedJobsError } = await Client.from('savedJobs')
+        .select('jobId')
+        .eq('userId', userId);
+
+      if (savedJobsError) {
+        throw new Error(savedJobsError.message);
+      }
+
+      const { jobs } = await getJobsByIds(savedJobIds.map(({ jobId }) => jobId));
+
+      return { data: jobs, error: null, count: jobs.length };
+    } catch (error) {
+      return { jobs: null, error: error.message, count: 0 };
+    }
+  };
+
+  /**
+   * @title Save job
+   * @param {string} userId
+   * @param {string} jobId
+   * @returns {Promise<Object>}
+   * @memberof Supabase
+   * @example const savedJob = Client.saveJob('userId', 'jobId')
+   * const { data, error } = savedJob
+   **/
+  const saveJob = async (userId, jobId) => {
+    try {
+      const { error } = await Client.from('savedJobs').insert({ userId, jobId }).select();
+
+      return { success: true, error };
+    } catch (error) {
+      console.error(error);
+      return { success: false, error: error?.response?.data?.message || 'Failed to save job.' };
+    }
+  };
+
+  /**
+   * @title Remove saved job
+   * @param {string} userId
+   * @param {string} jobId
+   * @returns {Promise<Object>}
+   * @memberof Supabase
+   * @example const removedSavedJob = Client.removeSavedJob('userId', 'jobId')
+   * const { data, error } = removedSavedJob
+   * */
+  const removeSavedJob = async (userId, jobId) => {
+    try {
+      const { data } = await Client.from('savedJobs').delete().match({ userId, jobId }).select();
+
+      return { success: true, data };
+    } catch (error) {
+      console.error(error);
+      return { success: false, error: 'Failed to remove saved job.' };
+    }
+  };
+
+  /**
+   * @title Get saved jobs ids
+   * @param {string} userId
+   * @returns {Promise<Array>}
+   * @memberof Supabase
+   * @example const savedJobsIds = Client.getSavedJobsIds('userId')
+   * const { data, error } = savedJobsIds
+   * */
+  const getSavedJobsIds = async (userId) => {
+    try {
+      const { data: savedJobIds, error: savedJobsError } = await Client.from('savedJobs')
+        .select('jobId')
+        .eq('userId', userId);
+
+      if (savedJobsError) {
+        throw new Error(savedJobsError.message);
+      }
+
+      return { data: savedJobIds, error: null, count: savedJobIds.length };
+    } catch (error) {
+      return { data: null, error: error.message, count: 0 };
+    }
+  };
+
+  /**
+   * @title Suscribe to saved jobs count
+   * @param {string} userId
+   * @returns {Promise<Object>}
+   * @memberof Supabase
+   * @example const suscribedSavedJobsCount = Client.suscribeToSavedJobsCount('userId')
+   * const { data, error } = suscribedSavedJobsCount
+   * */
+  const subscribeToSavedJobsCount = async (userId) => {
+    try {
+      const subscription = await Client.from('savedJobs')
+        .on('*', async () => {
+          const { count } = await getSavedJobsIds(userId);
+          return count;
+        })
+        .eq('userId', userId)
+        .subscribe();
+
+      return subscription;
+    } catch (error) {
+      return { data: null, error: error.message, count: 0 };
+    }
+  };
+
+  /**
    * @param {object} job
    * @returns {Promise<Object>}
    * @memberof Supabase
    * @example
-   * const job = Client.uploadLogo(company, file)
-   *
+   * const job = Client.uploadLogo({ slug: 'job-slug', file: file, filename: 'logo.png' })
+   * const { data, error } = jobWithNewLogo
    */
   const uploadLogo = async ({ slug, file, filename }) => {
-    const slugify = (str) => {
-      return str
-        .toString()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]/g, '-')
-        .replace(/-+/g, '-');
-    };
-
     const { data, error } = await Client.storage
       .from(`${slug}`)
-      .upload(`public/${slugify(filename)}`, file, {
+      .upload(`public/${filename}`, file, {
         cacheControl: '3600',
         upsert: true,
       });
+
+    console.log(data, error);
 
     return { data, error };
   };
@@ -246,10 +371,10 @@ const Supabase = () => {
    * @memberof Supabase
    * @example
    * const companies = Client.getCompanies()
-   *
+   * const { data, error } = companies
    */
   const getCompanies = async () => {
-    const { data: Companies } = await Client.from('jobs').select(`id,
+    const { data, error } = await Client.from('jobs').select(`id,
     userId,
     companyLogo,
     companyName,
@@ -258,7 +383,7 @@ const Supabase = () => {
     companySlug,
     createdAt`);
 
-    return Companies;
+    return { data, error };
   };
 
   /**
@@ -271,7 +396,8 @@ const Supabase = () => {
    *
    */
   const getCompany = async (companyId) => {
-    const { data: Company } = await Client.from('jobs')
+    const { data, error } = await Client.from('jobs')
+      .eq('id', companyId)
       .select(
         `id,
         userId,
@@ -281,10 +407,9 @@ const Supabase = () => {
         companyWebsite,
         companySlug,
         createdAt`
-      )
-      .eq('id', companyId);
+      );
 
-    return Company;
+    return { data, error };
   };
 
   // Categories
@@ -297,9 +422,9 @@ const Supabase = () => {
    *
    */
   const getCategories = async () => {
-    const { data: Categories } = await Client.from('Categories').select('*');
+    const { data, error } = await Client.from('categories').select();
 
-    return Categories;
+    return { data, error };
   };
 
   /**
@@ -312,9 +437,12 @@ const Supabase = () => {
    *
    */
   const getCategory = async (categoryId) => {
-    const { data: Category } = await Client.from('Categories').select('*').eq('id', categoryId);
+    const { data, error } = await Client.from('categories')
+      .select('*')
+      .eq('id', categoryId)
+      .select();
 
-    return Category;
+    return { data, error };
   };
 
   /**
@@ -327,9 +455,9 @@ const Supabase = () => {
    *
    */
   const createCategory = async (category) => {
-    const { data: Category } = await Client.from('Categories').upsert(category);
+    const { data, error } = await Client.from('categories').upsert(category).select();
 
-    return Category;
+    return { data, error };
   };
 
   /**
@@ -343,11 +471,12 @@ const Supabase = () => {
    *
    */
   const updateCategory = async (categoryId, category) => {
-    const { data: Category } = await Client.from('Categories')
+    const { data, error } = await Client.from('categories')
       .update(category)
-      .match({ id: categoryId });
+      .match({ id: categoryId })
+      .select();
 
-    return Category;
+    return { data, error };
   };
 
   /**
@@ -360,9 +489,12 @@ const Supabase = () => {
    *
    */
   const removeCategory = async (categoryId) => {
-    const { data: Category } = await Client.from('Categories').delete().match({ id: categoryId });
+    const { data, error } = await Client.from('categories')
+      .delete()
+      .match({ id: categoryId })
+      .select();
 
-    return Category;
+    return { data, error };
   };
 
   return {
@@ -383,6 +515,11 @@ const Supabase = () => {
     updateCategory,
     updateJob,
     uploadLogo,
+    saveJob,
+    removeSavedJob,
+    getSavedJobs,
+    getSavedJobsIds,
+    subscribeToSavedJobsCount,
   };
 };
 
