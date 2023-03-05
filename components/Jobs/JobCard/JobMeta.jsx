@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
+import { NumericFormat } from 'react-number-format';
 
 const JobMeta = (props) => {
   const { location, jobType, jobCategory, jobSalary } = props;
@@ -43,7 +44,18 @@ const JobMeta = (props) => {
       )}
 
       {jobSalary && (
-        <li className="capitalize cursor-pointer hover:text-primary-700">{jobSalary}</li>
+        <li className="flex items-center space-x-1.5 cursor-pointer hover:text-primary-700">
+          <span>Salary:</span>
+          <NumericFormat
+            className="flex items-center space-x-1"
+            decimalScale={0}
+            displayType="text"
+            fixedDecimalScale
+            prefix="$"
+            thousandSeparator=","
+            value={jobSalary}
+          />
+        </li>
       )}
     </nav>
   );
