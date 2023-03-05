@@ -67,7 +67,7 @@ const signUp = async (email, password) => {
       const errorMessage = error.message;
 
       // eslint-disable-next-line no-console
-      console.log(errorCode, errorMessage);
+      console.error(errorCode, errorMessage);
     });
 };
 
@@ -92,7 +92,7 @@ const signIn = async (email, password) => {
       const errorMessage = error.message;
 
       // eslint-disable-next-line no-console
-      console.log(errorCode, errorMessage);
+      console.error(errorCode, errorMessage);
     });
 };
 
@@ -147,7 +147,7 @@ const signInWithProvider = async (providerName) => {
         .catch((error) => {
           errorMessage = error.message;
           // eslint-disable-next-line no-console
-          console.log(errorMessage);
+          console.error(errorMessage);
           return errorMessage;
         });
     }
@@ -170,7 +170,7 @@ const logout = async () => {
     const errorMessage = error.message;
 
     // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
+    console.error(errorCode, errorMessage);
 
     return { error, errorCode, errorMessage };
   }
@@ -191,7 +191,7 @@ const getCurrentSession = async () => {
     const errorMessage = error.message;
 
     // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
+    console.error(errorCode, errorMessage);
 
     return { error, errorCode, errorMessage };
   }
@@ -223,7 +223,7 @@ const saveJob = async (_, job) => {
       const errorMessage = error.message;
 
       // eslint-disable-next-line no-console
-      console.log(errorCode, errorMessage);
+      console.error(errorCode, errorMessage);
 
       return { error, errorCode, errorMessage };
     }

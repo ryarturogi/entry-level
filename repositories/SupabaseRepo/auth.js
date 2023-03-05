@@ -21,7 +21,7 @@ const signUp = async (email, password) => {
     const errorMessage = error.message;
 
     // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
+    console.error(errorCode, errorMessage);
 
     return { error, errorCode, errorMessage };
   }
@@ -51,7 +51,7 @@ const signIn = async (email, password) => {
     const errorMessage = error.message;
 
     // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
+    console.error(errorCode, errorMessage);
 
     return { error, errorCode, errorMessage };
   }
@@ -79,7 +79,7 @@ const signInWithProvider = async (providerName) => {
     const errorMessage = error.message;
 
     // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
+    console.error(errorCode, errorMessage);
 
     return { error, errorCode, errorMessage };
   }
@@ -106,7 +106,9 @@ const signOut = async () => {
  */
 const getCurrentUser = async () => {
   try {
-    const { data: user } = await Client.auth.getUser();
+    const {
+      data: { user },
+    } = await Client.auth.getUser();
 
     return user;
   } catch (error) {
@@ -114,7 +116,7 @@ const getCurrentUser = async () => {
     const errorMessage = error.message;
 
     // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
+    console.error(errorCode, errorMessage);
 
     return { error, errorCode, errorMessage };
   }
@@ -137,7 +139,7 @@ const getCurrentSession = () => {
     const errorMessage = error.message;
 
     // eslint-disable-next-line no-console
-    console.log(errorCode, errorMessage);
+    console.error(errorCode, errorMessage);
 
     return { error, errorCode, errorMessage };
   }

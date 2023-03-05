@@ -359,8 +359,6 @@ const Supabase = () => {
         upsert: true,
       });
 
-    console.log(data, error);
-
     return { data, error };
   };
 
