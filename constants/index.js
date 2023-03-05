@@ -77,3 +77,10 @@ export const POST_JOB_SELECTION_OPTIONS = {
     'Other',
   ],
 };
+
+export const ERROR_MESSAGES = {
+  SAVE_JOB_ERROR_MESSAGE: 'You must be logged in to save jobs',
+  SOMETHING_WENT_WRONG_MESSAGE: 'Something went wrong',
+  JOB_SAVED_MESSAGE: 'Job saved!',
+  JOB_REMOVED_MESSAGE: 'Job removed!',
+};

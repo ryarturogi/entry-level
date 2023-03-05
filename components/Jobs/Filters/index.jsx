@@ -91,7 +91,7 @@ const Filters = ({ onChange = [] }) => {
               onSelect={handleOnChangeCategories}
               options={jobCategories}
               optionsSelected={categoriesSelected}
-              placeholder="e.g. Software Engineer, etc."
+              placeholder="e.g. Software Engineer..."
               title="Categories"
             />
           )}
@@ -105,7 +105,7 @@ const Filters = ({ onChange = [] }) => {
               onSelect={handleOnChangeSkills}
               options={allSkills}
               optionsSelected={skillsSelected}
-              placeholder="e.g. React, Vue, Node, etc."
+              placeholder="e.g. React, Vue, Node..."
               title="Tech/Skills"
             />
           )}
@@ -119,7 +119,7 @@ const Filters = ({ onChange = [] }) => {
               onSelect={handleOnChangeLocations}
               options={allCountries}
               optionsSelected={locationsSelected}
-              placeholder="e.g. United States, Spain, etc."
+              placeholder="e.g. United States, Spain..."
               title="Location"
             />
           )}
