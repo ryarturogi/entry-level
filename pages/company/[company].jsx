@@ -22,7 +22,6 @@ function JobsByCompany({ jobs, error }) {
   if (error) {
     return (
       <>
-        <Head title="Server error" />
         <div className="flex items-start justify-center w-screen h-screen">
           <div className="flex flex-col items-center justify-center space-y-5 text-center">
             <Image
@@ -63,10 +62,18 @@ export async function getServerSideProps({ params }) {
   const { company } = params;
 
   try {
-    const fetchCompanyJobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(
-      'companySlug',
-      company
-    );
+    const { data: fetchCompanyJobs, error } = await Client(
+      process.env.NEXT_PUBLIC_PROVIDER_NAME
+    ).getJobs('companySlug', company);
+
+    if (error) {
+      return {
+        props: {
+          jobs: [],
+          error: error?.message || 'Server error occurred',
+        },
+      };
+    }
 
     return {
       props: {

@@ -47,13 +47,37 @@ export async function getServerSideProps({ params }) {
 
   try {
     let fetchCompanyJobs;
-    const fetchJob = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJob(id);
+    const { data: fetchJob, error: fetchJobError } = await Client(
+      process.env.NEXT_PUBLIC_PROVIDER_NAME
+    ).getJob(id);
+
+    if (fetchJobError) {
+      return {
+        props: {
+          job: {},
+          companyJobs: [],
+          error: fetchJobError?.message || 'Server error occurred',
+        },
+      };
+    }
 
     if (fetchJob?.companySlug) {
-      fetchCompanyJobs = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(
+      const { data, error } = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(
         'companySlug',
         fetchJob.companySlug
       );
+
+      if (error) {
+        return {
+          props: {
+            job: {},
+            companyJobs: [],
+            error: error?.message || 'Server error occurred',
+          },
+        };
+      }
+
+      fetchCompanyJobs = data;
 
       fetchCompanyJobs = fetchCompanyJobs.filter((job) => job.id !== fetchJob.id);
     }

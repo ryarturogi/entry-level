@@ -19,11 +19,11 @@ function JobsList({ loading, error, jobs }) {
             );
           })}
       </ul>
-      {jobs?.length === 0 && <div className="text-2xl font-bold text-gray-600">No jobs found</div>}
-      {loading && (
-        <div className="hidden lg:block">
-          <Loader />
-        </div>
+
+      {jobs?.length === 0 ? (
+        <div className="text-2xl font-bold text-gray-600">No jobs found</div>
+      ) : (
+        loading && <Loader />
       )}
     </section>
   );
