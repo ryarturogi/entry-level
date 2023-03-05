@@ -27,10 +27,10 @@ const Checkbox = ({ options, optionsSelected, title, onChange, id, name, error }
         <legend className="text-base font-semibold leading-6 text-gray-900">{title}</legend>
       )}
 
-      <div className={title ? 'mt-4' : ''}>
+      <div className={title ? 'mt-2' : ''}>
         {optionsList?.length > 0 &&
           optionsList.map((option) => (
-            <div className="relative flex items-start py-2" key={option.id}>
+            <div className="relative flex items-center py-1.5" key={option.id}>
               <div className="flex items-center h-5 mr-3">
                 <input
                   checked={selected.includes(option.id)}
@@ -43,7 +43,7 @@ const Checkbox = ({ options, optionsSelected, title, onChange, id, name, error }
               </div>
               <div className="flex-1 min-w-0 text-base">
                 <label
-                  className="font-medium text-gray-700 cursor-pointer select-none"
+                  className="font-light text-gray-700 cursor-pointer select-none"
                   htmlFor={id || `option-${option.id}`}
                 >
                   {option.name}

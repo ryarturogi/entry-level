@@ -72,7 +72,7 @@ const AutoCompleteField = ({
       <section>
         <h3 className="text-base font-semibold leading-6 text-gray-900 ">{title}</h3>
 
-        <div className="mt-1.5">
+        <div className="mt-2">
           <div className="max-w-72">
             <Combobox multiple={multiple} onChange={handleOnChange} value={optionsSelected}>
               <div className="relative">
@@ -82,11 +82,11 @@ const AutoCompleteField = ({
                     'border-secondary-800 ring-secondary-800 focus:ring-secondary-800 ring-1'
                   } ${
                     success && 'border-primary-500'
-                  } relative flex items-center w-full overflow-hidden text-left bg-white border rounded-lg cursor-default border-primary-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm`}
+                  } relative flex items-center w-full overflow-hidden text-left bg-white border rounded-lg cursor-default border-primary-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm placeholder:text-gray-800`}
                 >
                   <Combobox.Input
                     className={
-                      'w-full px-4 py-2 text-gray-700 bg-white border-0 border-primary-100 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-primary-600'
+                      'w-full px-4 py-2 text-gray-700 bg-white border-0 border-primary-100 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-primary-600 font-light'
                     }
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder={placeholder}

@@ -4,9 +4,9 @@ const RadioField = ({ options, optionSelected, title, onChange }) => {
   return (
     <fieldset>
       <legend className="text-base font-semibold leading-6 text-gray-900">{title}</legend>
-      <div className="mt-4">
+      <div className="mt-2">
         {options.map((type) => (
-          <div className="relative flex items-start py-2" key={type.id}>
+          <div className="relative flex items-center py-1.5" key={type.id}>
             <div className="flex items-center h-5 mr-3">
               <input
                 checked={optionSelected === type.id}
@@ -21,7 +21,7 @@ const RadioField = ({ options, optionSelected, title, onChange }) => {
             </div>
             <div className="flex-1 min-w-0 text-base">
               <label
-                className="font-medium text-gray-700 cursor-pointer select-none"
+                className="font-light text-gray-700 cursor-pointer select-none"
                 htmlFor={`type-${type.id}`}
               >
                 {type.name}
