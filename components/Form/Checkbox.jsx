@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 const Checkbox = ({ options, optionsSelected, title, onChange, id, name, error }) => {
   const [optionsList, setOptionsList] = useState(options);
-  const [selected, setSelected] = useState(optionsSelected);
+  const [selected, setSelected] = useState(optionsSelected || []);
 
   const handleOnChange = (id) => {
     const isSelected = selected.includes(id);
@@ -61,13 +61,14 @@ const Checkbox = ({ options, optionsSelected, title, onChange, id, name, error }
 Checkbox.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      selected: PropTypes.bool,
     })
   ),
-  optionsSelected: PropTypes.oneOfType([PropTypes.bool, PropTypes.arrayOf(PropTypes.string)]),
+  optionsSelected: PropTypes.any,
   title: PropTypes.string,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func,
   id: PropTypes.string,
   name: PropTypes.string,

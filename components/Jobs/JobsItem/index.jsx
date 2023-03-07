@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import CompanyLogo from './CompanyLogo';
+import CompanyLogo from '../../UI/CompanyLogo';
 import JobActions from './JobActions';
 import JobContent from './JobContent';
 
@@ -18,29 +18,32 @@ import JobContent from './JobContent';
 //   (job.isFeatured || job.isGuaranteed) && !job.hasCompanyColor.isActive ? '-ml-14' : 'ml-2'
 // }
 
-function JobCard({ job }) {
+const JobCardItem = ({ job }) => {
   return (
     <div
       className={`
-        mx-auto relative flex flex-col justify-start w-full px-5 py-3.5 bg-white rounded-lg sm:rounded-xl  shadow-gray-300
+        mx-auto relative flex flex-col justify-start w-full px-5 py-3.5 bg-white rounded-lg sm:rounded-xl shadow-gray-300
       `}
     >
-      <div className="flex flex-col items-start justify-start w-full space-y-3 sm:flex-row sm:space-x-4 lg:justify-between sm:space-y-0 lg:items-start lg:flex-row">
-        <CompanyLogo
-          companyLogo={job.companyLogo}
-          companySlug={job.companySlug}
-          hasCompanyLogo={job.hasCompanyLogo}
-        />
-        <div className="flex flex-col justify-between w-full lg:items-center lg:flex-row">
+      {/* grid */}
+      <div className="grid grid-cols-12 gap-2 place-items-start">
+        <div className="col-span-12 lg:col-span-2">
+          <CompanyLogo
+            companyLogo={job.companyLogo}
+            companySlug={job.companySlug}
+            hasCompanyLogo={job.hasCompanyLogo}
+          />
+        </div>
+        <div className="col-span-12 lg:col-span-9">
           <JobContent {...job} />
           <JobActions {...job} />
         </div>
       </div>
     </div>
   );
-}
+};
 
-JobCard.propTypes = {
+JobCardItem.propTypes = {
   job: PropTypes.shape({
     isFeatured: PropTypes.bool,
     isGuaranteed: PropTypes.bool,
@@ -54,4 +57,4 @@ JobCard.propTypes = {
   }),
 };
 
-export default JobCard;
+export default JobCardItem;
