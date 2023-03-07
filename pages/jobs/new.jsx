@@ -1,20 +1,12 @@
 /* eslint-disable no-console */
-import TextareaField from '@/components/Form/TextareaField';
+import AutoCompleteField from '@/components/Form/AutoCompleteField';
+import Checkbox from '@/components/Form/Checkbox';
 import TextField from '@/components/Form/TextField';
-import AutoCompleteField from '@/components/Jobs/Filters/AutoCompleteField';
-import Head from '@/components/partials/Head';
+import TextareaField from '@/components/Form/TextareaField';
 import AvatarUpload from '@/components/UI/AvatarUpload';
 import Button from '@/components/UI/Button';
 import HeadingTitle from '@/components/UI/HeadingTitle';
-import {
-  BriefcaseIcon,
-  BuildingOffice2Icon,
-  CommandLineIcon,
-  PencilIcon,
-} from '@heroicons/react/24/outline';
-import { ArrowPathIcon } from '@heroicons/react/24/solid';
-
-import Checkbox from '@/components/Jobs/Filters/Checkbox';
+import Head from '@/components/partials/Head';
 import {
   experienceLevelsOptions,
   jobCategories,
@@ -33,6 +25,13 @@ import { PROVIDER_NAME } from '@/constants/supabase';
 import useCountries from '@/hooks/useCountries';
 import useSkills from '@/hooks/useSkills';
 import Client from '@/utils/initDatabase';
+import {
+  BriefcaseIcon,
+  BuildingOffice2Icon,
+  CommandLineIcon,
+  PencilIcon,
+} from '@heroicons/react/24/outline';
+import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import { Formik } from 'formik';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
@@ -80,7 +79,7 @@ const NewJob = () => {
   };
 
   const createJobHandler = async (values, companyLogoURL) => {
-    const jobTags = JSON.stringify(values.jobTags);
+    const jobTags = values.jobTags.map((tag) => tag.name.toLowerCase());
     const location = values.location.map((loc) => loc.name.toLowerCase()).join('');
     const jobCategory = values.jobCategory.map((cat) => cat.id).join('');
     const jobType = values.jobType.map((type) => type.id).join('');
@@ -163,6 +162,7 @@ const NewJob = () => {
               {/* Avatar Upload */}
               <div className="flex flex-col w-full">
                 <AvatarUpload
+                  errors={errors.companyLogo}
                   id="companyLogo"
                   name="companyLogo"
                   onChange={async (uploadedAvatar) => {

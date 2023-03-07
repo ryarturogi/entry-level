@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 const PROVIDER_NAME = process.env.NEXT_PUBLIC_PROVIDER_NAME;
 const ClientApi = Client(PROVIDER_NAME);
 
-export function useSavedJobs(userId) {
+export const useSavedJobs = (userId) => {
   const [savedJobs, setSavedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,7 +27,7 @@ export function useSavedJobs(userId) {
 
     setLoading(true);
 
-    async function fetchSavedJobs() {
+    const fetchSavedJobs = async () => {
       try {
         const { data: jobs, error } = await ClientApi.getSavedJobs(userId);
 
@@ -45,7 +45,7 @@ export function useSavedJobs(userId) {
         setError(error.message);
         setLoading(false);
       }
-    }
+    };
 
     fetchSavedJobs();
     getSavedJobsIds();
@@ -58,4 +58,4 @@ export function useSavedJobs(userId) {
     count: savedJobs.length,
     savedJobsIds,
   };
-}
+};

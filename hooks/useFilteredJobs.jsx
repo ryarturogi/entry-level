@@ -56,4 +56,4 @@ const useFilteredJobs = () => {
   return [jobs, loading, errors, handleFiltersChange, memoizedFilters];
 };
 
-export { useFilteredJobs };
+export default useFilteredJobs;

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-function Jobs() {
+const Jobs = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -11,6 +11,6 @@ function Jobs() {
   }, [router]);
 
   return null;
-}
+};
 
 export default Jobs;
