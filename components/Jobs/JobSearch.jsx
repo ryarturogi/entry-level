@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import Loader from '../UI/Loader';
 
-function JobSearch({ onSearch, loading }) {
+const JobSearch = ({ onSearch, loading }) => {
   const [search, setSearch] = useState('');
   let timeoutId = null;
 
@@ -21,11 +21,7 @@ function JobSearch({ onSearch, loading }) {
   }, [search, onSearch]);
 
   if (loading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
@@ -50,7 +46,7 @@ function JobSearch({ onSearch, loading }) {
       </div>
     </section>
   );
-}
+};
 
 JobSearch.propTypes = {
   onSearch: PropTypes.func.isRequired,

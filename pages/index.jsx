@@ -2,7 +2,7 @@ import Filters from '@/components/Jobs/Filters';
 import JobsList from '@/components/Jobs/JobsList';
 import Hero from '@/components/UI/Hero';
 import Head from '@/components/partials/Head';
-import { useFilteredJobs } from '@/hooks/useFilteredJobs';
+import useFilteredJobs from '@/hooks/useFilteredJobs';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
@@ -22,7 +22,7 @@ const Home = () => {
       />
 
       <section className="flex flex-col w-full gap-10 mx-auto max-w-8xl sm:grid sm:grid-cols-12">
-        <section className="col-span-12 lg:col-span-8">
+        <section className="min-h-screen col-span-12 lg:col-span-8">
           <header className="flex flex-col items-center justify-between pb-6 pl-5 sm:flex-row">
             <h2 className="text-lg font-semibold sm:text-xl md:text-2xl">Job postings</h2>
 

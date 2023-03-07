@@ -1,4 +1,4 @@
-import { slugify } from '@/utils/slugify';
+import slugify from '@/utils/slugify';
 
 import Auth from './auth';
 import { db, fieldValue, storage } from './FirebaseConfig';

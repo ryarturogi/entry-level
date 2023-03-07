@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 const COLOR_MAP = {
-  primary: 'bg-primary-500 hover:bg-primary-800',
+  primary: 'bg-primary-700 hover:bg-primary-800',
   secondary: 'bg-secondary-500 hover:bg-primary-700',
   success: 'bg-success hover:bg-primary-700',
   danger: 'bg-error-200 hover:bg-error-300',
@@ -61,7 +61,7 @@ const Button = (props) => {
     <button
       className={`
         text-white font-semibold flex items-center justify-center
-        transition-colors duration-300 ease-in-out
+        transition-colors duration-200 ease-in-out
         ${displayTypeClass}
         ${roundedClass}
         ${colorClass}

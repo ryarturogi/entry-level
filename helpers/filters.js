@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export function filterJobs(filter, jobs) {
+export const filterJobs = (filter, jobs) => {
   let filteredList = [...jobs];
 
   // Filter jobType
@@ -29,9 +29,9 @@ export function filterJobs(filter, jobs) {
   }
 
   return filteredList;
-}
+};
 
-export function orderJobs(order, jobs) {
+export const orderJobs = (order, jobs) => {
   const orderedList = [...jobs];
 
   if (order === 'createdAt') {
@@ -51,4 +51,4 @@ export function orderJobs(order, jobs) {
   }
 
   return orderedList;
-}
+};
