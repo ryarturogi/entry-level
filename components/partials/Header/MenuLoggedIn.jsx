@@ -19,7 +19,7 @@ const Navigation = [
   },
 ];
 
-function MenuLoggedIn() {
+const MenuLoggedIn = () => {
   const user = useUser();
   const router = useRouter();
   const supabaseClient = useSupabaseClient();
@@ -27,6 +27,12 @@ function MenuLoggedIn() {
 
   const logout = () => {
     if (typeof window !== 'undefined' && supabaseClient.auth.signOut()) {
+      // clear the store
+      useStore.setState({
+        savedJobs: [],
+        savedJobsCount: 0,
+      });
+
       router.push('/');
     }
   };
@@ -113,6 +119,6 @@ function MenuLoggedIn() {
       )}
     </Menu>
   );
-}
+};
 
 export default MenuLoggedIn;

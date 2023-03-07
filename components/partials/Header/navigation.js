@@ -1,7 +1,7 @@
 const Navigation = [
-  { current: false, href: '/', name: 'Find a Job' },
-  { current: false, href: '/careers', name: 'Careers' },
-  { current: false, href: '/resources', name: 'Resources' },
+  { pathname: '/', name: 'Find a Job' },
+  // { pathname: '/careers', name: 'Careers' },
+  // { pathname: '/resources', name: 'Resources' },
 ];
 
 export default Navigation;

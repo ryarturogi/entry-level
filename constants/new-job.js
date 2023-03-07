@@ -22,24 +22,24 @@ const stringOrArray = (fieldName) =>
   });
 
 export const SchemaValidation = {
-  companyName: requiredString('companyName'),
-  companyWebsite: url('companyWebsite').required('The company website is required'),
-  companyDescription: requiredString('companyDescription')
+  companyName: requiredString('Company Name'),
+  companyWebsite: url('Company Website').required('Company website is required'),
+  companyDescription: requiredString('Company Description')
     .max(500, 'Must be 500 characters or less')
     .min(200, 'Must be 200 characters or more'),
-  companyLogo: requiredString('companyLogo'),
-  jobTitle: requiredString('jobTitle'),
-  experienceLevel: stringOrArray('experienceLevel'),
-  jobCategory: stringOrArray('jobCategory'),
-  jobDescription: requiredString('jobDescription')
+  companyLogo: requiredString('Company Logo'),
+  jobTitle: requiredString('Job Title'),
+  experienceLevel: stringOrArray('Experience Level'),
+  jobCategory: stringOrArray('Job Category'),
+  jobDescription: requiredString('Job Description')
     .max(2000, 'Must be 2000 characters or less')
     .min(500, 'Must be 500 characters or more'),
-  location: stringOrArray('job location'),
-  jobLocationType: stringOrArray('jobLocationType'),
-  jobType: stringOrArray('jobType'),
-  jobSalary: requiredString('jobSalary'),
-  jobTags: stringOrArray('jobTags'),
-  howToApply: url('howToApply').required('The how to apply URL is required'),
+  location: stringOrArray('Job location'),
+  jobLocationType: stringOrArray('job Location Type'),
+  jobType: stringOrArray('Job Type'),
+  jobSalary: requiredString('Job Salary'),
+  jobTags: stringOrArray('Job Tags'),
+  howToApply: url('How To Apply').required('The how to apply URL is required'),
 };
 
 export const COMPANY_FIELDS = [
@@ -185,7 +185,7 @@ export const INITIAL_VALUES = {
   companyWebsite: 'https://elastic.co',
   companyDescription:
     'Elastic is a company that makes software for searching, analyzing, and visualizing data in real time.',
-  companyLogo: '/img/logo.png',
+  companyLogo: '',
   jobTitle: 'Senior Software Engineer',
   jobSalary: '3500',
   jobDescription:

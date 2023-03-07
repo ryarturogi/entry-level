@@ -1,4 +1,5 @@
 import JobSidebar from '@/components/Job/JobSidebar';
+import JobTags from '@/components/Jobs/JobTags';
 import { timeSince } from '@/utils/formatDate';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -25,7 +26,7 @@ const JobCard = ({ job }) => {
               <h1 className="text-3xl font-semibold">{job.jobTitle}</h1>
             </header>
 
-            <ul className="flex mt-3 mb-3 space-x-8 text-base text-gray-800 capitalize">
+            <ul className="flex mt-3 mb-1 space-x-8 text-base text-gray-800 capitalize">
               {job.location && (
                 <li>
                   <button
@@ -50,6 +51,8 @@ const JobCard = ({ job }) => {
               </li>
               <li>{job.jobCategory}</li>
             </ul>
+
+            <JobTags tags={job.jobTags} />
           </article>
 
           {job.howToApply && (
@@ -82,26 +85,17 @@ const JobCard = ({ job }) => {
 export default JobCard;
 
 JobCard.propTypes = {
-  job: PropTypes.objectOf({
-    _id: PropTypes.string.isRequired,
-    jobTitle: PropTypes.string.isRequired,
-    jobSlug: PropTypes.string.isRequired,
-    jobType: PropTypes.string.isRequired,
+  job: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    companyName: PropTypes.string.isRequired,
+    companyLogo: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    howToApply: PropTypes.string.isRequired,
     jobCategory: PropTypes.string.isRequired,
     jobDescription: PropTypes.string.isRequired,
+    jobType: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
-    companyName: PropTypes.string.isRequired,
-    companySlug: PropTypes.string.isRequired,
-    companyDescription: PropTypes.string.isRequired,
-    companyRating: PropTypes.number.isRequired,
-    companyJobs: PropTypes.arrayOf({
-      _id: PropTypes.string.isRequired,
-      jobTitle: PropTypes.string.isRequired,
-      jobSlug: PropTypes.string.isRequired,
-    }),
-    hasCompanyLogo: PropTypes.bool.isRequired,
-    companyLogo: PropTypes.string.isRequired,
-    howToApply: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
+    jobTitle: PropTypes.string.isRequired,
+    jobTags: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   }).isRequired,
 };

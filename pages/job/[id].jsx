@@ -1,17 +1,17 @@
+import JobCard from '@/components/Job';
+import Loader from '@/components/UI/Loader';
+import Head from '@/components/partials/Head';
 import Client from '@/utils/initDatabase';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 
-import JobCard from '@/components/Job/JobCard';
-import Head from '@/components/partials/Head';
-import Loader from '@/components/UI/Loader';
-
-function Job({ job, companyJobs, error }) {
+const Job = ({ job, companyJobs, error }) => {
   const isLoading = !job && !error;
 
   if (isLoading) {
     return <Loader />;
   }
+
   if (error) {
     return (
       <>
@@ -40,9 +40,9 @@ function Job({ job, companyJobs, error }) {
       </section>
     </>
   );
-}
+};
 
-export async function getServerSideProps({ params }) {
+export const getServerSideProps = async ({ params }) => {
   const { id } = params;
 
   try {
@@ -98,7 +98,7 @@ export async function getServerSideProps({ params }) {
       },
     };
   }
-}
+};
 
 Job.propTypes = {
   job: PropTypes.object.isRequired,

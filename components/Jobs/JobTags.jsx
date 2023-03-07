@@ -1,36 +1,30 @@
-import { PROVIDERS } from '@/constants/index';
-import Link from 'next/link';
+import Badge from '@/components/UI/Badge';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
-function JobTags({ tags, theme }) {
-  const parsedTags = () => {
-    if (process.env.NEXT_PUBLIC_PROVIDER_NAME === PROVIDERS.SUPABASE) {
-      return JSON.parse(tags);
-    }
-    return tags;
-  };
+const JobTags = ({ tags, theme }) => {
+  const router = useRouter();
+  if (!tags) {
+    return null;
+  }
 
   return (
-    <ul className="flex flex-wrap items-end justify-start space-x-1.5 space-y-1.5">
-      {parsedTags().map((tag, idx) => (
-        // eslint-disable-next-line react/no-array-index-key
+    <ul
+      className={`flex flex-col xs:flex-row gap-2 sm:gap-2 place-items-start sm:mt-2 mb-0.5 text-sm list-none ${theme}`}
+    >
+      {tags.map((tag, idx) => (
         <li key={idx}>
-          <Link
-            className={`cursor-pointer flex items-center justify-center px-2 py-0.5 text-xs border rounded capitalize  ${
-              theme === 'light'
-                ? 'border-white text-white hover:text-error-100 hover:bg-white'
-                : 'border-error-100 text-error-100 hover:text-white hover:bg-error-100'
-            }`}
-            href={`/jobs/tag/${tag.replace(/\s/g, '-')}`}
-            passHref
+          <button
+            className="flex items-center space-x-1 capitalize cursor-pointer hover:text-primary-700"
+            onClick={() => router.push(`/jobs/tag/${tag}`)}
           >
-            {tag}
-          </Link>
+            <Badge>{tag.replace('-', ' ')}</Badge>
+          </button>
         </li>
       ))}
     </ul>
   );
-}
+};
 
 JobTags.propTypes = {
   tags: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),

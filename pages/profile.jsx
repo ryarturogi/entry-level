@@ -1,27 +1,25 @@
 import Avatar from '@/components/UI/Avatar';
 import Head from '@/components/partials/Head';
 import { PROVIDERS } from '@/constants/index';
-import { formatDate, isToday, timeSince } from '@/utils/formatDate';
 import { Tab } from '@headlessui/react';
+import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useUser } from '@supabase/auth-helpers-react';
-import { Fragment, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { Fragment, useEffect, useState } from 'react';
 
 const Profile = () => {
+  const router = useRouter();
   const user = useUser();
   const [selectedIndex, setSelectedIndex] = useState(0);
-
-  if (!user?.id) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <Head title="Profile" />
-        <h1 className="text-3xl font-bold">Profile</h1>
-        <p className="mt-2 text-lg">You must be signed in to view this page.</p>
-      </div>
-    );
-  }
+  const [userMapped, setUserMapped] = useState({});
 
   const mappedUser = (user) => {
+    if (!user) {
+      return {};
+    }
+
     switch (process.env.NEXT_PUBLIC_PROVIDER_NAME) {
       case PROVIDERS.SUPABASE:
         return {
@@ -44,12 +42,19 @@ const Profile = () => {
         return {};
     }
   };
-  const userMapped = mappedUser(user);
+
+  useEffect(() => {
+    if (!user?.id) {
+      void router.push('/login');
+    }
+
+    setUserMapped(mappedUser(user));
+  }, [user?.id]);
 
   return (
     <>
       <Head title="Profile" />
-      <div className="max-w-screen-lg px-4 mx-auto mt-10">
+      <div className="max-w-sm px-4 pt-10 mx-auto">
         <Tab.Group onChange={setSelectedIndex} selectedIndex={selectedIndex}>
           <Tab.List className="space-x-2 text-base">
             <Tab as={Fragment}>
@@ -57,8 +62,8 @@ const Profile = () => {
                 <button
                   className={`${
                     selected
-                      ? 'bg-primary-100 hover:bg-primary-100 text-white'
-                      : 'bg-gray-200 hover:bg-primary-100 text-black hover:text-white'
+                      ? 'bg-primary-700 hover:bg-primary-800 text-white'
+                      : 'bg-gray-200 hover:bg-primary-800 text-black hover:text-white'
                   } py-2 px-5 rounded cursor-pointer`}
                   type="button"
                 >
@@ -71,8 +76,8 @@ const Profile = () => {
                 <button
                   className={`${
                     selected
-                      ? 'bg-primary-100 hover:bg-primary-100 text-white'
-                      : 'bg-gray-200 hover:bg-primary-100 text-black hover:text-white'
+                      ? 'bg-primary-700 hover:bg-primary-800 text-white'
+                      : 'bg-gray-200 hover:bg-primary-800 text-black hover:text-white'
                   } py-2 px-5 rounded cursor-pointer`}
                   type="button"
                 >
@@ -81,31 +86,31 @@ const Profile = () => {
               )}
             </Tab>
           </Tab.List>
-          <Tab.Panels className="px-5 mt-3 bg-white border rounded">
+          <Tab.Panels className="flex flex-col items-center justify-center p-5 mt-3 bg-white border rounded-xl">
             <Tab.Panel>
-              <section className="py-5 space-y-5 text-gray-800">
-                <div className="flex items-end">
-                  <Avatar avatar={userMapped?.avatar} isRounded size="sm" />
+              <section className="flex flex-col items-center justify-center py-5 space-y-2 text-gray-800">
+                <div className="flex items-end mb-1">
+                  <Avatar avatar={userMapped?.avatar} isRounded size="md" />
 
-                  {user.user_metadata?.certified && (
+                  {user?.user_metadata?.certified && (
                     <div className="relative top right-5" title="Certified account">
                       <CheckCircleIcon className="w-4 h-4 bg-white rounded-full text-primary-500" />
                     </div>
                   )}
                 </div>
                 <div>
-                  <h1 className="text-2xl font-semibold">{userMapped.name}</h1>
-                  {/* <p className="text-sm">
-                      <span className="font-semibold">ID:</span> {userMapped.id}
-                    </p> */}
-                  <p className="text-sm">Email: {userMapped.email}</p>
+                  <h1 className="mb-1 text-xl font-semibold">{userMapped.name}</h1>
 
-                  <p className="text-sm">
-                    <span className="font-semibold">Joined:</span>
-                    {isToday(new Date(userMapped.createdAt), new Date())
-                      ? timeSince(userMapped.createdAt)
-                      : formatDate(userMapped.createdAt)}
-                  </p>
+                  <div className="flex items-center justify-center space-x-2">
+                    <Link href={`mailto:${userMapped.email}`} title="Drop me a message">
+                      <EnvelopeIcon className="inline-block w-5 h-5" />
+                    </Link>
+                    {userMapped.phone && (
+                      <Link href={`mailto:${userMapped.phone}`} title="Drop me a message">
+                        <PhoneIcon className="inline-block w-5 h-5" />
+                      </Link>
+                    )}
+                  </div>
 
                   {userMapped.phone && (
                     <p className="text-sm">
@@ -116,7 +121,11 @@ const Profile = () => {
               </section>
             </Tab.Panel>
             <Tab.Panel>
-              <section className="py-5">...</section>
+              <section className="py-5 text-lg font-semibold text-center">
+                <span>TODO: Settings Panel</span>
+                <br />
+                <span>...</span>
+              </section>
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

@@ -1,12 +1,10 @@
-import Avatar from '@/components/UI/Avatar';
 import Button from '@/components/UI/Button';
+import CompanyLogo from '@/components/UI/CompanyLogo';
 import Rating from '@/components/UI/Rating';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-
-const UPLOAD_IMAGE_PATH = process.env.NEXT_PUBLIC_SUPABASE_UPLOAD_IMAGE_PATH;
 
 const Sidebar = ({ job }) => {
   const router = useRouter();
@@ -14,20 +12,15 @@ const Sidebar = ({ job }) => {
   return (
     <aside className="col-span-12 px-10 py-8 bg-white xl:col-span-4 rounded-2xl">
       <section className="flex items-center w-full space-x-4">
-        <Link href={`/company/${job.companySlug}`}>
-          <div className="mb-2">
-            {job.hasCompanyLogo && (
-              <Avatar
-                avatar={
-                  job.companyLogo.includes('company-logos')
-                    ? `${UPLOAD_IMAGE_PATH}/${job.companyLogo}`
-                    : job.companyLogo
-                }
-                size="md"
-              />
-            )}
-          </div>
-        </Link>
+        {job.hasCompanyLogo && (
+          <Link href={`/company/${job.companySlug}`}>
+            <CompanyLogo
+              companyLogo={job.companyLogo}
+              companySlug={job.companySlug}
+              hasCompanyLogo={job.hasCompanyLogo}
+            />
+          </Link>
+        )}
         <article>
           <h3 className="text-lg font-semibold">{job.companyName}</h3>
           <Rating rating={job.companyRating} />
