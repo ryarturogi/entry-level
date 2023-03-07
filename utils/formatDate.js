@@ -1,10 +1,19 @@
 export const formatDate = (dateString) => {
-  // Use the Intl.DateTimeFormat object to format the date string
+  if (!dateString || typeof dateString !== 'string') {
+    return '';
+  }
+
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    return '';
+  }
+
   return new Intl.DateTimeFormat('en-US', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
-  }).format(new Date(dateString));
+  }).format(date);
 };
 
 export const timeSince = (time) => {
@@ -46,7 +55,8 @@ export const timeSince = (time) => {
 };
 
 export const isToday = (date, now = new Date()) => {
-  // Compare the year, month, and day of the input date to the year, month, and day of the "now" date
+  // add validation for date
+
   return (
     date.getFullYear() === now.getFullYear() &&
     date.getMonth() === now.getMonth() &&
