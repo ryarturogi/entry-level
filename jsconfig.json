@@ -14,12 +14,8 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@/images/*": [
-        ".assets/images/*"
-      ]
+      "@/*": ["./*"],
+      "@/images/*": [".assets/images/*"]
     }
   }
 }
