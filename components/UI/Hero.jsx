@@ -1,8 +1,13 @@
 import Button from '@/components/UI/Button';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import CompanyLogo from '../Jobs/JobCard/CompanyLogo';
+import CompanyLogo from './CompanyLogo';
 
-function Hero({ title = 'Guiding the next generation of devs!', action, logo }) {
+const Hero = ({ title = 'Guiding the next generation of devs!', action, logo }) => {
+  const user = useUser();
+  const router = useRouter();
+
   return (
     <section className="flex flex-col items-center mb-10 justify-center min-w-screen min-h-[255px] bg-hero-pattern bg-center bg-no-repeat bg-cover max-w-8xl w-full rounded-b-4xl mx-auto bg-primary-1000">
       {logo ? (
@@ -12,7 +17,7 @@ function Hero({ title = 'Guiding the next generation of devs!', action, logo }) 
       ) : null}
       <div className="flex flex-col items-center text-white">
         <h1 className="block text-xl font-medium text-center sm:text-2xl md:text-3xl">{title}</h1>
-        {action ? (
+        {action && user ? (
           <Button
             color="secondary"
             displayType="inline"
@@ -24,11 +29,23 @@ function Hero({ title = 'Guiding the next generation of devs!', action, logo }) 
           >
             {action.title || 'Post a Job'}
           </Button>
-        ) : null}
+        ) : (
+          <Button
+            color="primary"
+            displayType="inline"
+            onClick={() => router.push('/login')}
+            rounded="md"
+            size="md"
+            styles="mt-8 w-full max-w-[280px] max-h-[44px]"
+            title="Register or Login"
+          >
+            Join the community
+          </Button>
+        )}
       </div>
     </section>
   );
-}
+};
 
 Hero.propTypes = {
   title: PropTypes.string,
