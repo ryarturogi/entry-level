@@ -1,20 +1,25 @@
 {
   "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "target": "esnext",
+    "module": "esnext",
+    "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/pages/*": ["pages/*"],
-      "@/api/*": ["pages/api/*"],
-      "@/store/*": ["store/*"],
-      "@/lib/*": ["lib/*"],
-      "@/utils/*": ["utils/*"],
-      "@/constants/*": ["constants/*"],
-      "@/repositories/*": ["repositories/*"],
-      "@/assets/*": ["assets/*"],
-      "@/styles/*": ["styles/*"],
-      "@/public/*": ["public/*"],
-      "@/hooks/*": ["hooks/*"],
-      "@/images/*": [".assets/images/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@/images/*": [
+        ".assets/images/*"
+      ]
     }
   }
 }
