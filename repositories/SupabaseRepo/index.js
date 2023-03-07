@@ -11,7 +11,7 @@ const Supabase = () => {
    *
    */
   const getJobsApi = () => {
-    return Client.from('jobs').select('*').order('createdAt', { ascending: false });
+    return Client.from('jobs').select('*');
   };
 
   /**
@@ -22,26 +22,24 @@ const Supabase = () => {
    * const jobs = Client.getJobs(contentType, content)
    *
    */
-  const getJobs = async (contentType, content) => {
+  const getJobs = async (contentType, query) => {
     const jobsApi = getJobsApi();
 
     switch (true) {
       case contentType === 'jobType':
-        jobsApi.eq('jobType', content);
+        jobsApi.eq('jobType', query);
         break;
       case contentType === 'jobCategory':
-        jobsApi.eq('jobCategory', content);
+        jobsApi.eq('jobCategory', query);
         break;
       case contentType === 'location':
-        jobsApi.eq('location', content);
+        jobsApi.eq('location', query);
         break;
       case contentType === 'companySlug':
-        jobsApi.eq('companySlug', content);
+        jobsApi.eq('companySlug', query);
         break;
       case contentType === 'jobTags':
-        jobsApi.textSearch('jobTags', content, {
-          config: 'english',
-        });
+        jobsApi.contains('jobTags', [query], { all: true });
         break;
     }
 
@@ -76,8 +74,7 @@ const Supabase = () => {
     }
 
     if (skills.length > 0) {
-      const skillsQuery = skills.map((skill) => `jobTags.ilike.%${skill}%`);
-      baseQuery = baseQuery.or(skillsQuery);
+      baseQuery = baseQuery.contains('jobTags', skills, { all: true });
     }
 
     if (locations.length > 0) {
