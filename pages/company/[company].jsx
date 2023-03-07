@@ -1,4 +1,4 @@
-import JobCard from '@/components/Jobs/JobCard';
+import JobCard from '@/components/Jobs/JobsItem';
 import Hero from '@/components/UI/Hero';
 import Client from '@/utils/initDatabase';
 import Loader from 'components/UI/Loader';
@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
-function JobsByCompany({ jobs, error }) {
+const JobsByCompany = ({ jobs, error }) => {
   const router = useRouter();
   const { company } = router.query;
   const isLoading = !jobs && !error;
@@ -41,11 +41,11 @@ function JobsByCompany({ jobs, error }) {
   return (
     <section className="flex flex-col items-center justify-center mx-auto max-w-8xl">
       <Head>
-        <title>{`${companyCapitalize} Jobs`} | EntryLevelDevs</title>
+        <title>{`${companyCapitalize} Jobs`} | EntryLevel.dev</title>
         <meta content="initial-scale=1.0, width=device-width" name="viewport" />
       </Head>
       <Hero logo={companyLogo} title={`${companyCapitalize} Jobs`} />
-      <ul className="w-full space-y-5 max-w-8xl">
+      <ul className="w-full max-w-3xl space-y-5">
         {error && error.message}
         {(isLoading && !error && (
           <li className="flex items-center justify-center w-full ">
@@ -56,9 +56,9 @@ function JobsByCompany({ jobs, error }) {
       </ul>
     </section>
   );
-}
+};
 
-export async function getServerSideProps({ params }) {
+export const getServerSideProps = async ({ params }) => {
   const { company } = params;
 
   try {
@@ -90,7 +90,7 @@ export async function getServerSideProps({ params }) {
       },
     };
   }
-}
+};
 
 JobsByCompany.propTypes = {
   jobs: PropTypes.arrayOf(
