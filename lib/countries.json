@@ -1,0 +1,830 @@
+[
+  {
+    "id": "eritrea",
+    "name": "Eritrea"
+  },
+  {
+    "id": "ethiopia",
+    "name": "Ethiopia"
+  },
+  {
+    "id": "gabon",
+    "name": "Gabon"
+  },
+  {
+    "id": "guinea",
+    "name": "Guinea"
+  },
+  {
+    "id": "the gambia",
+    "name": "The Gambia"
+  },
+  {
+    "id": "guinea-bissau",
+    "name": "Guinea-Bissau"
+  },
+  {
+    "id": "equatorial guinea",
+    "name": "Equatorial Guinea"
+  },
+  {
+    "id": "kenya",
+    "name": "Kenya"
+  },
+  {
+    "id": "liberia",
+    "name": "Liberia"
+  },
+  {
+    "id": "libya",
+    "name": "Libya"
+  },
+  {
+    "id": "lesotho",
+    "name": "Lesotho"
+  },
+  {
+    "id": "morocco",
+    "name": "Morocco"
+  },
+  {
+    "id": "madagascar",
+    "name": "Madagascar"
+  },
+  {
+    "id": "mali",
+    "name": "Mali"
+  },
+  {
+    "id": "mozambique",
+    "name": "Mozambique"
+  },
+  {
+    "id": "burundi",
+    "name": "Burundi"
+  },
+  {
+    "id": "mauritania",
+    "name": "Mauritania"
+  },
+  {
+    "id": "malawi",
+    "name": "Malawi"
+  },
+  {
+    "id": "namibia",
+    "name": "Namibia"
+  },
+  {
+    "id": "nigeria",
+    "name": "Nigeria"
+  },
+  {
+    "id": "rwanda",
+    "name": "Rwanda"
+  },
+  {
+    "id": "sudan",
+    "name": "Sudan"
+  },
+  {
+    "id": "senegal",
+    "name": "Senegal"
+  },
+  {
+    "id": "somalia",
+    "name": "Somalia"
+  },
+  {
+    "id": "south sudan",
+    "name": "South Sudan"
+  },
+  {
+    "id": "são tomé and príncipe",
+    "name": "São Tomé And Príncipe"
+  },
+  {
+    "id": "eswatini",
+    "name": "Eswatini"
+  },
+  {
+    "id": "chad",
+    "name": "Chad"
+  },
+  {
+    "id": "togo",
+    "name": "Togo"
+  },
+  {
+    "id": "tanzania",
+    "name": "Tanzania"
+  },
+  {
+    "id": "uganda",
+    "name": "Uganda"
+  },
+  {
+    "id": "south africa",
+    "name": "South Africa"
+  },
+  {
+    "id": "zambia",
+    "name": "Zambia"
+  },
+  {
+    "id": "benin",
+    "name": "Benin"
+  },
+  {
+    "id": "zimbabwe",
+    "name": "Zimbabwe"
+  },
+  {
+    "id": "botswana",
+    "name": "Botswana"
+  },
+  {
+    "id": "jordan",
+    "name": "Jordan"
+  },
+  {
+    "id": "japan",
+    "name": "Japan"
+  },
+  {
+    "id": "kazakhstan",
+    "name": "Kazakhstan"
+  },
+  {
+    "id": "azerbaijan",
+    "name": "Azerbaijan"
+  },
+  {
+    "id": "bangladesh",
+    "name": "Bangladesh"
+  },
+  {
+    "id": "brunei",
+    "name": "Brunei"
+  },
+  {
+    "id": "bhutan",
+    "name": "Bhutan"
+  },
+  {
+    "id": "people's republic of china",
+    "name": "People's Republic Of China"
+  },
+  {
+    "id": "cyprus",
+    "name": "Cyprus"
+  },
+  {
+    "id": "georgia",
+    "name": "Georgia"
+  },
+  {
+    "id": "hong kong",
+    "name": "Hong Kong"
+  },
+  {
+    "id": "indonesia",
+    "name": "Indonesia"
+  },
+  {
+    "id": "india",
+    "name": "India"
+  },
+  {
+    "id": "iran",
+    "name": "Iran"
+  },
+  {
+    "id": "iraq",
+    "name": "Iraq"
+  },
+  {
+    "id": "israel",
+    "name": "Israel"
+  },
+  {
+    "id": "afghanistan",
+    "name": "Afghanistan"
+  },
+  {
+    "id": "kyrgyzstan",
+    "name": "Kyrgyzstan"
+  },
+  {
+    "id": "cambodia",
+    "name": "Cambodia"
+  },
+  {
+    "id": "south korea",
+    "name": "South Korea"
+  },
+  {
+    "id": "kuwait",
+    "name": "Kuwait"
+  },
+  {
+    "id": "lebanon",
+    "name": "Lebanon"
+  },
+  {
+    "id": "sri lanka",
+    "name": "Sri Lanka"
+  },
+  {
+    "id": "macau",
+    "name": "Macau"
+  },
+  {
+    "id": "myanmar",
+    "name": "Myanmar"
+  },
+  {
+    "id": "mongolia",
+    "name": "Mongolia"
+  },
+  {
+    "id": "malaysia",
+    "name": "Malaysia"
+  },
+  {
+    "id": "nepal",
+    "name": "Nepal"
+  },
+  {
+    "id": "oman",
+    "name": "Oman"
+  },
+  {
+    "id": "pakistan",
+    "name": "Pakistan"
+  },
+  {
+    "id": "philippines",
+    "name": "Philippines"
+  },
+  {
+    "id": "north korea",
+    "name": "North Korea"
+  },
+  {
+    "id": "qatar",
+    "name": "Qatar"
+  },
+  {
+    "id": "saudi arabia",
+    "name": "Saudi Arabia"
+  },
+  {
+    "id": "singapore",
+    "name": "Singapore"
+  },
+  {
+    "id": "syria",
+    "name": "Syria"
+  },
+  {
+    "id": "thailand",
+    "name": "Thailand"
+  },
+  {
+    "id": "tajikistan",
+    "name": "Tajikistan"
+  },
+  {
+    "id": "turkmenistan",
+    "name": "Turkmenistan"
+  },
+  {
+    "id": "east timor",
+    "name": "East Timor"
+  },
+  {
+    "id": "turkey",
+    "name": "Turkey"
+  },
+  {
+    "id": "taiwan",
+    "name": "Taiwan"
+  },
+  {
+    "id": "uzbekistan",
+    "name": "Uzbekistan"
+  },
+  {
+    "id": "bahrain",
+    "name": "Bahrain"
+  },
+  {
+    "id": "vietnam",
+    "name": "Vietnam"
+  },
+  {
+    "id": "turkish republic of northern cyprus",
+    "name": "Turkish Republic Of Northern Cyprus"
+  },
+  {
+    "id": "united arab emirates",
+    "name": "United Arab Emirates"
+  },
+  {
+    "id": "armenia",
+    "name": "Armenia"
+  },
+  {
+    "id": "austria",
+    "name": "Austria"
+  },
+  {
+    "id": "belgium",
+    "name": "Belgium"
+  },
+  {
+    "id": "bulgaria",
+    "name": "Bulgaria"
+  },
+  {
+    "id": "bosnia and herzegovina",
+    "name": "Bosnia And Herzegovina"
+  },
+  {
+    "id": "belarus",
+    "name": "Belarus"
+  },
+  {
+    "id": "burkina faso",
+    "name": "Burkina Faso"
+  },
+  {
+    "id": "switzerland",
+    "name": "Switzerland"
+  },
+  {
+    "id": "czech republic",
+    "name": "Czech Republic"
+  },
+  {
+    "id": "germany",
+    "name": "Germany"
+  },
+  {
+    "id": "denmark",
+    "name": "Denmark"
+  },
+  {
+    "id": "spain",
+    "name": "Spain"
+  },
+  {
+    "id": "estonia",
+    "name": "Estonia"
+  },
+  {
+    "id": "finland",
+    "name": "Finland"
+  },
+  {
+    "id": "france",
+    "name": "France"
+  },
+  {
+    "id": "united kingdom",
+    "name": "United Kingdom"
+  },
+  {
+    "id": "guernsey",
+    "name": "Guernsey"
+  },
+  {
+    "id": "greece",
+    "name": "Greece"
+  },
+  {
+    "id": "croatia",
+    "name": "Croatia"
+  },
+  {
+    "id": "hungary",
+    "name": "Hungary"
+  },
+  {
+    "id": "isle of man",
+    "name": "Isle Of Man"
+  },
+  {
+    "id": "maldives",
+    "name": "Maldives"
+  },
+  {
+    "id": "ireland",
+    "name": "Ireland"
+  },
+  {
+    "id": "iceland",
+    "name": "Iceland"
+  },
+  {
+    "id": "italy",
+    "name": "Italy"
+  },
+  {
+    "id": "jersey",
+    "name": "Jersey"
+  },
+  {
+    "id": "liechtenstein",
+    "name": "Liechtenstein"
+  },
+  {
+    "id": "ukraine",
+    "name": "Ukraine"
+  },
+  {
+    "id": "lithuania",
+    "name": "Lithuania"
+  },
+  {
+    "id": "luxembourg",
+    "name": "Luxembourg"
+  },
+  {
+    "id": "latvia",
+    "name": "Latvia"
+  },
+  {
+    "id": "monaco",
+    "name": "Monaco"
+  },
+  {
+    "id": "moldova",
+    "name": "Moldova"
+  },
+  {
+    "id": "republic of macedonia",
+    "name": "Republic Of Macedonia"
+  },
+  {
+    "id": "malta",
+    "name": "Malta"
+  },
+  {
+    "id": "montenegro",
+    "name": "Montenegro"
+  },
+  {
+    "id": "netherlands",
+    "name": "Netherlands"
+  },
+  {
+    "id": "poland",
+    "name": "Poland"
+  },
+  {
+    "id": "mauritius",
+    "name": "Mauritius"
+  },
+  {
+    "id": "portugal",
+    "name": "Portugal"
+  },
+  {
+    "id": "romania",
+    "name": "Romania"
+  },
+  {
+    "id": "russia",
+    "name": "Russia"
+  },
+  {
+    "id": "san marino",
+    "name": "San Marino"
+  },
+  {
+    "id": "serbia",
+    "name": "Serbia"
+  },
+  {
+    "id": "slovakia",
+    "name": "Slovakia"
+  },
+  {
+    "id": "slovenia",
+    "name": "Slovenia"
+  },
+  {
+    "id": "sweden",
+    "name": "Sweden"
+  },
+  {
+    "id": "åland islands",
+    "name": "Åland Islands"
+  },
+  {
+    "id": "vatican city",
+    "name": "Vatican City"
+  },
+  {
+    "id": "kosovo",
+    "name": "Kosovo"
+  },
+  {
+    "id": "norway",
+    "name": "Norway"
+  },
+  {
+    "id": "albania",
+    "name": "Albania"
+  },
+  {
+    "id": "andorra",
+    "name": "Andorra"
+  },
+  {
+    "id": "australia",
+    "name": "Australia"
+  },
+  {
+    "id": "fiji",
+    "name": "Fiji"
+  },
+  {
+    "id": "federated states of micronesia",
+    "name": "Federated States Of Micronesia"
+  },
+  {
+    "id": "kiribati",
+    "name": "Kiribati"
+  },
+  {
+    "id": "marshall islands",
+    "name": "Marshall Islands"
+  },
+  {
+    "id": "samoa",
+    "name": "Samoa"
+  },
+  {
+    "id": "nauru",
+    "name": "Nauru"
+  },
+  {
+    "id": "new zealand",
+    "name": "New Zealand"
+  },
+  {
+    "id": "central african republic",
+    "name": "Central African Republic"
+  },
+  {
+    "id": "palau",
+    "name": "Palau"
+  },
+  {
+    "id": "papua new guinea",
+    "name": "Papua New Guinea"
+  },
+  {
+    "id": "solomon islands",
+    "name": "Solomon Islands"
+  },
+  {
+    "id": "tonga",
+    "name": "Tonga"
+  },
+  {
+    "id": "tuvalu",
+    "name": "Tuvalu"
+  },
+  {
+    "id": "vanuatu",
+    "name": "Vanuatu"
+  },
+  {
+    "id": "sierra leone",
+    "name": "Sierra Leone"
+  },
+  {
+    "id": "seychelles",
+    "name": "Seychelles"
+  },
+  {
+    "id": "ivory coast",
+    "name": "Ivory Coast"
+  },
+  {
+    "id": "tunisia",
+    "name": "Tunisia"
+  },
+  {
+    "id": "cameroon",
+    "name": "Cameroon"
+  },
+  {
+    "id": "democratic republic of the congo",
+    "name": "Democratic Republic Of The Congo"
+  },
+  {
+    "id": "republic of the congo",
+    "name": "Republic Of The Congo"
+  },
+  {
+    "id": "comoros",
+    "name": "Comoros"
+  },
+  {
+    "id": "cape verde",
+    "name": "Cape Verde"
+  },
+  {
+    "id": "djibouti",
+    "name": "Djibouti"
+  },
+  {
+    "id": "algeria",
+    "name": "Algeria"
+  },
+  {
+    "id": "egypt",
+    "name": "Egypt"
+  },
+  {
+    "id": "niger",
+    "name": "Niger"
+  },
+  {
+    "id": "angola",
+    "name": "Angola"
+  },
+  {
+    "id": "antigua and barbuda",
+    "name": "Antigua And Barbuda"
+  },
+  {
+    "id": "the bahamas",
+    "name": "The Bahamas"
+  },
+  {
+    "id": "belize",
+    "name": "Belize"
+  },
+  {
+    "id": "barbados",
+    "name": "Barbados"
+  },
+  {
+    "id": "canada",
+    "name": "Canada"
+  },
+  {
+    "id": "costa rica",
+    "name": "Costa Rica"
+  },
+  {
+    "id": "cuba",
+    "name": "Cuba"
+  },
+  {
+    "id": "curaçao",
+    "name": "Curaçao"
+  },
+  {
+    "id": "dominica",
+    "name": "Dominica"
+  },
+  {
+    "id": "dominican republic",
+    "name": "Dominican Republic"
+  },
+  {
+    "id": "grenada",
+    "name": "Grenada"
+  },
+  {
+    "id": "greenland",
+    "name": "Greenland"
+  },
+  {
+    "id": "guatemala",
+    "name": "Guatemala"
+  },
+  {
+    "id": "honduras",
+    "name": "Honduras"
+  },
+  {
+    "id": "haiti",
+    "name": "Haiti"
+  },
+  {
+    "id": "jamaica",
+    "name": "Jamaica"
+  },
+  {
+    "id": "saint kitts and nevis",
+    "name": "Saint Kitts And Nevis"
+  },
+  {
+    "id": "saint lucia",
+    "name": "Saint Lucia"
+  },
+  {
+    "id": "mexico",
+    "name": "Mexico"
+  },
+  {
+    "id": "nicaragua",
+    "name": "Nicaragua"
+  },
+  {
+    "id": "aruba",
+    "name": "Aruba"
+  },
+  {
+    "id": "panama",
+    "name": "Panama"
+  },
+  {
+    "id": "el salvador",
+    "name": "El Salvador"
+  },
+  {
+    "id": "sint maarten",
+    "name": "Sint Maarten"
+  },
+  {
+    "id": "trinidad and tobago",
+    "name": "Trinidad And Tobago"
+  },
+  {
+    "id": "united states of america",
+    "name": "United States Of America"
+  },
+  {
+    "id": "saint vincent and the grenadines",
+    "name": "Saint Vincent And The Grenadines"
+  },
+  {
+    "id": "bolivia",
+    "name": "Bolivia"
+  },
+  {
+    "id": "chile",
+    "name": "Chile"
+  },
+  {
+    "id": "brazil",
+    "name": "Brazil"
+  },
+  {
+    "id": "colombia",
+    "name": "Colombia"
+  },
+  {
+    "id": "ecuador",
+    "name": "Ecuador"
+  },
+  {
+    "id": "guyana",
+    "name": "Guyana"
+  },
+  {
+    "id": "peru",
+    "name": "Peru"
+  },
+  {
+    "id": "paraguay",
+    "name": "Paraguay"
+  },
+  {
+    "id": "suriname",
+    "name": "Suriname"
+  },
+  {
+    "id": "uruguay",
+    "name": "Uruguay"
+  },
+  {
+    "id": "venezuela",
+    "name": "Venezuela"
+  },
+  {
+    "id": "argentina",
+    "name": "Argentina"
+  },
+  {
+    "id": "ghana",
+    "name": "Ghana"
+  },
+  {
+    "id": "laos",
+    "name": "Laos"
+  },
+  {
+    "id": "yemen",
+    "name": "Yemen"
+  }
+]

@@ -1,48 +1,27 @@
 import { useEffect, useState } from 'react';
 
-const X_RAPIDAPI_KEY = String(process.env.NEXT_PUBLIC_X_RAPIDAPI_KEY);
-const X_RAPIDAPI_HOST = String(process.env.NEXT_PUBLIC_X_RAPIDAPI_HOST);
-const X_RAPIDAPI_API_URL = String(process.env.NEXT_PUBLIC_X_RAPIDAPI_API_URL);
-
 const useCountries = () => {
-  const [countries, setCountries] = useState([]);
-
-  const fetchCountries = async () => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': X_RAPIDAPI_KEY,
-        'X-RapidAPI-Host': X_RAPIDAPI_HOST,
-      },
-    };
-
-    // fetch all countries
-    await fetch(X_RAPIDAPI_API_URL, options)
-      .then((response) => response.json())
-      .then((response) => {
-        // use flatMap to flatten the array of arrays
-        const countryObjects = response
-          .flatMap((country) => {
-            return {
-              id: country.key.toLowerCase(),
-              name: country.value,
-            };
-          })
-          .sort((a, b) => a.name.localeCompare(b.name));
-
-        // add a global location
-        const globalLocations = [{ id: 'remote', name: 'Remote' }];
-
-        setCountries([...countryObjects, ...globalLocations]);
-      })
-      .catch((err) => console.error(err));
-  };
-
+  const [allCountries, setAllCountries] = useState([]);
+  // fetch all Countries
   useEffect(() => {
-    fetchCountries();
+    fetch('/api/countries')
+      .then((res) => res.json())
+      .then((data) => {
+        const sortedCountries = data.sort((a, b) => {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+
+        setAllCountries(sortedCountries);
+      });
   }, []);
 
-  return countries;
+  return allCountries;
 };
 
 export default useCountries;
