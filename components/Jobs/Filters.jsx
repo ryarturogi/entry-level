@@ -1,6 +1,6 @@
-import AutoCompleteField from '@/components/Jobs/Filters/AutoCompleteField';
-import Checkbox from '@/components/Jobs/Filters/Checkbox';
-import RadioField from '@/components/Jobs/Filters/RadioField';
+import AutoCompleteField from '@/components/Form/AutoCompleteField';
+import Checkbox from '@/components/Form/Checkbox';
+import RadioField from '@/components/Form/RadioField';
 import Fallback from '@/components/UI/Fallback';
 import {
   experienceLevelsOptions,
@@ -92,7 +92,7 @@ const Filters = ({ onChange = [] }) => {
               options={jobCategories}
               optionsSelected={categoriesSelected}
               placeholder="e.g. Software Engineer..."
-              title="Categories"
+              title="Specialties"
             />
           )}
         </Suspense>

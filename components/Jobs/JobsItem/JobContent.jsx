@@ -4,22 +4,22 @@ import JobMeta from './JobMeta';
 import { timeSince } from '@/utils/formatDate';
 import Link from 'next/link';
 
-const JobContent = (props) => (
-  <div className="items-center justify-between w-full lg:flex sm:pr-5">
+const JobContent = (job) => (
+  <div className="items-center justify-between w-full lg:flex">
     <section className="flex flex-col sm:items-start sm:text-left">
-      <Link href={`/company/${props.companySlug}`}>
-        <div className="mb-1 text-sm text-gray-500 hover:text-primary-700">{props.companyName}</div>
+      <Link href={`/company/${job.companySlug}`}>
+        <div className="mb-1 text-sm text-gray-500 hover:text-primary-700">{job.companyName}</div>
       </Link>
-      <Link href={`/job/${props.id}`}>
-        <div className="mb-2 text-base font-semibold hover:text-primary-700 ">{props.jobTitle}</div>
+      <Link href={`/job/${job.id}`}>
+        <div className="mb-2 text-base font-semibold hover:text-primary-700 ">{job.jobTitle}</div>
       </Link>
 
-      <JobMeta {...props} />
+      <JobMeta {...job} />
     </section>
 
     <section className="absolute top-5 right-5">
       <h1 className="flex justify-center text-sm font-light text-gray-500 lg:text-sm sm:justify-start">
-        {timeSince(props.createdAt)}
+        {timeSince(job.createdAt)}
       </h1>
     </section>
   </div>
