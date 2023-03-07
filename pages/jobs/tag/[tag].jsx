@@ -1,11 +1,11 @@
-import JobCard from '@/components/Jobs/JobCard';
+import JobsItem from '@/components/Jobs/JobsItem';
 import Hero from '@/components/UI/Hero';
 import Loader from '@/components/UI/Loader';
 import useJobs from '@/hooks/useJobs';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-function JobsByLocation() {
+const JobsByLocation = () => {
   const { query } = useRouter();
   const { tag } = query;
   const { jobs, loading, error } = useJobs('jobTags', tag);
@@ -23,15 +23,15 @@ function JobsByLocation() {
   return (
     <section className="flex flex-col items-center justify-center mx-auto max-w-8xl">
       <Head>
-        <title>{`${tagCapitalize} Jobs`} | EntryLevelDevs</title>
+        <title>{`${tagCapitalize} Jobs`} | EntryLevel.dev</title>
         <meta content="initial-scale=1.0, width=device-width" name="viewport" />
       </Head>
       <Hero title={`Jobs listing at ${tagCapitalize} `} />
-      <ul className="w-full space-y-5 max-w-8xl">
-        {jobs && !loading && jobs.map((job) => <JobCard job={job} key={job.id} />)}
+      <ul className="w-full max-w-3xl space-y-5">
+        {jobs && !loading && jobs.map((job) => <JobsItem job={job} key={job.id} />)}
       </ul>
     </section>
   );
-}
+};
 
 export default JobsByLocation;

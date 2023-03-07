@@ -1,4 +1,4 @@
-import JobCard from '@/components/Jobs/JobCard';
+import JobCard from '@/components/Jobs/JobsItem';
 import Hero from '@/components/UI/Hero';
 import useJobs from '@/hooks/useJobs';
 import Loader from 'components/UI/Loader';
@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
-function JobsByCategory() {
+const JobsByCategory = () => {
   const { query } = useRouter();
   const { category } = query;
 
@@ -24,16 +24,16 @@ function JobsByCategory() {
   return (
     <section className="flex flex-col items-center justify-center mx-auto max-w-8xl">
       <Head>
-        <title>{`${categoryCapitalize} Category`} | EntryLevelDevs</title>
+        <title>{`${categoryCapitalize} Category`} | EntryLevel.dev</title>
         <meta content="initial-scale=1.0, width=device-width" name="viewport" />
       </Head>
       <Hero title={`${categoryCapitalize} Category`} />
-      <div className="w-full space-y-5 max-w-8xl">
+      <div className="w-full max-w-3xl space-y-5">
         {jobs && !loading && jobs.map((job) => <JobCard job={job} key={job.id} />)}
       </div>
     </section>
   );
-}
+};
 
 JobsByCategory.propTypes = {
   category: PropTypes.string,
