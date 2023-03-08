@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 const JobsByLocation = () => {
-  const { query } = useRouter();
+  const { query, push } = useRouter();
   const { type } = query;
   const { jobs, loading, error } = useJobs('jobTypes', type);
 
@@ -26,7 +26,14 @@ const JobsByLocation = () => {
         <title>{`${typeCapitalize} Jobs`} | EntryLevel.dev</title>
         <meta content="initial-scale=1.0, width=device-width" name="viewport" />
       </Head>
-      <Hero title={`Jobs listing at ${typeCapitalize} `} />
+      <Hero
+        action={{
+          handler: () => {
+            push('/jobs/new');
+          },
+        }}
+        title={`Jobs listing at ${typeCapitalize} `}
+      />
       <ul className="w-full max-w-3xl space-y-5">
         {jobs && !loading && jobs.map((job) => <JobCard job={job} key={job.id} />)}
       </ul>

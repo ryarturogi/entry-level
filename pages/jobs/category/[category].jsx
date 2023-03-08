@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
 const JobsByCategory = () => {
-  const { query } = useRouter();
+  const { query, push } = useRouter();
   const { category } = query;
 
   const { jobs, loading, error } = useJobs('jobCategory', category);
@@ -27,7 +27,14 @@ const JobsByCategory = () => {
         <title>{`${categoryCapitalize} Category`} | EntryLevel.dev</title>
         <meta content="initial-scale=1.0, width=device-width" name="viewport" />
       </Head>
-      <Hero title={`${categoryCapitalize} Category`} />
+      <Hero
+        action={{
+          handler: () => {
+            push('/jobs/new');
+          },
+        }}
+        title={`${categoryCapitalize} Category`}
+      />
       <div className="w-full max-w-3xl space-y-5">
         {jobs && !loading && jobs.map((job) => <JobCard job={job} key={job.id} />)}
       </div>
