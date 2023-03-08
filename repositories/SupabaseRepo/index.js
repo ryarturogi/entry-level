@@ -11,7 +11,7 @@ const Supabase = () => {
    *
    */
   const getJobsApi = () => {
-    return Client.from('jobs').select('*');
+    return Client.from('jobs').select('*', { count: 'exact' });
   };
 
   /**
@@ -22,7 +22,7 @@ const Supabase = () => {
    * const jobs = Client.getJobs(contentType, content)
    *
    */
-  const getJobs = async (contentType, query) => {
+  const getJobs = async ({ contentType, query, limit = 5, offset = 0 }) => {
     const jobsApi = getJobsApi();
 
     switch (true) {
@@ -43,9 +43,11 @@ const Supabase = () => {
         break;
     }
 
-    const { data, error } = await jobsApi.order('createdAt', { ascending: false }).select();
+    const { data, count, error } = await jobsApi
+      .order('createdAt', { ascending: false })
+      .range(offset, offset + Number(limit - 1));
 
-    return { data, error };
+    return { data, count, error };
   };
 
   /**
@@ -63,8 +65,10 @@ const Supabase = () => {
     sortBy = 'newest',
     jobTypeOptions = [],
     experienceLevels = [],
+    limit = 5,
+    offset = 0,
   }) => {
-    let baseQuery = Client.from('jobs').select('*');
+    let baseQuery = Client.from('jobs').select('*', { count: 'exact' });
 
     if (categories.length > 0) {
       baseQuery = baseQuery.in(
@@ -94,6 +98,7 @@ const Supabase = () => {
       );
       baseQuery = baseQuery.or(jobTypeOptionsQuery);
     }
+
     if (experienceLevels.length > 0) {
       const levels = experienceLevels.map((level) => level.id);
       baseQuery = baseQuery.in('experienceLevel', levels);
@@ -101,15 +106,21 @@ const Supabase = () => {
 
     try {
       const sortedBy = sortBy !== 'newest';
-      const { data: Jobs, error: JobsError } = await baseQuery.order('createdAt', {
-        ascending: sortedBy,
-      });
+      const {
+        data: Jobs,
+        error: JobsError,
+        count,
+      } = await baseQuery
+        .order('createdAt', {
+          ascending: sortedBy,
+        })
+        .range(offset, offset + limit - 1);
 
       if (JobsError) {
         throw Error(JobsError?.message) || new Error('Error getting jobs');
       }
 
-      return Jobs;
+      return { data: Jobs, count };
     } catch (error) {
       throw error?.response?.data?.message || new Error('Error getting jobs');
     }

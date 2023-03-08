@@ -4,8 +4,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 const PROVIDER_NAME = process.env.NEXT_PUBLIC_PROVIDER_NAME;
 const ClientApi = Client(PROVIDER_NAME);
 
-const useFilteredJobs = () => {
+const useFilteredJobs = (offset, limit) => {
   const [jobs, setJobs] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [errors, setErrors] = useState(null);
   const [cachedFilters, setCachedFilters] = useState({});
   const [loading, setLoading] = useState(true);
@@ -17,8 +18,9 @@ const useFilteredJobs = () => {
 
       try {
         const mergedFilters = { ...cachedFilters, ...filters };
-        const filteredJobs = await ClientApi.getFilteredJobs(mergedFilters);
+        const { data: filteredJobs, count } = await ClientApi.getFilteredJobs(mergedFilters);
         setJobs(filteredJobs);
+        setTotalCount(count);
       } catch (error) {
         setErrors(error?.response?.data?.message || error.message);
       } finally {
@@ -35,7 +37,7 @@ const useFilteredJobs = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const { data: jobs, error } = await ClientApi.getJobs();
+        const { data: jobs, error, count } = await ClientApi.getJobs({ offset, limit });
 
         if (error) {
           setErrors(error?.message || 'Something went wrong');
@@ -43,6 +45,7 @@ const useFilteredJobs = () => {
         }
 
         setJobs(jobs);
+        setTotalCount(count);
       } catch (error) {
         setErrors(error?.response?.data?.message || error.message);
       } finally {
@@ -51,9 +54,9 @@ const useFilteredJobs = () => {
     };
 
     fetchJobs();
-  }, []);
+  }, [offset, limit]);
 
-  return [jobs, loading, errors, handleFiltersChange, memoizedFilters];
+  return [jobs, totalCount, loading, errors, handleFiltersChange, memoizedFilters];
 };
 
 export default useFilteredJobs;
