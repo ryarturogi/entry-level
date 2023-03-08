@@ -1,14 +1,31 @@
 import Filters from '@/components/Jobs/Filters';
 import JobsList from '@/components/Jobs/JobsList';
 import Hero from '@/components/UI/Hero';
+import Pagination from '@/components/UI/Pagination';
 import Head from '@/components/partials/Head';
 import useFilteredJobs from '@/hooks/useFilteredJobs';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 const Home = () => {
   const router = useRouter();
-  const [jobs, loading, error, handleFiltersChange] = useFilteredJobs();
+  const [offset, setOffSet] = useState(0);
+  // eslint-disable-next-line no-unused-vars
+  const [limit, setLimit] = useState(10);
+  const [jobs, totalCount, loading, error, handleFiltersChange, memoizedFilters] = useFilteredJobs(
+    offset,
+    limit
+  );
+
+  const handlePageChange = (offset) => {
+    setOffSet(offset);
+  };
+
+  const handleLimitChange = (e) => {
+    setLimit(Number(e.target.value));
+    setOffSet(0);
+  };
 
   return (
     <div className="min-h-screen mb-20">
@@ -28,10 +45,25 @@ const Home = () => {
 
             {/* <JobsSortBy onChange={handleFiltersChange} /> */}
           </header>
+          {loading}
+
           <JobsList error={error} jobs={jobs} loading={loading} />
+
+          {/* Pagination simple next/prev */}
+          {totalCount > 0 && !loading && (
+            <Pagination
+              error={error}
+              handleLimitChange={handleLimitChange}
+              handlePageChange={handlePageChange}
+              limit={limit}
+              loading={loading}
+              offset={offset}
+              totalCount={totalCount}
+            />
+          )}
         </section>
 
-        <Filters onChange={handleFiltersChange} />
+        <Filters filters={memoizedFilters} onChange={handleFiltersChange} />
       </section>
     </div>
   );

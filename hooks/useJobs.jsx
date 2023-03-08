@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 const PROVIDER_NAME = process.env.NEXT_PUBLIC_PROVIDER_NAME;
 const clientApi = Client(PROVIDER_NAME);
 
-const useJobs = (type, query) => {
+const useJobs = (contentType, query) => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,7 +19,7 @@ const useJobs = (type, query) => {
         data = res.data;
         error = res.error || null;
       } else {
-        const res = await clientApi.getJobs(type, query);
+        const res = await clientApi.getJobs({ contentType, query });
         data = res.data;
         error = res.error || null;
       }
@@ -34,7 +34,7 @@ const useJobs = (type, query) => {
     } finally {
       setLoading(false);
     }
-  }, [type, query]);
+  }, [contentType, query]);
 
   useEffect(() => {
     fetchJobs();
