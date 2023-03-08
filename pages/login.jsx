@@ -1,6 +1,11 @@
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { Auth } from '@supabase/auth-ui-react';
 
+const DEV_REDIRECT_URL = process.env.NEXT_PUBLIC_DEV_REDIRECT_URL;
+const PROD_REDIRECT_URL = process.env.NEXT_PUBLIC_PROD_REDIRECT_URL;
+const ENVIRONMENT_TYPE = process.env.NODE_ENV;
+const redirectTo = ENVIRONMENT_TYPE === 'development' ? DEV_REDIRECT_URL : PROD_REDIRECT_URL;
+
 const Login = () => {
   const supabaseClient = useSupabaseClient();
   const user = useUser();
@@ -52,7 +57,7 @@ const Login = () => {
               },
             }}
             providers={['google', 'github']}
-            redirectTo="http://localhost:3000/"
+            redirectTo={redirectTo}
             supabaseClient={supabaseClient}
           />
         </div>
