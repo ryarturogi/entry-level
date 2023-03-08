@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
 const SIZE_TO_CLASS_MAP = {
@@ -15,16 +16,13 @@ const AVATAR_SIZE_MAP = {
 };
 
 const Avatar = ({ avatar, isRounded = false, size = 'default', url }) => {
+  const router = useRouter();
   const sizeClass = SIZE_TO_CLASS_MAP[size];
   const roundedClass = isRounded ? 'rounded-full' : 'rounded-lg';
 
   if (url) {
     return (
-      <button
-        className="focus:outline-none"
-        onClick={() => window.open(url, '_blank')}
-        type="button"
-      >
+      <button className="focus:outline-none" onClick={() => router.push(url)} type="button">
         <Image
           alt="avatar"
           className={`relative flex items-center justify-center overflow-hidden  
