@@ -1,4 +1,5 @@
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/outline';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { ArrowRightIcon } from '@heroicons/react/24/solid';
 import PropTypes from 'prop-types';
 import Button from './Button';
 
