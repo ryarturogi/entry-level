@@ -64,7 +64,7 @@ export const getServerSideProps = async ({ params }) => {
   try {
     const { data: fetchCompanyJobs, error } = await Client(
       process.env.NEXT_PUBLIC_PROVIDER_NAME
-    ).getJobs('companySlug', company);
+    ).getJobs({ contentType: 'companySlug', query: company });
 
     if (error) {
       return {
