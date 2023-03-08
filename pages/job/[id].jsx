@@ -62,10 +62,10 @@ export const getServerSideProps = async ({ params }) => {
     }
 
     if (fetchJob?.companySlug) {
-      const { data, error } = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs(
-        'companySlug',
-        fetchJob.companySlug
-      );
+      const { data, error } = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs({
+        contentType: 'companySlug',
+        query: fetchJob.companySlug,
+      });
 
       if (error) {
         return {
