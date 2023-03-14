@@ -2,14 +2,21 @@ import PropTypes from 'prop-types';
 
 const COLOR_MAP = {
   primary:
-    'bg-primary-700 hover:bg-primary-800 active:ring-primary-500  active:outline-none active:bg-primary-900',
-  secondary: 'bg-secondary-500 hover:bg-primary-700',
-  success: 'bg-success hover:bg-primary-700',
-  danger: 'bg-error-200 hover:bg-error-300',
-  warning: 'bg-warning hover:bg-orange-700',
-  info: 'bg-info hover:bg-primary-800',
-  link: 'bg-transparent text-gray-800 hover:text-primary-500',
-  disabled: 'bg-gray-300 text-gray-500 cursor-not-allowed',
+    'bg-primary-700 hover:bg-primary-800 active:ring-primary-600  active:outline-none active:bg-primary-600 text-white',
+  secondary:
+    'bg-secondary-500 hover:bg-primary-700 active:ring-primary-600  active:outline-none active:bg-primary-600 text-white',
+  success:
+    'bg-success hover:bg-primary-700 active:ring-primary-600  active:outline-none active:bg-primary-600 text-white',
+  danger: 'bg-error-200 hover:bg-error-300 text-error-700',
+  warning: 'bg-warning hover:bg-orange-700 text-white',
+  info: 'bg-info hover:bg-primary-800 active:ring-primary-600  active:outline-none active:bg-primary-600 text-white',
+  link: 'bg-transparent text-gray-800 hover:text-primary-500 hover:bg-gray-200',
+  disabled: 'bg-gray-200 text-gray-500 cursor-not-allowed',
+  white:
+    'bg-white text-gray-800 hover:text-secondary-700 hover:bg-secondary-700 border-2 border-primary-100 hover:border-secondary-700 active:ring-secondary-500  active:outline-none active:bg-secondary-900 hover:text-white',
+  gray: 'bg-gray-200 text-gray-800 hover:text-primary-500 hover:bg-gray-300',
+  dark: 'text-white bg-gray-800 hover:bg-primary-800 active:ring-primary-600  active:outline-none active:bg-primary-600 text-white',
+  transparent: 'bg-transparent text-gray-800 hover:text-primary-500 hover:bg-gray-200',
 };
 
 const SIZE_MAP = {
@@ -61,7 +68,7 @@ const Button = (props) => {
   return (
     <button
       className={`
-        text-white font-semibold flex items-center justify-center
+        flex items-center justify-center space-x-1
         transition-colors duration-200 ease-in-out
         ${displayTypeClass}
         ${roundedClass}
@@ -70,12 +77,14 @@ const Button = (props) => {
         ${styles}
         ${fullWidth ? 'w-full' : ''}
       `}
-      type="button"
       {...rest}
+      type="button"
     >
-      {icon && iconPosition === 'left' && <i className={`${iconSizeClass} mr-1`}>{icon}</i>}
-      <div>{children}</div>
-      {icon && iconPosition === 'right' && <i className={`${iconSizeClass} ml-1`}>{icon}</i>}
+      <span>{icon && iconPosition === 'left' && <i className={`${iconSizeClass}`}>{icon}</i>}</span>
+      <span>{children}</span>
+      <span>
+        {icon && iconPosition === 'right' && <i className={`${iconSizeClass}`}>{icon}</i>}
+      </span>
     </button>
   );
 };
