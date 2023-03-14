@@ -17,13 +17,13 @@ const Pagination = ({
       <Button
         color={offset === 0 ? 'disabled' : 'primary'}
         disabled={offset === 0}
-        icon={<ArrowLeftIcon className="text-white " />}
+        icon={<ArrowLeftIcon className="w-4 h-4" />}
         onClick={() => handlePageChange(offset - limit >= 0 ? offset - limit : 0)}
         rounded="lg"
         size="sm"
         styles="px-4"
       >
-        <span className="text-lg font-semibold text-white">Prev</span>
+        Prev
       </Button>
 
       <Button
@@ -33,28 +33,32 @@ const Pagination = ({
             : 'primary'
         }
         disabled={offset + limit - 1 >= totalCount || totalCount === 0 || loading || error !== null}
-        icon={<ArrowRightIcon className="text-white " />}
+        icon={<ArrowRightIcon className="w-4 h-4" />}
         iconPosition="right"
-        onClick={() => handlePageChange(offset + limit <= totalCount ? offset + limit : totalCount)}
-        rounded="lg"
+        onClick={() =>
+          handlePageChange(
+            offset + limit <= totalCount ? offset + limit : Math.max(totalCount - limit, 0),
+            totalCount - offset - limit
+          )
+        }
+        rounded="md"
         size="sm"
         styles="px-4"
       >
-        <span className="text-lg font-semibold text-white">Next</span>
+        Next
       </Button>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2">
         <select
-          className="w-20 ml-2 text-sm font-semibold text-gray-500 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+          className="h-8 text-xs font-normal border border-gray-300 rounded-md text-primary-700 w-fit focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           onChange={handleLimitChange}
           value={limit}
         >
-          <option value={2}>2</option>
-          <option value={5}>5</option>
           <option value={10}>10</option>
           <option value={20}>20</option>
+          <option value={50}>50</option>
         </select>
 
-        <span className="text-sm font-semibold text-gray-500">per page</span>
+        <span className="text-xs font-semibold text-primary-700">per page</span>
       </div>
     </div>
   );

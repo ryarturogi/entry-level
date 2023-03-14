@@ -37,7 +37,15 @@ const useFilteredJobs = (offset, limit) => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const { data: jobs, error, count } = await ClientApi.getJobs({ offset, limit });
+        const {
+          data: jobs,
+          error,
+          count,
+        } = await ClientApi.getFilteredJobs({
+          ...cachedFilters,
+          offset,
+          limit,
+        });
 
         if (error) {
           setErrors(error?.message || 'Something went wrong');
