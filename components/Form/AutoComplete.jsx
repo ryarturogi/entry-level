@@ -4,29 +4,31 @@ import PropTypes from 'prop-types';
 import ChevronIcon from 'public/img/chevron-icon.svg';
 import { Fragment, useEffect, useState } from 'react';
 
-const AutoCompleteField = ({
+const AutoComplete = ({
   options,
   optionsSelected,
-  onSelect,
+  onChange,
   title,
   placeholder,
   error,
-  success,
   multiple,
+  required,
+  setTouched,
+  name,
 }) => {
   const [query, setQuery] = useState('');
   const [filteredOptions, setFilteredOptions] = useState(options);
 
   const handleOnChange = (selected) => {
-    onSelect(Array.isArray(selected) ? selected : [selected]);
+    onChange(Array.isArray(selected) ? selected : [selected]);
   };
 
   const handleOnRemove = (keyword) => {
     // check type of optionsSelected is array
     if (Array.isArray(optionsSelected)) {
-      onSelect(optionsSelected.filter((option) => option.id !== keyword.id));
+      onChange(optionsSelected.filter((option) => option.id !== keyword.id));
     } else if (typeof optionsSelected === 'object') {
-      onSelect([optionsSelected].filter((option) => option.id !== keyword.id));
+      onChange([optionsSelected].filter((option) => option.id !== keyword.id));
     }
   };
 
@@ -62,6 +64,13 @@ const AutoCompleteField = ({
     return [];
   };
 
+  const handleOnFocus = (fieldName) => {
+    if (!setTouched) {
+      return;
+    }
+    setTouched(fieldName);
+  };
+
   // filter options based on query
   useEffect(() => {
     handleFilteredOptions(options);
@@ -70,31 +79,45 @@ const AutoCompleteField = ({
   return (
     <div className="relative">
       <section>
-        <h3 className="text-base font-semibold leading-6 text-gray-900 ">{title}</h3>
+        {title && (
+          <label htmlFor={title}>
+            <div className="flex space-x-1.5 mb-1.5 text-base font-medium text-gray-700">
+              <span>{title}</span>
+              {required && (
+                <span className="text-secondary-800" title={error}>
+                  *
+                </span>
+              )}
+            </div>
+          </label>
+        )}
 
         <div className="mt-2">
           <div className="max-w-72">
             <Combobox multiple={multiple} onChange={handleOnChange} value={optionsSelected}>
               <div className="relative">
                 <div
-                  className={`${
-                    error &&
-                    'border-secondary-800 ring-secondary-800 focus:ring-secondary-800 ring-1'
-                  } ${
-                    success && 'border-primary-500'
-                  } relative flex items-center w-full overflow-hidden text-left bg-white border rounded-lg cursor-default border-primary-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm placeholder:text-gray-800`}
+                  className={`w-full  text-gray-700 bg-white border-2 border-primary-100 rounded-lg shadow-sm appearance-none font-light focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent ${
+                    error && 'border-secondary-300'
+                  }`}
                 >
                   <Combobox.Input
-                    className={
-                      'w-full px-4 py-2 text-gray-700 bg-white border-0 border-primary-100 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-primary-600 font-light'
-                    }
+                    as="input"
+                    className={`w-full px-4 py-2.5 text-gray-700 bg-white border-0 border-primary-100 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 placeholder:text-sm focus:ring-primary-600 focus:border-primary-600 font-light ${
+                      error && 'placeholder:text-secondary-300'
+                    }`}
+                    id={title}
+                    onBlur={() => handleOnFocus(name)}
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder={placeholder}
                   />
 
-                  <Combobox.Button className="absolute inset-y-0 right-0 flex pr-1.5 top-2 options-center">
+                  <Combobox.Button
+                    as="button"
+                    className="absolute inset-y-0 right-0 flex pr-1.5 top-3 options-center"
+                  >
                     <ChevronIcon
-                      className={`w-6 h-6 ${error ? 'text-secondary-800' : 'text-primary-500'}`}
+                      className={`w-6 h-6 ${error ? 'text-secondary-300' : 'text-primary-500'}`}
                     />
                   </Combobox.Button>
                 </div>
@@ -177,7 +200,7 @@ const AutoCompleteField = ({
   );
 };
 
-AutoCompleteField.propTypes = {
+AutoComplete.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
@@ -190,12 +213,15 @@ AutoCompleteField.propTypes = {
       name: PropTypes.string,
     })
   ),
-  onSelect: PropTypes.func,
+  onChange: PropTypes.func,
   title: PropTypes.string,
   placeholder: PropTypes.string,
   error: PropTypes.bool,
   success: PropTypes.string,
   multiple: PropTypes.bool,
+  name: PropTypes.string,
+  required: PropTypes.bool,
+  setTouched: PropTypes.func,
 };
 
-export default AutoCompleteField;
+export default AutoComplete;
