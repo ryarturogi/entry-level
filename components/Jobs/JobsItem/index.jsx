@@ -1,3 +1,4 @@
+import { useUser } from '@supabase/auth-helpers-react';
 import PropTypes from 'prop-types';
 import CompanyLogo from '../../UI/CompanyLogo';
 import JobActions from './JobActions';
@@ -19,6 +20,9 @@ import JobContent from './JobContent';
 // }
 
 const JobCardItem = ({ job }) => {
+  const user = useUser();
+  const isCandidate = user?.user_metadata?.role === 'candidate';
+
   return (
     <div
       className={`
@@ -36,7 +40,7 @@ const JobCardItem = ({ job }) => {
         </div>
         <div className="col-span-12 lg:col-span-9">
           <JobContent {...job} />
-          <JobActions {...job} />
+          {isCandidate && <JobActions {...job} />}
         </div>
       </div>
     </div>

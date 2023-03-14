@@ -1,41 +1,65 @@
 import useStore from '@/lib/store';
 import classNames from '@/utils/classsesNames';
 import { Menu, Transition } from '@headlessui/react';
-import { UserCircleIcon } from '@heroicons/react/24/outline';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+
+const UPLOAD_IMAGE_PATH = process.env.NEXT_PUBLIC_SUPABASE_UPLOAD_IMAGE_PATH;
+
+const ROLES = {
+  CANDIDATE: 'candidate',
+  COMPANY: 'company',
+};
 
 const Navigation = [
   {
     label: 'Profile',
     href: '/profile',
   },
-  {
-    label: 'Saved Jobs',
-    href: '/saved-jobs',
-  },
 ];
 
 const MenuLoggedIn = () => {
   const user = useUser();
-  const router = useRouter();
+  const userData = user?.user_metadata;
   const supabaseClient = useSupabaseClient();
   const savedJobsCount = useStore((state) => state.savedJobsCount);
+  const avatarURL = userData?.avatar_url;
+  const AVATAR_PATH =
+    avatarURL?.startsWith('/avatars') || avatarURL?.startsWith('/company-logos')
+      ? `${UPLOAD_IMAGE_PATH}${avatarURL}`
+      : avatarURL;
+
+  const clearSavedJobs = () => {
+    // clear the store
+    useStore.setState({
+      savedJobs: [],
+      savedJobsCount: 0,
+    });
+  };
 
   const logout = () => {
-    if (typeof window !== 'undefined' && supabaseClient.auth.signOut()) {
-      // clear the store
-      useStore.setState({
-        savedJobs: [],
-        savedJobsCount: 0,
-      });
+    if (typeof window === 'undefined') {
+      return;
+    }
 
-      router.push('/');
+    if (supabaseClient.auth.signOut()) {
+      if (userData?.role === ROLES.CANDIDATE) {
+        clearSavedJobs();
+      }
     }
   };
+
+  useEffect(() => {
+    if (userData?.role !== ROLES.CANDIDATE) {
+      return;
+    }
+
+    const newNavigation = [...Navigation, { label: 'Saved Jobs', href: '/saved-jobs' }];
+
+    Navigation.splice(0, Navigation.length, ...newNavigation);
+  }, []);
 
   return (
     <Menu as="div" className="relative z-50 ml-3">
@@ -43,16 +67,21 @@ const MenuLoggedIn = () => {
         <div className="relative flex justify-start">
           <Menu.Button className="flex items-center pr-2 py-1 rounded-md text-sm font-medium space-x-1.5 text-gray-500 focus:outline-none transition-colors ease-linear duration-100 relative">
             <span className="sr-only">Open user menu</span>
-            {(user?.user_metadata?.avatar_url && (
+            {(userData?.avatar_url && (
               <Image
                 alt="avatar"
-                className="w-8 h-8 rounded-full"
+                className="object-cover w-8 h-8 rounded-full"
                 height={28}
-                src={user.user_metadata.avatar_url}
+                src={AVATAR_PATH}
                 width={28}
               />
-            )) || <UserCircleIcon className="w-8 h-8" />}
-            {savedJobsCount > 0 && (
+            )) || (
+              <div className="flex items-center justify-center w-8 h-8 text-sm text-white rounded-full bg-primary-800">
+                {userData?.full_name?.charAt(0)}
+              </div>
+            )}
+
+            {savedJobsCount > 0 && userData?.role === ROLES.CANDIDATE && (
               <div
                 className="absolute grid w-3.5 h-3.5 p-1.5 text-[10px] font-normal rounded-full place-content-center bottom-0 right-0 bg-primary-700 text-white"
                 title={`${savedJobsCount} saved job${savedJobsCount > 1 ? 's' : ''}`}
@@ -61,6 +90,7 @@ const MenuLoggedIn = () => {
               </div>
             )}
           </Menu.Button>
+
           <Transition
             as={Fragment}
             enter="transition ease-out duration-100"

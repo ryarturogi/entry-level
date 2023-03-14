@@ -8,14 +8,18 @@ import Client from './SupabaseConfig';
  * @example
  * const newUser = Client.Auth.signUp(userData)
  */
-const signUp = async (email, password) => {
+const signUp = async ({ email, password, data }) => {
   try {
-    const { user, session, error } = await Client.auth.signUp({
+    const { user, error } = await Client.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: 'http://localhost:3000',
+        data,
+      },
     });
 
-    return { error, session, user };
+    return { error, user };
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -68,9 +72,6 @@ const signInWithProvider = async (providerName) => {
   try {
     const { data: user, error } = await Client.auth.signInWithOAuth({
       provider: providerName || 'google',
-      options: {
-        redirectTo: 'http://localhost:3000',
-      },
     });
 
     return { error, user };
@@ -129,9 +130,11 @@ const getCurrentUser = async () => {
  * @example
  * const authState = Client.Auth.getCurrentSession()
  */
-const getCurrentSession = () => {
+const getCurrentSession = async () => {
   try {
-    const { data: session } = Client.auth.getSession();
+    const {
+      data: { session },
+    } = await Client.auth.getSession();
 
     return session;
   } catch (error) {
@@ -145,6 +148,36 @@ const getCurrentSession = () => {
   }
 };
 
+/**
+ * @title Update user metadata
+ * @returns {Promise<Object>}
+ * @memberof Supabase
+ * @example
+ * const user = Client.Auth.updateUserMetadata(userMetadata)
+ * @param {Object} userMetadata
+ */
+const updateUserMetadata = async (userMetadata) => {
+  try {
+    const { data, error } = await Client.auth.updateUser({
+      data: userMetadata,
+    });
+
+    return { error, data };
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+
+    // eslint-disable-next-line no-console
+    console.error(errorCode, errorMessage);
+
+    return { error, errorCode, errorMessage };
+  }
+};
+
+const onAuthStateChange = (callback) => {
+  return Client.auth.onAuthStateChange(callback);
+};
+
 const Auth = () => ({
   authMethods: Client.auth,
   signUp,
@@ -153,6 +186,8 @@ const Auth = () => ({
   signIn,
   signInWithProvider,
   signOut,
+  updateUserMetadata,
+  onAuthStateChange,
 });
 
 export default Auth();

@@ -13,7 +13,7 @@ const PROVIDER_NAME = process.env.NEXT_PUBLIC_PROVIDER_NAME;
 const ClientApi = Client(PROVIDER_NAME);
 
 const SAVE_BUTTON_TITLE = 'Save';
-const REMOVE_BUTTON_TITLE = 'Remove';
+const REMOVE_BUTTON_TITLE = 'Drop';
 
 const JobActions = (props) => {
   const user = useUser();
@@ -22,24 +22,14 @@ const JobActions = (props) => {
   const incrementSavedJobsCount = useStore((state) => state.increment);
   const decrementSavedJobsCount = useStore((state) => state.decrement);
 
-  const updateSavedJobs = async () => {
-    const { data: savedJobs, error } = await ClientApi.getSavedJobs(user.id);
-
-    if (error) {
-      return toast.error(error?.message || ERROR_MESSAGES.SOMETHING_WENT_WRONG_MESSAGE);
-    }
-
-    useStore.setState({ savedJobs });
+  const updateSavedJobs = async (newSavedJobs) => {
+    useStore.setState({ savedJobs: newSavedJobs });
   };
 
   const handleSaveJob = async (jobId) => {
-    if (!user) {
-      return toast.error(ERROR_MESSAGES.SAVE_JOB_ERROR_MESSAGE);
-    }
-
     try {
       // save job
-      const { error, success } = await ClientApi.saveJob(user.id, jobId);
+      const { error, success, newSavedJobs } = await ClientApi.saveJob(jobId);
 
       if (error) {
         return toast.error(error?.message || ERROR_MESSAGES.SOMETHING_WENT_WRONG_MESSAGE);
@@ -49,7 +39,7 @@ const JobActions = (props) => {
         setIsSaved(true);
         incrementSavedJobsCount();
         toast.success(ERROR_MESSAGES.JOB_SAVED_MESSAGE);
-        await updateSavedJobs();
+        await updateSavedJobs(newSavedJobs);
       }
     } catch (error) {
       toast.error(error?.message || ERROR_MESSAGES.SOMETHING_WENT_WRONG_MESSAGE);
@@ -59,7 +49,7 @@ const JobActions = (props) => {
   const handleRemoveSavedJob = async (jobId) => {
     try {
       // remove job
-      const { success } = await ClientApi.removeSavedJob(user.id, jobId);
+      const { success } = await ClientApi.removeSavedJob(jobId);
 
       if (success) {
         setIsSaved(false);
@@ -76,8 +66,10 @@ const JobActions = (props) => {
   };
 
   const checkIfJobIsSaved = () => {
-    const isSaved = savedJobs.find(({ id }) => id === props.id);
-
+    if (!savedJobs) {
+      return;
+    }
+    const isSaved = savedJobs.find((id) => id === props.id);
     setIsSaved(!!isSaved);
   };
 
@@ -112,6 +104,24 @@ const JobActions = (props) => {
     );
   }
 
+  if (props.outlined) {
+    return (
+      <Button
+        className={`{
+          rounded-md p-1 transition duration-150 ease-in-out active:text-primary-800 active:bg-primary-200
+          ${
+            isSaved
+              ? 'text-gray-700 hover:bg-gray-400 hover:text-gray-700 bg-primary-100'
+              : 'text-gray-700 hover:text-gray-700 bg-gray-300 hover:bg-primary-200 '
+          }`}
+        onClick={() => (isSaved ? handleRemoveSavedJob(props.id) : handleSaveJob(props.id))}
+        title={isSaved ? REMOVE_BUTTON_TITLE : SAVE_BUTTON_TITLE}
+      >
+        <BookmarkIconOutline className="w-6 h-6" />
+      </Button>
+    );
+  }
+
   return (
     <div className="absolute bottom-3 right-3.5">
       <Button
@@ -130,6 +140,7 @@ const JobActions = (props) => {
 JobActions.propTypes = {
   id: PropTypes.string.isRequired,
   isSaved: PropTypes.bool,
+  outlined: PropTypes.bool,
 };
 
 export default JobActions;
