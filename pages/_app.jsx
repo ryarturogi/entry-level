@@ -9,13 +9,17 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = ({ Component, pageProps }) => {
+  const user = useUser();
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
   const setInitialState = useStore((state) => state.setInitialState);
-  const user = useUser();
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setInitialState();
-  }, [user?.id]);
+    if (!isMounted) {
+      setIsMounted(true);
+      setInitialState({});
+    }
+  }, [user]);
 
   return (
     <SessionContextProvider
@@ -30,7 +34,7 @@ const App = ({ Component, pageProps }) => {
           hideProgressBar
           limit={10}
           pauseOnHover
-          position={toast.POSITION.BOTTOM_RIGHT}
+          position={toast.POSITION.TOP_RIGHT}
           role="alert"
         />
       </Layout>
