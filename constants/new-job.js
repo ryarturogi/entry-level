@@ -1,25 +1,5 @@
-import * as Yup from 'yup';
 import { experienceLevelsOptions, jobCategories, jobLocationTypes, jobTypes } from './filters';
-
-const requiredString = (fieldName) => Yup.string().required(`The ${fieldName} is required`);
-
-const url = (fieldName) => Yup.string().url(`The ${fieldName} URL is not valid`);
-
-const stringOrArray = (fieldName) =>
-  Yup.mixed().test({
-    name: 'stringOrArray',
-    exclusive: true,
-    message: `The ${fieldName} is required`,
-    test: (value) => {
-      if (typeof value === 'string') {
-        return value.length > 0;
-      }
-      if (Array.isArray(value)) {
-        return value.length > 0;
-      }
-      return false;
-    },
-  });
+import { requiredString, stringOrArray, url } from './helpers';
 
 export const SchemaValidation = {
   companyName: requiredString('Company Name'),
