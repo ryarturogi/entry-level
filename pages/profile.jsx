@@ -9,11 +9,23 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 
+const UPLOAD_IMAGE_PATH = process.env.NEXT_PUBLIC_SUPABASE_UPLOAD_IMAGE_PATH;
+
 const Profile = () => {
   const router = useRouter();
   const user = useUser();
+  const userData = user?.user_metadata;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [userMapped, setUserMapped] = useState({});
+
+  const getAvatarPath = (avatarURL) => {
+    if (avatarURL?.startsWith('/avatars') || avatarURL?.startsWith('/company-logos')) {
+      return `${UPLOAD_IMAGE_PATH}${avatarURL}`;
+    }
+    return avatarURL;
+  };
+
+  const AVATAR_PATH = getAvatarPath(userData?.avatar_url);
 
   const mappedUser = (user) => {
     if (!user) {
@@ -24,17 +36,17 @@ const Profile = () => {
       case PROVIDERS.SUPABASE:
         return {
           id: user.id,
+          name: userData?.name,
           email: user.email,
           phone: user.phone,
-          avatar: user?.user_metadata?.avatar_url,
-          name: user?.user_metadata?.name,
+          avatar: AVATAR_PATH,
           createdAt: user.created_at,
         };
       case PROVIDERS.FIREBASE:
         return {
           id: user.uid,
-          email: user.email,
           name: user.displayName,
+          email: user.email,
           avatar: user.photoURL,
           createdAt: user?.metadata?.creationTime,
         };
@@ -54,7 +66,7 @@ const Profile = () => {
   return (
     <>
       <Head title="Profile" />
-      <div className="max-w-sm px-4 pt-10 mx-auto">
+      <article className="max-w-sm px-4 pt-10 mx-auto">
         <Tab.Group onChange={setSelectedIndex} selectedIndex={selectedIndex}>
           <Tab.List className="space-x-2 text-base">
             <Tab as={Fragment}>
@@ -65,12 +77,14 @@ const Profile = () => {
                       ? 'bg-primary-700 hover:bg-primary-800 text-white'
                       : 'bg-gray-200 hover:bg-primary-800 text-black hover:text-white'
                   } py-2 px-5 rounded cursor-pointer`}
+                  role="tab"
                   type="button"
                 >
                   Profile
                 </button>
               )}
             </Tab>
+
             <Tab as={Fragment}>
               {({ selected }) => (
                 <button
@@ -86,18 +100,20 @@ const Profile = () => {
               )}
             </Tab>
           </Tab.List>
+
           <Tab.Panels className="flex flex-col items-center justify-center p-5 mt-3 bg-white border rounded-xl">
             <Tab.Panel>
               <section className="flex flex-col items-center justify-center py-5 space-y-2 text-gray-800">
                 <div className="flex items-end mb-1">
                   <Avatar avatar={userMapped?.avatar} isRounded size="md" />
 
-                  {user?.user_metadata?.certified && (
+                  {userData?.certified && (
                     <div className="relative top right-5" title="Certified account">
                       <CheckCircleIcon className="w-4 h-4 bg-white rounded-full text-primary-500" />
                     </div>
                   )}
                 </div>
+
                 <div>
                   <h1 className="mb-1 text-xl font-semibold">{userMapped.name}</h1>
 
@@ -120,16 +136,18 @@ const Profile = () => {
                 </div>
               </section>
             </Tab.Panel>
+
             <Tab.Panel>
-              <section className="py-5 text-lg font-semibold text-center">
+              <section className="py-5 text-lg font-semibold text-left">
                 <span>TODO: Settings Panel</span>
                 <br />
                 <span>...</span>
+                <pre>{JSON.stringify(user, null, 2)}</pre>
               </section>
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
-      </div>
+      </article>
     </>
   );
 };
