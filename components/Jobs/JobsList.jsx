@@ -21,7 +21,11 @@ const JobsList = ({ loading, error, jobs }) => {
   }, [loading]);
 
   if (currentLoading) {
-    return <Loader />;
+    return (
+      <div className="relative flex flex-col items-center w-full h-full top-20">
+        <Loader />
+      </div>
+    );
   }
 
   if (error) {
@@ -45,7 +49,7 @@ const JobsList = ({ loading, error, jobs }) => {
 
   return (
     <section className="relative flex flex-col items-center justify-center col-span-12 mx-auto max-w-8xl sm:col-span-8">
-      <ul className="grid w-full grid-cols-1 gap-5">
+      <ul className="grid w-full grid-cols-1 gap-5 h-fit">
         {jobs?.length > 0 &&
           jobs.map((job) => {
             return (

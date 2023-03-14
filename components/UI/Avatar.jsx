@@ -26,7 +26,7 @@ const Avatar = ({ avatar, isRounded = false, size = 'default', url }) => {
         <Image
           alt="avatar"
           className={`relative flex items-center justify-center overflow-hidden  
-        object-contain object-center w-20 h-20 ${roundedClass} ${sizeClass}`}
+        object-contain object-center ${roundedClass} ${sizeClass}`}
           height={AVATAR_SIZE_MAP.height}
           src={avatar}
           width={AVATAR_SIZE_MAP.width}

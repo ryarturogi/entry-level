@@ -1,4 +1,4 @@
-import AutoCompleteField from '@/components/Form/AutoCompleteField';
+import AutoComplete from '@/components/Form/AutoComplete';
 import Checkbox from '@/components/Form/Checkbox';
 import RadioField from '@/components/Form/RadioField';
 import Fallback from '@/components/UI/Fallback';
@@ -77,7 +77,7 @@ const Filters = ({ onChange = [] }) => {
   ]);
 
   return (
-    <aside className="col-span-12 px-8 py-6 bg-white lg:col-span-4 rounded-xl">
+    <aside className="col-span-12 px-8 py-6 bg-white lg:col-span-4 rounded-xl h-fit">
       <header>
         <h2 className="mb-5 text-2xl font-semibold leading-6 text-gray-900">Filters</h2>
       </header>
@@ -86,13 +86,15 @@ const Filters = ({ onChange = [] }) => {
         {/* Categories */}
         <Suspense fallback={<Fallback message="Loading Categories..." />}>
           {jobCategories?.length > 0 && (
-            <AutoCompleteField
+            <AutoComplete
               multiple
-              onSelect={handleOnChangeCategories}
+              onChange={handleOnChangeCategories}
               options={jobCategories}
               optionsSelected={categoriesSelected}
               placeholder="e.g. Software Engineer..."
+              setTouched={() => {}}
               title="Specialties"
+              touched={false}
             />
           )}
         </Suspense>
@@ -100,13 +102,15 @@ const Filters = ({ onChange = [] }) => {
         {/* Skills/Technologies */}
         <Suspense fallback={<Fallback message="Loading Skills..." />}>
           {allSkills?.length > 0 && (
-            <AutoCompleteField
+            <AutoComplete
               multiple
-              onSelect={handleOnChangeSkills}
+              onChange={handleOnChangeSkills}
               options={allSkills}
               optionsSelected={skillsSelected}
               placeholder="e.g. React, Vue, Node..."
+              setTouched={() => {}}
               title="Tech/Skills"
+              touched={false}
             />
           )}
         </Suspense>
@@ -114,13 +118,15 @@ const Filters = ({ onChange = [] }) => {
         {/* Locations */}
         <Suspense fallback={<Fallback message="Loading Locations..." />}>
           {allCountries?.length > 0 && (
-            <AutoCompleteField
+            <AutoComplete
               multiple
-              onSelect={handleOnChangeLocations}
+              onChange={handleOnChangeLocations}
               options={allCountries}
               optionsSelected={locationsSelected}
               placeholder="e.g. United States, Spain..."
+              setTouched={() => {}}
               title="Location"
+              touched={false}
             />
           )}
         </Suspense>

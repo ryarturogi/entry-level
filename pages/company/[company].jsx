@@ -8,8 +8,8 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
 const JobsByCompany = ({ jobs, error }) => {
-  const router = useRouter();
-  const { company } = router.query;
+  const { push, query } = useRouter();
+  const { company } = query;
   const isLoading = !jobs && !error;
 
   const companyCapitalize = company?.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
@@ -44,7 +44,15 @@ const JobsByCompany = ({ jobs, error }) => {
         <title>{`${companyCapitalize} Jobs`} | EntryLevel.dev</title>
         <meta content="initial-scale=1.0, width=device-width" name="viewport" />
       </Head>
-      <Hero logo={companyLogo} title={`${companyCapitalize} Jobs`} />
+      <Hero
+        action={{
+          handler: () => {
+            push('/jobs/new');
+          },
+        }}
+        logo={companyLogo}
+        title={`${companyCapitalize} Jobs`}
+      />
       <ul className="w-full max-w-3xl space-y-5">
         {error && error.message}
         {(isLoading && !error && (

@@ -2,28 +2,35 @@ import PropTypes from 'prop-types';
 import { NumericFormat } from 'react-number-format';
 
 const TextField = (props) => {
+  const { error, label, name, onBlur, onChange, required, type, value } = props;
+
   return (
-    <div className="w-full">
-      {props.label && (
-        <label htmlFor={props.name}>
+    <div className="flex flex-col w-full">
+      {label && (
+        <label htmlFor={name}>
           <div className="flex space-x-1.5 mb-1.5 text-base font-medium text-gray-700">
-            <span>{props.label}</span>
-            {props.required && <span className="text-secondary-800">*</span>}
+            <span dangerouslySetInnerHTML={{ __html: label }} />
+            {required && (
+              <span className="text-secondary-800" title={error}>
+                *
+              </span>
+            )}
           </div>
         </label>
       )}
-      {(props.name === 'jobSalary' && (
+      {(name === 'jobSalary' && (
         <>
           <NumericFormat
             {...props}
-            className={`w-full px-4 py-2.5 text-gray-700 bg-white border-2 border-primary-100 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary-600 font-light focus:border-transparent ${
-              props.error && 'border-secondary-800'
-            } ${props.success && 'border-primary-500'}`}
+            className={`w-full px-4 py-2.5 text-gray-700 bg-white border-2 border-primary-100 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary-600 font-light focus:border-transparent placeholder:text-sm ${
+              error && 'border-secondary-800 placeholder:text-secondary-300'
+            }`}
             displayType="input"
             onValueChange={(values) => {
-              props.onChange(values.value);
+              onChange(values.value);
             }}
             prefix="$"
+            required={required}
             thousandSeparator=","
             valueIsNumericString={true}
           />
@@ -31,16 +38,18 @@ const TextField = (props) => {
       )) || (
         <input
           {...props}
-          className={`w-full px-4 py-2.5 text-gray-700 bg-white border-2 border-primary-100 rounded-lg shadow-sm appearance-none font-light focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent ${
-            props.error && 'border-secondary-800'
-          } ${props.success && 'border-primary-500'}`}
-          onBlur={props.onBlur}
-          onChange={props.onChange}
-          type="text"
-          value={props.value}
+          className={`w-full px-4 py-2.5 text-gray-700 bg-white border-2 border-primary-100 rounded-lg shadow-sm appearance-none font-light focus:outline-none focus:ring-2 focus:ring-primary-600 placeholder:text-sm focus:border-transparent ${
+            error && 'border-secondary-800 placeholder:text-secondary-300'
+          }`}
+          onBlur={onBlur}
+          onChange={onChange}
+          required={required || false}
+          title=" "
+          type={type || 'text'}
+          value={value}
         />
       )}
-      {props.error && <p className="mt-2 text-sm text-secondary-800">{props.error}</p>}
+      {error && <small className="mt-2 text-sm text-secondary-800">{error}</small>}
     </div>
   );
 };
@@ -48,6 +57,7 @@ const TextField = (props) => {
 TextField.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string,
+  type: PropTypes.string,
   error: PropTypes.string,
   onChange: PropTypes.func,
   onBlur: PropTypes.func,

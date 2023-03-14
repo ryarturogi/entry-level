@@ -65,7 +65,7 @@ const Supabase = () => {
     sortBy = 'newest',
     jobTypeOptions = [],
     experienceLevels = [],
-    limit = 5,
+    limit = 10,
     offset = 0,
   }) => {
     let baseQuery = Client.from('jobs').select('*', { count: 'exact' });
@@ -245,17 +245,12 @@ const Supabase = () => {
    * @example const savedJobs = Client.getSavedJobs('userId')
    * const { data, error } = savedJobs
    **/
-  const getSavedJobs = async (userId) => {
+  const getSavedJobs = async () => {
     try {
-      const { data: savedJobIds, error: savedJobsError } = await Client.from('savedJobs')
-        .select('jobId')
-        .eq('userId', userId);
+      const { user } = await Auth.getCurrentSession();
+      const savedJobIds = user?.user_metadata?.savedJobs || [];
 
-      if (savedJobsError) {
-        throw new Error(savedJobsError.message);
-      }
-
-      const { jobs } = await getJobsByIds(savedJobIds.map(({ jobId }) => jobId));
+      const { jobs } = await getJobsByIds(savedJobIds.map((jobId) => jobId));
 
       return { data: jobs, error: null, count: jobs.length };
     } catch (error) {
@@ -269,17 +264,26 @@ const Supabase = () => {
    * @param {string} jobId
    * @returns {Promise<Object>}
    * @memberof Supabase
-   * @example const savedJob = Client.saveJob('userId', 'jobId')
-   * const { data, error } = savedJob
+   * @example const savedJob = Client.saveJob('jobId')
+   * const { error } = savedJob
    **/
-  const saveJob = async (userId, jobId) => {
+  const saveJob = async (jobId) => {
     try {
-      const { error } = await Client.from('savedJobs').insert({ userId, jobId }).select();
+      const { user } = await Auth.getCurrentSession();
+      // prevent null values
+      const newSet = new Set([...(user.user_metadata.savedJobs || []), jobId]);
+      newSet.delete(null);
+      const { error, data } = await Auth.updateUserMetadata({
+        savedJobs: Array.from(newSet),
+      });
 
-      return { success: true, error };
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return { success: true, data, newSavedJobs: Array.from(newSet) };
     } catch (error) {
-      console.error(error);
-      return { success: false, error: error?.response?.data?.message || 'Failed to save job.' };
+      return { success: false, error: error?.message || 'Failed to save job.' };
     }
   };
 
@@ -292,14 +296,21 @@ const Supabase = () => {
    * @example const removedSavedJob = Client.removeSavedJob('userId', 'jobId')
    * const { data, error } = removedSavedJob
    * */
-  const removeSavedJob = async (userId, jobId) => {
+  const removeSavedJob = async (id) => {
     try {
-      const { data } = await Client.from('savedJobs').delete().match({ userId, jobId }).select();
+      const { user } = await Auth.getCurrentSession();
+
+      const { error, data } = await Auth.updateUserMetadata({
+        savedJobs: user.user_metadata?.savedJobs.filter((jobId) => jobId !== id) || [],
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
 
       return { success: true, data };
     } catch (error) {
-      console.error(error);
-      return { success: false, error: 'Failed to remove saved job.' };
+      return { success: false, error: error?.message || 'Failed to remove saved job.' };
     }
   };
 
@@ -328,30 +339,6 @@ const Supabase = () => {
   };
 
   /**
-   * @title Suscribe to saved jobs count
-   * @param {string} userId
-   * @returns {Promise<Object>}
-   * @memberof Supabase
-   * @example const suscribedSavedJobsCount = Client.suscribeToSavedJobsCount('userId')
-   * const { data, error } = suscribedSavedJobsCount
-   * */
-  const subscribeToSavedJobsCount = async (userId) => {
-    try {
-      const subscription = await Client.from('savedJobs')
-        .on('*', async () => {
-          const { count } = await getSavedJobsIds(userId);
-          return count;
-        })
-        .eq('userId', userId)
-        .subscribe();
-
-      return subscription;
-    } catch (error) {
-      return { data: null, error: error.message, count: 0 };
-    }
-  };
-
-  /**
    * @param {object} job
    * @returns {Promise<Object>}
    * @memberof Supabase
@@ -360,12 +347,10 @@ const Supabase = () => {
    * const { data, error } = jobWithNewLogo
    */
   const uploadLogo = async ({ slug, file, filename }) => {
-    const { data, error } = await Client.storage
-      .from(`${slug}`)
-      .upload(`public/${filename}`, file, {
-        cacheControl: '3600',
-        upsert: true,
-      });
+    const { data, error } = await Client.storage.from(slug).upload(`public/${filename}`, file, {
+      cacheControl: '3600',
+      upsert: true,
+    });
 
     return { data, error };
   };
@@ -525,7 +510,6 @@ const Supabase = () => {
     removeSavedJob,
     getSavedJobs,
     getSavedJobsIds,
-    subscribeToSavedJobsCount,
   };
 };
 
