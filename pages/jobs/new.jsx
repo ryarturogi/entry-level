@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import AutoCompleteField from '@/components/Form/AutoCompleteField';
+import AutoComplete from '@/components/Form/AutoComplete';
 import Checkbox from '@/components/Form/Checkbox';
 import TextField from '@/components/Form/TextField';
-import TextareaField from '@/components/Form/TextareaField';
+import Textarea from '@/components/Form/Textarea';
 import AvatarUpload from '@/components/UI/AvatarUpload';
 import Button from '@/components/UI/Button';
 import HeadingTitle from '@/components/UI/HeadingTitle';
@@ -193,7 +193,7 @@ const NewJob = () => {
               </div>
 
               <div className="-mt-5">
-                <TextareaField
+                <Textarea
                   error={
                     errors.companyDescription &&
                     touched.companyDescription &&
@@ -226,7 +226,7 @@ const NewJob = () => {
                   {JOB_FIELDS.map((field) => (
                     <div className="col-span-6" key={field.name}>
                       {field.type === 'select' && getFieldOptions(field.name)?.length > 0 && (
-                        <AutoCompleteField
+                        <AutoComplete
                           error={errors[field.name] && touched[field.name] && errors[field.name]}
                           multiple={field.multiple}
                           onSelect={(selected) => {
@@ -260,7 +260,7 @@ const NewJob = () => {
                 </div>
 
                 <div className="-mt-5">
-                  <TextareaField
+                  <Textarea
                     error={errors.jobDescription && touched.jobDescription && errors.jobDescription}
                     label="Job Description"
                     maxLength={5000}
