@@ -1,6 +1,7 @@
+![image](https://user-images.githubusercontent.com/8452197/223853814-a2e29af3-d321-4893-8d8d-69eb2e3f6940.png)
 <h1>Entry Level</h1>
 <p>Welcome to Entry Level, a job board specifically designed to help entry level developers, designers, and other professionals find remote job opportunities.</p>
-<p>This project is built using React and Next.js, and is hosted on Vercel at <a href="entry-level-devs-nextjs.vercel.app/">entry-level-devs-nextjs.vercel.app/</a>.</p>
+<p>This project is built using React and Next.js, and is hosted on Vercel at <a href="entry-levels.vercel.app/">entry-levels.vercel.app/</a>.</p>
 <h2>Features</h2>
 <ul>
   <li>Search for job listings by location, job title, or company</li>
