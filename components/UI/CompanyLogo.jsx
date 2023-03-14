@@ -23,7 +23,7 @@ const randomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const CompanyLogo = ({ hasCompanyLogo, companySlug, companyLogo }) => {
+const CompanyLogo = ({ hasCompanyLogo, companySlug, companyLogo, size }) => {
   if (hasCompanyLogo) {
     const COMPANY_LOGO_PATH = companyLogo.includes('company-logos')
       ? `${UPLOAD_IMAGE_PATH}${companyLogo}`
@@ -31,7 +31,7 @@ const CompanyLogo = ({ hasCompanyLogo, companySlug, companyLogo }) => {
 
     return (
       <div className="flex items-center justify-center p-1.5 rounded-md bg-gray-50 w-fit h-fit">
-        <Avatar avatar={COMPANY_LOGO_PATH} size="md" url={`/company/${companySlug}`} />
+        <Avatar avatar={COMPANY_LOGO_PATH} size={size || 'md'} url={`/company/${companySlug}`} />
       </div>
     );
   }
@@ -50,6 +50,7 @@ CompanyLogo.propTypes = {
   hasCompanyLogo: PropTypes.bool.isRequired,
   companySlug: PropTypes.string.isRequired,
   companyLogo: PropTypes.string.isRequired,
+  size: PropTypes.string,
 };
 
 export default CompanyLogo;

@@ -29,7 +29,7 @@ export const useSavedJobs = (userId) => {
 
     const fetchSavedJobs = async () => {
       try {
-        const { data: jobs, error } = await ClientApi.getSavedJobs(userId);
+        const { data: jobs, error } = await ClientApi.getSavedJobs();
 
         if (error) {
           throw new Error(error.message);

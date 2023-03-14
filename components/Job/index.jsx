@@ -1,25 +1,31 @@
 import JobSidebar from '@/components/Job/JobSidebar';
 import JobTags from '@/components/Jobs/JobTags';
+import JobActions from '@/components/Jobs/JobsItem/JobActions';
 import { timeSince } from '@/utils/formatDate';
+import { useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
 const JobCard = ({ job }) => {
   const router = useRouter();
+  const user = useUser();
+  const isCandidate = user?.user_metadata?.role === 'candidate';
 
   return (
     <main className="grid w-full grid-cols-12 gap-12 px-2">
       <article className="col-span-12 xl:col-span-8">
         <section className="flex flex-col items-start w-full p-8 space-y-4 bg-white rounded-2xl">
-          <article className="mt-3 lg:mt-0">
+          <header className="relative flex items-center justify-between w-full mt-3 lg:mt-0 lg:space-x-4">
             <time
               className="flex justify-center text-sm font-medium lg:text-sm sm:justify-start"
               dateTime={new Date(job.createdAt).toISOString()}
             >
               {timeSince(new Date(job.createdAt))}
             </time>
-          </article>
+
+            {isCandidate && <JobActions {...job} outlined />}
+          </header>
 
           <article className="flex flex-col items-start w-full">
             <header>

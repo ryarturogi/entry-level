@@ -29,8 +29,8 @@ const Checkbox = ({ options, optionsSelected, title, onChange, id, name, error }
 
       <div className={title ? 'mt-2' : ''}>
         {optionsList?.length > 0 &&
-          optionsList.map((option) => (
-            <div className="relative flex items-center py-1.5" key={option.id}>
+          optionsList.map((option, idx) => (
+            <div className="relative flex items-center py-1.5" key={`option-${option.name}-${idx}`}>
               <div className="flex items-center h-5 mr-3">
                 <input
                   checked={selected.includes(option.id)}
@@ -59,13 +59,7 @@ const Checkbox = ({ options, optionsSelected, title, onChange, id, name, error }
 };
 
 Checkbox.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      selected: PropTypes.bool,
-    })
-  ),
+  options: PropTypes.any,
   optionsSelected: PropTypes.any,
   title: PropTypes.string,
   onChange: PropTypes.func.isRequired,
