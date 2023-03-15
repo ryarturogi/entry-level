@@ -1,13 +1,14 @@
-import Filters from '@/components/Jobs/Filters';
-import JobsList from '@/components/Jobs/JobsList';
-import Hero from '@/components/UI/Hero';
-import Pagination from '@/components/UI/Pagination';
 import Head from '@/components/partials/Head';
+import Hero from '@/components/UI/Hero';
+import JobsList from '@/components/Jobs/JobsList';
+import JobsSortBy from '@/components/Jobs/JobsSortBy';
+import Pagination from '@/components/UI/Pagination';
+import Filters from '@/components/Jobs/Filters';
 import useFilteredJobs from '@/hooks/useFilteredJobs';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const Home = () => {
   const router = useRouter();
@@ -57,19 +58,21 @@ const Home = () => {
           <header className="flex flex-col items-center justify-between pb-6 pl-5 sm:flex-row">
             <h2 className="text-lg font-semibold sm:text-xl md:text-2xl">Job postings</h2>
 
-            {/* <JobsSortBy onChange={handleFiltersChange} /> */}
-            {/* Pagination simple next/prev */}
-            {totalCount > 10 && (
-              <Pagination
-                error={error}
-                handleLimitChange={handleLimitChange}
-                handlePageChange={handlePageChange}
-                limit={pageOptions.limit}
-                loading={loading}
-                offset={pageOptions.offset}
-                totalCount={totalCount}
-              />
-            )}
+            <div className="flex flex-col items-end gap-2">
+              <JobsSortBy onChange={handleFiltersChange} />
+              {/* Pagination simple next/prev */}
+              {totalCount > 10 && (
+                <Pagination
+                  error={error}
+                  handleLimitChange={handleLimitChange}
+                  handlePageChange={handlePageChange}
+                  limit={pageOptions.limit}
+                  loading={loading}
+                  offset={pageOptions.offset}
+                  totalCount={totalCount}
+                />
+              )}
+            </div>
           </header>
 
           <JobsList error={error} jobs={jobs} loading={loading} />

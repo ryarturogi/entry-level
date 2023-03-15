@@ -1,25 +1,14 @@
-import Layout from '@/components/Layout';
-import useStore from '@/lib/store';
 import '@/styles/globals.css';
+import Layout from '@/components/Layout';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { SessionContextProvider, useUser } from '@supabase/auth-helpers-react';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = ({ Component, pageProps }) => {
-  const user = useUser();
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
-  const setInitialState = useStore((state) => state.setInitialState);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    if (!isMounted) {
-      setIsMounted(true);
-      setInitialState({});
-    }
-  }, [user]);
 
   return (
     <SessionContextProvider
