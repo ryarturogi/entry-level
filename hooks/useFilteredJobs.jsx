@@ -13,7 +13,7 @@ const useFilteredJobs = (offset, limit) => {
 
   const handleFiltersChange = useCallback(
     async (filters) => {
-      setCachedFilters(filters);
+      setCachedFilters({ ...cachedFilters, ...filters });
       setLoading(true);
 
       try {

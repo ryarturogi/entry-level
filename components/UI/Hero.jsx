@@ -17,7 +17,7 @@ const Hero = ({ title = 'Guiding the next generation of devs!', action, logo }) 
       ) : null}
       <div className="flex flex-col items-center text-white">
         <h1 className="block text-xl font-medium text-center sm:text-xl md:text-2xl">{title}</h1>
-        {action && user ? (
+        {action && user?.id ? (
           <Button
             color="secondary"
             displayType="inline"
@@ -36,7 +36,7 @@ const Hero = ({ title = 'Guiding the next generation of devs!', action, logo }) 
             onClick={() => router.push('/login')}
             rounded="md"
             size="md"
-            styles="mt-8 w-full max-w-[205px] h-[40px]"
+            styles="mt-8 w-full max-w-fit h-[40px]"
             title="Register or Login"
           >
             Join the community

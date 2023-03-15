@@ -1,12 +1,13 @@
-import Footer from '@/components/partials//Footer';
 import Header from '@/components/partials/Header';
+import Footer from '@/components/partials/Footer';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 
 const Layout = ({ children }) => {
   const router = useRouter();
 
-  const footerExcludedRoutes = ['/login', '/register'];
+  const excludedRoutes = ['/login', '/register'];
+  const isExcludedRoute = excludedRoutes.includes(router.pathname);
 
   return (
     <>
@@ -14,7 +15,7 @@ const Layout = ({ children }) => {
       <main className="min-h-[calc(100vh-4rem)] px-2 pb-8 bg-gray-100 sm:px-4" role="main">
         {children}
       </main>
-      {!footerExcludedRoutes.includes(router.pathname) && <Footer />}
+      {!isExcludedRoute && <Footer />}
     </>
   );
 };

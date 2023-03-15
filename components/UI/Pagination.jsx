@@ -13,7 +13,7 @@ const Pagination = ({
   handleLimitChange,
 }) => {
   return (
-    <div className="flex items-center justify-center mt-5 space-x-4">
+    <div className="flex items-center justify-center space-x-4">
       <Button
         color={offset === 0 ? 'disabled' : 'primary'}
         disabled={offset === 0}
