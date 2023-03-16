@@ -5,13 +5,9 @@ import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useEffect } from 'react';
+import { ROLES } from '@/constants/register';
 
 const UPLOAD_IMAGE_PATH = process.env.NEXT_PUBLIC_SUPABASE_UPLOAD_IMAGE_PATH;
-
-const ROLES = {
-  CANDIDATE: 'candidate',
-  COMPANY: 'company',
-};
 
 const Navigation = [
   {

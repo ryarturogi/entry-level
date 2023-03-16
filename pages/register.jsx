@@ -5,55 +5,36 @@ import AvatarUpload from '@/components/UI/AvatarUpload';
 import Button from '@/components/UI/Button';
 import {
   CANDIDATE_FIELDS,
-  CandidateSchemaValidation,
   COMPANY_FIELDS,
-  CompanySchemaValidation,
   CREDENTIALS_FIELDS,
+  INITIAL_VALUES,
   ROLE_OPTIONS,
+  ROLES,
+  SCHEMAS,
+  STEPS,
 } from '@/constants/register';
 import useCountries from '@/hooks/useCountries';
 import Provider from '@/utils/initDatabase';
 import { Formik } from 'formik';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import useModal from '@/hooks/useModal';
 import { ArrowPathIcon, CheckIcon } from '@heroicons/react/24/outline';
 
-const ClientApi = Provider(process.env.NEXT_PUBLIC_PROVIDER_NAME);
-
-const ROLES = {
-  CANDIDATE: 'candidate',
-  COMPANY: 'company',
-};
-const STEPS = {
-  SELECT_ROLE: 'role-selection',
-  CREDENTIALS: 'credentials',
-  REGISTER_INFO: 'register-info',
-};
-
 const Register = () => {
   const router = useRouter();
+  const [ClientApi] = useState(Provider(process.env.NEXT_PUBLIC_PROVIDER_NAME));
   const allCountries = useCountries();
   const [formData, setFormData] = useState({});
   const [step, setStep] = useState(STEPS.SELECT_ROLE);
   const [role, setRole] = useState(ROLES.CANDIDATE);
+  const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
+  const [typesSchemas] = useState(SCHEMAS);
   const { Modal, isOpen, openModal, closeModal } = useModal();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Define schema validation objects for candidate and company forms using Yup.
-  const typesSchemas = {
-    candidate: CandidateSchemaValidation,
-    company: CompanySchemaValidation,
-  };
-
-  // Memoize the Yup validation schema based on the selected role.
-  const validationSchema = useMemo(() => {
-    return typesSchemas[role];
-  }, [role]);
-
   // Returns an array of options for a given field name.
-  // The options are retrieved from predefined field definitions (CANDIDATE_FIELDS and COMPANY_FIELDS).
   const getFieldOptions = (fieldName) => {
     // Field names for which options are available
     const CAREER_FIELD = 'career';
@@ -209,47 +190,45 @@ const Register = () => {
       const { error } = await createUserHandler(formData, avatarURL);
 
       if (error) {
-        toast.error(error?.message || 'Server error occurred');
-        throw new Error(error?.message || 'Server error occurred');
+        const errorMessage = error?.message || 'Server error occurred';
+        throw new Error(errorMessage);
       }
 
       closeModal();
       toast.success('Account created successfully');
       router.push('/');
     } catch (error) {
-      toast.error(error?.message || 'Server error occurred');
+      const errorMessage = error?.message || 'Server error occurred';
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // Set the email field to the value of the query parameter 'email', if present
+  useEffect(() => {
+    const { email } = router.query;
+    if (email) {
+      setInitialValues((prevValues) => ({ ...prevValues, email }));
+    }
+  }, [router.query.email]);
+
+  // Memoize the Yup validation schema based on the selected role.
+  const validationSchemaSelected = useMemo(() => {
+    return typesSchemas[role];
+  }, [role]);
+
   return (
     <Formik
-      initialValues={
-        {
-          role: ROLES.CANDIDATE,
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
-          phone: '',
-          career: [],
-          companyName: '',
-          companyDescription: '',
-          companyWebsite: '',
-          industry: [],
-          size: [],
-          location: [],
-          avatar_url: '',
-        } || {}
-      }
-      validationSchema={validationSchema}
+      enableReinitialize
+      initialValues={initialValues}
+      validationSchema={validationSchemaSelected}
     >
       {({ values, handleChange, handleBlur, setFieldValue, errors, touched, setFieldTouched }) => (
         <>
           <article
             className={`container flex flex-col items-center pt-8 w-full min-h-[calc(100vh-4rem)] mx-auto space-y-6 bg-gray-100 min-w-screen
-          ${step === STEPS.REGISTER_INFO && role === 'company' ? 'max-w-2xl' : 'max-w-sm'}
+          ${step === STEPS.REGISTER_INFO && role === ROLES.COMPANY ? 'max-w-2xl' : 'max-w-sm'}
         `}
           >
             <header>
@@ -491,7 +470,7 @@ const Register = () => {
                       ))}
                     </section>
 
-                    {role === 'company' && (
+                    {role === ROLES.COMPANY && (
                       <section className="flex flex-col w-full mt-4">
                         <TextareaField
                           error={
@@ -550,6 +529,7 @@ const Register = () => {
                 </article>
               )}
             </form>
+
             <footer className="flex flex-col gap-2 mt-4 text-center">
               <section className="text-base font-light text-gray-800">
                 Already have an account?{' '}
@@ -571,11 +551,11 @@ const Register = () => {
               </span>
             </section> */}
             </footer>
-            {/* Confirmation Modal */}
           </article>
 
+          {/* Confirmation Modal */}
           <Modal>
-            <>
+            <article>
               <header className="flex flex-col items-center justify-center w-full h-full">
                 <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary-700">
                   <CheckIcon className="w-8 h-8 text-white" />
@@ -590,7 +570,7 @@ const Register = () => {
                 </p>
               </header>
 
-              <div className="flex items-center w-full mt-8 space-x-4">
+              <section className="flex items-center w-full mt-8 space-x-4">
                 <Button
                   color="white"
                   displayType="block"
@@ -630,8 +610,8 @@ const Register = () => {
                     <div className="text-white">Register</div>
                   )}
                 </Button>
-              </div>
-            </>
+              </section>
+            </article>
           </Modal>
         </>
       )}

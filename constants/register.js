@@ -8,7 +8,7 @@ import {
   url,
 } from './helpers';
 
-const CAREER_OPTIONS = [
+export const CAREER_OPTIONS = [
   {
     name: 'Frontend Developer',
     id: 'frontend-developer',
@@ -55,10 +55,38 @@ const CAREER_OPTIONS = [
   },
 ];
 
+export const ROLES = {
+  CANDIDATE: 'candidate',
+  COMPANY: 'company',
+};
+
 export const ROLE_OPTIONS = [
   { id: 'candidate', name: 'Candidate' },
   { id: 'company', name: 'Company' },
 ];
+
+export const STEPS = {
+  SELECT_ROLE: 'role-selection',
+  CREDENTIALS: 'credentials',
+  REGISTER_INFO: 'register-info',
+};
+
+export const INITIAL_VALUES = {
+  role: ROLES.CANDIDATE,
+  name: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  phone: '',
+  career: [],
+  companyName: '',
+  companyDescription: '',
+  companyWebsite: '',
+  industry: [],
+  size: [],
+  location: [],
+  avatar_url: '',
+};
 
 export const CREDENTIALS_FIELDS = [
   {
@@ -241,3 +269,8 @@ export const CompanySchemaValidation = Yup.object().shape({
     .max(2000, 'Must be 2000 characters or less')
     .min(500, 'Must be 500 characters or more'),
 });
+
+export const SCHEMAS = {
+  candidate: CandidateSchemaValidation,
+  company: CompanySchemaValidation,
+};
