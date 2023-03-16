@@ -1,8 +1,5 @@
-import Client from '@/utils/initDatabase';
+import ClientApi from '@/utils/initDatabase';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
-const PROVIDER_NAME = process.env.NEXT_PUBLIC_PROVIDER_NAME;
-const ClientApi = Client(PROVIDER_NAME);
 
 const useFilteredJobs = (offset, limit) => {
   const [jobs, setJobs] = useState([]);

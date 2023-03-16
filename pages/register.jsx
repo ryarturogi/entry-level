@@ -14,7 +14,7 @@ import {
   STEPS,
 } from '@/constants/register';
 import useCountries from '@/hooks/useCountries';
-import Provider from '@/utils/initDatabase';
+import ClientApi from '@/utils/initDatabase';
 import { Formik } from 'formik';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
@@ -24,7 +24,6 @@ import { ArrowPathIcon, CheckIcon } from '@heroicons/react/24/outline';
 
 const Register = () => {
   const router = useRouter();
-  const [ClientApi] = useState(Provider(process.env.NEXT_PUBLIC_PROVIDER_NAME));
   const allCountries = useCountries();
   const [formData, setFormData] = useState({});
   const [step, setStep] = useState(STEPS.SELECT_ROLE);

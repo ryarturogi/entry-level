@@ -1,16 +1,13 @@
 import Button from '@/components/UI/Button';
 import { ERROR_MESSAGES } from '@/constants/index';
 import useStore from '@/lib/store';
-import Client from '@/utils/initDatabase';
+import ClientApi from '@/utils/initDatabase';
 import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/react/24/outline';
 import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid';
 import { useUser } from '@supabase/auth-helpers-react';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-
-const PROVIDER_NAME = process.env.NEXT_PUBLIC_PROVIDER_NAME;
-const ClientApi = Client(PROVIDER_NAME);
 
 const SAVE_BUTTON_TITLE = 'Save';
 const REMOVE_BUTTON_TITLE = 'Drop';

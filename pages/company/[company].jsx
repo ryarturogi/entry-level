@@ -1,6 +1,6 @@
 import JobCard from '@/components/Jobs/JobsItem';
 import Hero from '@/components/UI/Hero';
-import Client from '@/utils/initDatabase';
+import ClientApi from '@/utils/initDatabase';
 import Loader from 'components/UI/Loader';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -70,9 +70,10 @@ export const getServerSideProps = async ({ params }) => {
   const { company } = params;
 
   try {
-    const { data: fetchCompanyJobs, error } = await Client(
-      process.env.NEXT_PUBLIC_PROVIDER_NAME
-    ).getJobs({ contentType: 'companySlug', query: company });
+    const { data: fetchCompanyJobs, error } = await ClientApi.getJobs({
+      contentType: 'companySlug',
+      query: company,
+    });
 
     if (error) {
       return {
