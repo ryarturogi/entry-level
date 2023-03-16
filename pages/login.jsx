@@ -15,13 +15,13 @@ const SchemaValidation = Yup.object().shape({
 });
 
 const Login = () => {
-  const supabase = useSupabaseClient();
+  const supabaseClient = useSupabaseClient();
   const [checkIfExists] = useCheckUserExistence();
 
   const router = useRouter();
 
   const handleLogin = async (values) => {
-    const { error } = await supabase.auth.signInWithPassword(values);
+    const { error } = await supabaseClient.auth.signInWithPassword(values);
     if (error) {
       toast.error(error.message);
       throw new Error(error.message);
@@ -37,7 +37,7 @@ const Login = () => {
       return;
     }
 
-    const { error } = await supabase.auth.signInWithOAuth({ provider: provider || 'google' });
+    const { error } = await supabaseClient.auth.signInWithOAuth({ provider: provider || 'google' });
 
     if (error) {
       toast.error(error.message);
