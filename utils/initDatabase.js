@@ -17,4 +17,6 @@ const Provider = (provider) => {
   }
 };
 
-export default Provider;
+const ClientApi = Provider(process.env.NEXT_PUBLIC_PROVIDER_NAME);
+
+export default ClientApi;

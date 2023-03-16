@@ -1,8 +1,5 @@
-import Client from '@/utils/initDatabase';
+import ClientApi from '@/utils/initDatabase';
 import { useEffect, useState } from 'react';
-
-const PROVIDER_NAME = process.env.NEXT_PUBLIC_PROVIDER_NAME;
-const ClientApi = Client(PROVIDER_NAME);
 
 export const useSavedJobs = (userId) => {
   const [savedJobs, setSavedJobs] = useState([]);

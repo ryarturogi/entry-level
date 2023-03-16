@@ -21,10 +21,9 @@ import {
   JOB_TITLE_FIELD,
   SchemaValidation,
 } from '@/constants/new-job';
-import { PROVIDER_NAME } from '@/constants/supabase';
 import useCountries from '@/hooks/useCountries';
 import useSkills from '@/hooks/useSkills';
-import Client from '@/utils/initDatabase';
+import ClientApi from '@/utils/initDatabase';
 import {
   BriefcaseIcon,
   BuildingOffice2Icon,
@@ -35,8 +34,6 @@ import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import { Formik } from 'formik';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
-
-const ClientApi = Client(PROVIDER_NAME);
 
 const NewJob = () => {
   const router = useRouter();

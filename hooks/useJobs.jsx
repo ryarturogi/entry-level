@@ -1,8 +1,5 @@
-import Client from '@/utils/initDatabase';
+import ClientApi from '@/utils/initDatabase';
 import { useCallback, useEffect, useState } from 'react';
-
-const PROVIDER_NAME = process.env.NEXT_PUBLIC_PROVIDER_NAME;
-const clientApi = Client(PROVIDER_NAME);
 
 const useJobs = (contentType, query) => {
   const [jobs, setJobs] = useState([]);
@@ -15,11 +12,11 @@ const useJobs = (contentType, query) => {
       let error;
 
       if (!query) {
-        const res = await clientApi.getJobs();
+        const res = await ClientApi.getJobs();
         data = res.data;
         error = res.error || null;
       } else {
-        const res = await clientApi.getJobs({ contentType, query });
+        const res = await ClientApi.getJobs({ contentType, query });
         data = res.data;
         error = res.error || null;
       }
