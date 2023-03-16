@@ -9,6 +9,7 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { ROLES } from '@/constants/register';
 
 const Home = () => {
   const router = useRouter();
@@ -39,8 +40,8 @@ const Home = () => {
 
   useEffect(() => {
     const role = user?.user_metadata?.role;
-    const title = role === 'company' ? 'Post a job' : 'Find a job';
-    const path = role === 'company' ? '/jobs/new' : '/jobs';
+    const title = role === ROLES.COMPANY ? 'Post a job' : 'Find a job';
+    const path = role === ROLES.COMPANY ? '/jobs/new' : '/jobs';
 
     setAction({
       title: title,

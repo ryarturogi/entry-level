@@ -1,7 +1,7 @@
 import JobCard from '@/components/Job';
 import Loader from '@/components/UI/Loader';
 import Head from '@/components/partials/Head';
-import Client from '@/utils/initDatabase';
+import ClientApi from '@/utils/initDatabase';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 
@@ -47,9 +47,7 @@ export const getServerSideProps = async ({ params }) => {
 
   try {
     let fetchCompanyJobs;
-    const { data: fetchJob, error: fetchJobError } = await Client(
-      process.env.NEXT_PUBLIC_PROVIDER_NAME
-    ).getJob(id);
+    const { data: fetchJob, error: fetchJobError } = await ClientApi.getJob(id);
 
     if (fetchJobError) {
       return {
@@ -62,7 +60,7 @@ export const getServerSideProps = async ({ params }) => {
     }
 
     if (fetchJob?.companySlug) {
-      const { data, error } = await Client(process.env.NEXT_PUBLIC_PROVIDER_NAME).getJobs({
+      const { data, error } = await ClientApi.getJobs({
         contentType: 'companySlug',
         query: fetchJob.companySlug,
       });

@@ -7,7 +7,7 @@ import GithubIcon from 'public/img/github-icon.svg';
 import GoogleIcon from 'public/img/google-icon.svg';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
-import useCheckUserExistence from '@/hooks/useUserExists';
+import { useCheckUserExistence } from '@/hooks/useUserExists';
 
 const SchemaValidation = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('The email field is required'),
@@ -15,12 +15,13 @@ const SchemaValidation = Yup.object().shape({
 });
 
 const Login = () => {
-  const supabase = useSupabaseClient();
-  const { userExists, checkIfExists } = useCheckUserExistence();
+  const supabaseClient = useSupabaseClient();
+  const [checkIfExists] = useCheckUserExistence();
+
   const router = useRouter();
 
   const handleLogin = async (values) => {
-    const { error } = await supabase.auth.signInWithPassword(values);
+    const { error } = await supabaseClient.auth.signInWithPassword(values);
     if (error) {
       toast.error(error.message);
       throw new Error(error.message);
@@ -29,15 +30,19 @@ const Login = () => {
   };
 
   const handleLoginWithProvider = async ({ email, provider }) => {
-    await checkIfExists(email);
+    const userExists = await checkIfExists(email);
 
-    if (userExists) {
-      toast.error('You need to register first before you can login with this provider');
+    if (!userExists) {
       router.push(`/register?email=${email}`);
       return;
     }
 
-    await supabase.auth.signInWithOAuth({ provider: provider || 'google' });
+    const { error } = await supabaseClient.auth.signInWithOAuth({ provider: provider || 'google' });
+
+    if (error) {
+      toast.error(error.message);
+      throw new Error(error.message);
+    }
   };
 
   return (
