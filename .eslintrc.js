@@ -11,9 +11,11 @@ module.exports = {
     'next/core-web-vitals',
     'eslint:recommended',
     'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:prettier/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
     'plugin:json/recommended',
+    'plugin:prettier/recommended',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -22,7 +24,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['react'],
+  plugins: ['react', 'prettier', 'json', 'import', 'react-hooks'],
   rules: {
     // Possible errors
     'no-console': 'warn',
@@ -38,6 +40,8 @@ module.exports = {
     'no-lonely-if': 'error',
     'no-unneeded-ternary': 'error',
     'one-var-declaration-per-line': 'error',
+    'no-undef': 'off',
+    'no-unused-vars': 'off',
     quotes: [
       'error',
       'single',
