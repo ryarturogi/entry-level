@@ -7,14 +7,14 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps): React.ReactEle
   const [optionsList, setOptionsList] = useState<OptionItem[]>(options);
   const [selected, setSelected] = useState<OptionItem[]>(optionsSelected);
 
-  const handleOnChange = (id: any): void => {
-    const isSelected = selected.includes(id);
+  const handleOnChange = (option: OptionItem) => {
+    const isSelected = selected.includes(option);
     const newSelected = isSelected
-      ? selected.filter((selectedId) => selectedId !== id)
-      : [...selected, id];
+      ? selected.filter((selectedId) => selectedId.id !== option.id)
+      : [...selected, option];
     setSelected(newSelected);
     const newOptions = optionsList.map((option) => {
-      if (option.id === id) {
+      if (option.id === option.id) {
         return { ...option, selected: !isSelected };
       }
       return option;
@@ -49,7 +49,7 @@ const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps): React.ReactEle
                     className="w-4 h-4 border-gray-300 rounded cursor-pointer text-primary-600 focus:ring-primary-500"
                     id={id || `option-${option.id}`}
                     name={name || `option-${option.id}`}
-                    onChange={() => handleOnChange(option.id)}
+                    onChange={() => handleOnChange(option)}
                     type="checkbox"
                   />
                 </div>
