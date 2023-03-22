@@ -68,7 +68,6 @@ dependencies:
   '@supabase/supabase-js': 2.10.0
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.7
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.7
-  '@types/react': 18.0.28
   css-loader: 6.7.3
   firebase: 9.18.0
   formik: 2.2.9_react@18.2.0
@@ -97,6 +96,7 @@ devDependencies:
   '@storybook/react': 7.0.0-rc.5_grokbpfbuuosdhrkscgthnz2vm
   '@storybook/testing-library': 0.0.14-next.1
   '@svgr/webpack': 6.5.1
+  '@types/react': 18.0.28
   autoprefixer: 10.4.14_postcss@8.4.21
   babel-eslint: 10.1.0_eslint@8.36.0
   chromatic: 6.17.2
