@@ -65,7 +65,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = (
 
   return (
     <section className="relative flex items-center space-x-5">
-      <button type="button" onClick={handleImageClick}>
+      <button onClick={handleImageClick} type="button">
         <label
           className={`${
             error

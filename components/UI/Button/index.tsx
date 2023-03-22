@@ -1,4 +1,4 @@
-import { COLOR_MAP, SIZE_MAP, ROUNDED_MAP, DISPLAY_TYPE_MAP, ICON_SIZE_MAP } from './constants';
+import { COLOR_MAP, DISPLAY_TYPE_MAP, ICON_SIZE_MAP, ROUNDED_MAP, SIZE_MAP } from './constants';
 import { ButtonProps } from './types';
 
 const Button: React.FC<ButtonProps> = (props: ButtonProps): React.ReactElement => {
