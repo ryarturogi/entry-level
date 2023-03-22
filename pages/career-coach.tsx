@@ -1,9 +1,7 @@
-import QUESTIONS from '@/constants/coach-questions';
+import QUESTIONS, { Question, SelectOption } from '@/constants/coach-questions';
 import generateDescription from '@/lib/openai';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
-import { Question, SelectOption } from '@/constants/coach-questions';
-import React from 'react';
 
 const CareerCoach = (): React.ReactElement => {
   const [answers, setAnswers] = useState<string[]>([]);

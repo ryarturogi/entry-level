@@ -1,4 +1,5 @@
 const prettierConfig = require('./.prettierrc.js');
+
 module.exports = {
   env: {
     browser: true,
@@ -7,13 +8,15 @@ module.exports = {
     node: true,
   },
   extends: [
-    'standard',
-    'standard-react',
+    'next/core-web-vitals',
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
     'plugin:json/recommended',
-    'plugin:storybook/recommended',
-    'plugin:storybook/recommended',
+    'plugin:prettier/recommended',
   ],
-  parser: 'babel-eslint',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -21,7 +24,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['react-hooks'],
+  plugins: ['react', 'prettier', 'json', 'import', 'react-hooks'],
   rules: {
     // Possible errors
     'no-console': 'warn',
@@ -37,6 +40,8 @@ module.exports = {
     'no-lonely-if': 'error',
     'no-unneeded-ternary': 'error',
     'one-var-declaration-per-line': 'error',
+    'no-undef': 'off',
+    'no-unused-vars': 'off',
     quotes: [
       'error',
       'single',
@@ -84,10 +89,6 @@ module.exports = {
     // but the config lives in the `config/` directory. Passing the config here
     // to get around this.
     'prettier/prettier': ['error', prettierConfig],
-    'react/react-in-jsx-scope': 'off',
-    'react/prop-types': 'off',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
   },
   settings: {
     react: {
