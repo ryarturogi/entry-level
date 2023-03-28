@@ -6,9 +6,8 @@ export interface ButtonProps {
   iconPosition?: string;
   rounded?: string;
   displayType?: string;
-  children?: React.ReactNode;
+  children: React.ReactNode;
   styles?: string;
   fullWidth?: boolean;
-  [key: string]: any;
   className?: string;
 }

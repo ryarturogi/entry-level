@@ -30,9 +30,9 @@ const TextField: React.FC<TextFieldProps> = (props: TextFieldProps): React.React
               onChange({ target: { value: values.value } } as React.ChangeEvent<HTMLInputElement>);
             }}
             prefix="$"
-            required={required}
+            required={required || false}
             thousandSeparator=","
-            valueIsNumericString={true}
+            valueIsNumericString
           />
         </>
       )) || (

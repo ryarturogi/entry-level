@@ -1,13 +1,14 @@
+import { OptionItem } from '../../../types/index';
 export interface AutoCompleteProps {
-  options: any[];
-  optionsSelected: any[];
+  options: OptionItem[];
+  optionsSelected: OptionItem[];
   onChange: any;
   title?: string;
   placeholder?: string;
   error?: string;
   multiple?: any;
-  required?: boolean;
+  required?: Boolean;
   setTouched?: any;
   name?: string;
-  touched?: boolean;
+  touched?: Boolean;
 }

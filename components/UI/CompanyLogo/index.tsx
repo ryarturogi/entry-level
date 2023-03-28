@@ -1,9 +1,9 @@
+import React from 'react';
 import Avatar from '@/components/UI/Avatar';
 import { CompanyLogoProps } from './types';
 import { randomColor } from './helpers';
-import React from 'react';
 
-const UPLOAD_IMAGE_PATH: string = String(process.env.NEXT_PUBLIC_SUPABASE_UPLOAD_IMAGE_PATH);
+const UPLOAD_IMAGE_PATH = String(process.env.NEXT_PUBLIC_SUPABASE_UPLOAD_IMAGE_PATH);
 
 const CompanyLogo: React.FC<CompanyLogoProps> = (props: CompanyLogoProps): React.ReactElement => {
   const { hasCompanyLogo, companySlug, companyLogo, size } = props;
