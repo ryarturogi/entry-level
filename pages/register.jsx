@@ -307,7 +307,7 @@ const Register = () => {
                   <section className="grid w-full grid-cols-1 gap-2">
                     <ul className="flex flex-col w-full">
                       {CREDENTIALS_FIELDS.map((field) => (
-                        <li className="block w-full" key={field.name} role="field">
+                        <li className="block w-full" key={field.name}>
                           {field.type === 'text' && (
                             <TextField
                               error={
@@ -482,7 +482,7 @@ const Register = () => {
                           onBlur={handleBlur}
                           onChange={handleChange}
                           placeholder={'Enter your company description'}
-                          required={true}
+                          required
                           rows={5}
                           title={'Company Description'}
                           value={values.companyDescription}
@@ -532,22 +532,24 @@ const Register = () => {
             <footer className="flex flex-col gap-2 mt-4 text-center">
               <section className="text-base font-light text-gray-800">
                 Already have an account?{' '}
-                <span
+                <button
                   className="cursor-pointer text-primary-700"
                   onClick={() => router.push('/login')}
+                  type="button"
                 >
                   Login
-                </span>
+                </button>
               </section>
               {/* 
             <section className="text-base font-light text-gray-800">
               Forgot your password?{' '}
-              <span
+              <button
+                type="button"
                 className="cursor-pointer text-primary-700"
                 onClick={() => router.push('/forgot-password')}
               >
                 Reset Password
-              </span>
+              </button>
             </section> */}
             </footer>
           </article>

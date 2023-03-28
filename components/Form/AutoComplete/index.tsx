@@ -28,7 +28,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (
     onChange(Array.isArray(selected) ? selected : [selected]);
   };
 
-  const handleOnRemove = (keyword: { id: number }) => {
+  const handleOnRemove = (keyword: OptionItem) => {
     if (Array.isArray(optionsSelected)) {
       onChange(optionsSelected.filter((option: OptionItem) => option.id !== keyword.id));
     } else if (typeof optionsSelected === 'object') {
@@ -36,7 +36,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (
     }
   };
 
-  const handleFilteredOptions = (options: { name: string }[]) => {
+  const handleFilteredOptions = (options: OptionItem[]) => {
     setFilteredOptions(
       query === ''
         ? options
@@ -59,8 +59,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (
     return false; // default case
   };
 
-  // Array.isArray(optionsSelected) ? optionsSelected : [optionsSelected];
-  const handleSelectedOptions = (optionsSelected: any): { id: number }[] => {
+  const handleSelectedOptions = (optionsSelected: OptionItem[] | OptionItem) => {
     if (Array.isArray(optionsSelected)) {
       return optionsSelected;
     } else if (typeof optionsSelected === 'object') {
@@ -185,7 +184,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = (
           checkIfDataTypeExist(optionsSelected) ? 'hidden' : 'mt-2'
         }`}
       >
-        {handleSelectedOptions(optionsSelected).map((option: { id: number; name: string }) => (
+        {handleSelectedOptions(optionsSelected).map((option: OptionItem) => (
           <li key={option.id}>
             <button
               className="inline-flex items-center pl-3 pr-2.5 py-1.5 rounded-full text-xs font-light bg-primary-100 text-black"
