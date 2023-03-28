@@ -5,7 +5,7 @@ const Button: React.FC<ButtonProps> = (props: ButtonProps): React.ReactElement =
   const {
     color = 'primary',
     size = 'md',
-    icon,
+    icon = null,
     iconSize = 'md',
     iconPosition = 'left',
     rounded,
