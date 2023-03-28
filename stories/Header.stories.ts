@@ -3,7 +3,7 @@ import Header from '@/components/partials/Header';
 import logo from './assets/logo.svg';
 
 const meta: Meta<typeof Header> = {
-  title: 'Example/Header',
+  title: 'Header',
   component: Header,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/7.0/react/writing-docs/docs-page
   tags: ['autodocs'],
