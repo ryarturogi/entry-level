@@ -1,7 +1,7 @@
 export interface ButtonProps {
   color?: string;
   size?: string;
-  icon?: React.ReactNode;
+  icon?: React.ReactNode
   iconSize?: string;
   iconPosition?: string;
   rounded?: string;
