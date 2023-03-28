@@ -2,18 +2,36 @@ import React from 'react';
 import classNames from '@/utils/classsesNames';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useUser } from '@supabase/auth-helpers-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import MenuLoggedIn from './MenuLoggedIn';
 import MenuNotLoggedIn from './MenuNotLoggedIn';
 import Navigation from './navigation';
 import { NavigationItem } from './types';
+import { UPLOAD_IMAGE_PATH } from './constants';
+import Image from 'next/image';
 
-const Header: React.FC = (): React.ReactElement => {
+interface User {
+  id: string;
+  role: string;
+  full_name: string;
+  avatar_url: string;
+}
+
+interface HeaderProps {
+  user: User;
+  logo: any;
+}
+
+const Header: React.FC<HeaderProps> = (props: HeaderProps): React.ReactElement => {
+  const { user, logo } = props;
   const router = useRouter();
-  const user = useUser();
+
+  const avatarURL = user?.avatar_url;
+  const AVATAR_PATH =
+    avatarURL?.startsWith('/avatars') || avatarURL?.startsWith('/company-logos')
+      ? `${UPLOAD_IMAGE_PATH}${avatarURL}`
+      : avatarURL;
 
   return (
     <Disclosure as="nav" className="bg-white border-b border-gray-400">
@@ -36,7 +54,7 @@ const Header: React.FC = (): React.ReactElement => {
 
                 <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
                   <Link className="flex items-center flex-shrink-0 text-white" href="/">
-                    <Image alt="entry level devs" height={22} src="/logo.svg" width={82} />
+                    <Image alt="logo" height={100} src={logo} width={100} />
                   </Link>
                 </div>
 
@@ -62,7 +80,11 @@ const Header: React.FC = (): React.ReactElement => {
 
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   {/** Notifications */}
-                  {user?.id ? <MenuLoggedIn /> : <MenuNotLoggedIn />}
+                  {user?.id ? (
+                    <MenuLoggedIn avatarURL={AVATAR_PATH} user={user} />
+                  ) : (
+                    <MenuNotLoggedIn />
+                  )}
                 </div>
               </div>
             </div>
