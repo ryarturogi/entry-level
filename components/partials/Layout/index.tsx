@@ -3,6 +3,7 @@ import Header from '@/components/partials/Header';
 import Footer from '@/components/partials/Footer';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
+import { useUser } from '@supabase/auth-helpers-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = (props: LayoutProps): React.ReactElement => {
   const { children } = props;
+  const user = useUser();
 
   const router = useRouter();
 
@@ -18,7 +20,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps): React.ReactElement =
 
   return (
     <article>
-      <Header />
+      <Header logo="public/logo.svg" user={user} />
       <main className="min-h-[calc(100vh-4rem)] px-2 pb-8 bg-gray-100 sm:px-4" role="main">
         {children}
       </main>

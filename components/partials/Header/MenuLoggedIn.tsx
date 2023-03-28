@@ -6,20 +6,25 @@ import useStore from '@/lib/store';
 import classNames from '@/utils/classsesNames';
 import { Menu, Transition } from '@headlessui/react';
 import { ROLES } from '@/constants/register';
-import { Navigation, UPLOAD_IMAGE_PATH } from './constants';
+import { Navigation } from './constants';
 import { NewNavigationItem } from './types';
 
-const MenuLoggedIn: React.FC = (): React.ReactElement => {
-  const user = useUser();
+interface User {
+  role: string;
+  full_name: string;
+  avatar_url: string;
+}
+interface MenuLoggedInProps {
+  avatarURL: string;
+  user: User;
+}
+
+const MenuLoggedIn: React.FC<MenuLoggedInProps> = (
+  props: MenuLoggedInProps
+): React.ReactElement => {
+  const { avatarURL, user } = props;
   const supabaseClient = useSupabaseClient();
   const savedJobsCount = useStore((state) => state.savedJobsCount);
-
-  const userData = user?.user_metadata;
-  const avatarURL: string = userData?.avatar_url;
-  const AVATAR_PATH: string =
-    avatarURL?.startsWith('/avatars') || avatarURL?.startsWith('/company-logos')
-      ? `${UPLOAD_IMAGE_PATH}${avatarURL}`
-      : avatarURL;
 
   const clearSavedJobs: () => void = () => {
     // clear the store
@@ -35,24 +40,11 @@ const MenuLoggedIn: React.FC = (): React.ReactElement => {
     }
 
     if (supabaseClient.auth.signOut()) {
-      if (userData?.role === ROLES.CANDIDATE) {
+      if (user?.role === ROLES.CANDIDATE) {
         clearSavedJobs();
       }
     }
   };
-
-  useEffect(() => {
-    if (userData?.role !== ROLES.CANDIDATE) {
-      return;
-    }
-
-    const newNavigation: NewNavigationItem[] = [
-      ...Navigation,
-      { label: 'Saved Jobs', href: '/saved-jobs' },
-    ];
-
-    Navigation.splice(0, Navigation.length, ...newNavigation);
-  }, []);
 
   return (
     <Menu as="div" className="relative z-50 ml-3">
@@ -60,21 +52,21 @@ const MenuLoggedIn: React.FC = (): React.ReactElement => {
         <div className="relative flex justify-start">
           <Menu.Button className="flex items-center pr-2 py-1 rounded-md text-sm font-medium space-x-1.5 text-gray-500 focus:outline-none transition-colors ease-linear duration-100 relative">
             <span className="sr-only">Open user menu</span>
-            {(userData?.avatar_url && (
+            {(user?.avatar_url && (
               <Image
                 alt="avatar"
                 className="object-cover w-8 h-8 rounded-full"
                 height={28}
-                src={AVATAR_PATH}
+                src={avatarURL}
                 width={28}
               />
             )) || (
               <div className="flex items-center justify-center w-8 h-8 text-sm text-white rounded-full bg-primary-800">
-                {userData?.full_name?.charAt(0)}
+                {user?.full_name?.charAt(0)}
               </div>
             )}
 
-            {savedJobsCount > 0 && userData?.role === ROLES.CANDIDATE && (
+            {savedJobsCount > 0 && user?.role === ROLES.CANDIDATE && (
               <div
                 className="absolute grid w-3.5 h-3.5 p-1.5 text-[10px] font-normal rounded-full place-content-center bottom-0 right-0 bg-primary-700 text-white"
                 title={`${savedJobsCount} saved job${savedJobsCount > 1 ? 's' : ''}`}
@@ -109,18 +101,32 @@ const MenuLoggedIn: React.FC = (): React.ReactElement => {
                       href={item.href}
                     >
                       {item.label}
-                      {item.label === 'Saved Jobs' && savedJobsCount > 0 && (
-                        <div
-                          className=" grid w-3.5 h-3.5 p-2 text-xs font-bold rounded-full place-content-center bg-primary-500 text-white"
-                          title={`${savedJobsCount} saved job${savedJobsCount > 1 ? 's' : ''}`}
-                        >
-                          {savedJobsCount} <span className="sr-only">saved jobs</span>
-                        </div>
-                      )}
                     </Link>
                   )}
                 </Menu.Item>
               ))}
+              {user?.role === ROLES.CANDIDATE && (
+                <Menu.Item>
+                  {({ active }) => (
+                    <Link
+                      className={classNames(
+                        active ? 'bg-primary-500 text-white' : 'text-gray-800 hover:bg-gray-100',
+                        'pl-4 pr-2 py-2 text-sm relative flex items-center justify-between w-full'
+                      )}
+                      href="/saved-jobs"
+                    >
+                      Saved Jobs
+                      <div
+                        className=" grid w-3.5 h-3.5 p-2 text-xs font-bold rounded-full place-content-center bg-primary-500 text-white"
+                        title={`${savedJobsCount} saved job${savedJobsCount > 1 ? 's' : ''}`}
+                      >
+                        {savedJobsCount}
+                        <span className="sr-only">saved jobs</span>
+                      </div>
+                    </Link>
+                  )}
+                </Menu.Item>
+              )}
               <Menu.Item>
                 {({ active }) => (
                   <button
