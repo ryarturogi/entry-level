@@ -257,19 +257,24 @@ const Login = () => {
         <footer className="flex flex-col gap-1 text-center">
           <p className="text-base font-light text-gray-800">
             Don&apos;t have an account?{' '}
-            <span className="text-blue-500 cursor-pointer" onClick={() => router.push('/register')}>
+            <button
+              className="text-blue-500 cursor-pointer"
+              onClick={() => router.push('/register')}
+              type="button"
+            >
               Register
-            </span>
+            </button>
           </p>
 
           <p className="text-base font-light text-gray-800">
             Forgot your password?{' '}
-            <span
+            <button
               className="text-blue-500 cursor-pointer"
               onClick={() => router.push('/forgot-password')}
+              type="button"
             >
               Reset Password
-            </span>
+            </button>
           </p>
         </footer>
       </section>
