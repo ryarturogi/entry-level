@@ -5,4 +5,7 @@ export interface HeroProps {
     handler?: () => void;
   };
   logo?: string;
+  user?: {
+    id?: string;
+  };
 }
