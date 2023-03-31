@@ -1,13 +1,17 @@
 export interface ButtonProps {
-  color?: string;
-  size?: string;
-  icon?: React.ReactNode;
-  iconSize?: string;
-  iconPosition?: string;
-  rounded?: string;
-  displayType?: string;
   children: React.ReactNode;
-  styles?: string;
-  fullWidth?: boolean;
   className?: string;
+  color?: string;
+  disabled?: boolean;
+  displayType?: string;
+  fullWidth?: boolean;
+  id?: string;
+  loading?: boolean;
+  loadingText?: string;
+  rounded?: string;
+  size?: string;
+  styles?: string;
+  title?: string;
+  type?: 'button' | 'submit' | 'reset';
+  onClick?: () => void;
 }

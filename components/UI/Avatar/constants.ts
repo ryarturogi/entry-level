@@ -1,6 +1,5 @@
-export const SIZE_TO_CLASS_MAP: Record<string, string> = {
-  xs: 'w-10 h-10',
-  sm: 'w-16 h-16',
+export const SIZE_MAP: Record<string, string> = {
+  sm: 'w-20 h-20',
   md: 'w-24 h-24',
   lg: 'w-28 h-28',
   default: 'w-20 h-20',

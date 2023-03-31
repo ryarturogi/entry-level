@@ -1,4 +1,10 @@
-export interface NavigationItem {
+export type User = {
+  id: string | number;
+  role: string;
+  name: string;
+  avatar: string;
+};
+export interface NavigationItemProps {
   pathname: string;
   name: string;
 }
@@ -8,11 +14,7 @@ export interface MenuItemProps {
   href: string;
 }
 
-export type NewNavigationItem = {
-  label: string;
-  href: string;
-};
-
-export interface MenuNotLoggedInProps {
-  classes?: string;
+export interface MenuLoggedInProps {
+  avatar: string;
+  user: User;
 }

@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect } from 'react';
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import React, { Fragment } from 'react';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import useStore from '@/lib/store';
@@ -7,22 +7,12 @@ import classNames from '@/utils/classsesNames';
 import { Menu, Transition } from '@headlessui/react';
 import { ROLES } from '@/constants/register';
 import { Navigation } from './constants';
-import { NewNavigationItem } from './types';
-
-interface User {
-  role: string;
-  full_name: string;
-  avatar_url: string;
-}
-interface MenuLoggedInProps {
-  avatarURL: string;
-  user: User;
-}
+import { MenuLoggedInProps } from './types';
 
 const MenuLoggedIn: React.FC<MenuLoggedInProps> = (
   props: MenuLoggedInProps
 ): React.ReactElement => {
-  const { avatarURL, user } = props;
+  const { user } = props;
   const supabaseClient = useSupabaseClient();
   const savedJobsCount = useStore((state) => state.savedJobsCount);
 
@@ -52,17 +42,17 @@ const MenuLoggedIn: React.FC<MenuLoggedInProps> = (
         <div className="relative flex justify-start">
           <Menu.Button className="flex items-center pr-2 py-1 rounded-md text-sm font-medium space-x-1.5 text-gray-500 focus:outline-none transition-colors ease-linear duration-100 relative">
             <span className="sr-only">Open user menu</span>
-            {(user?.avatar_url && (
+            {(user.avatar && (
               <Image
                 alt="avatar"
                 className="object-cover w-8 h-8 rounded-full"
                 height={28}
-                src={avatarURL}
+                src={user.avatar}
                 width={28}
               />
             )) || (
               <div className="flex items-center justify-center w-8 h-8 text-sm text-white rounded-full bg-primary-800">
-                {user?.full_name?.charAt(0)}
+                {user?.name?.charAt(0)}
               </div>
             )}
 

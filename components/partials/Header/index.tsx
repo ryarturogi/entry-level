@@ -5,29 +5,21 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import MenuLoggedIn from './MenuLoggedIn';
-import MenuNotLoggedIn from './MenuNotLoggedIn';
 import Navigation from './navigation';
-import { NavigationItem } from './types';
+import { NavigationItemProps, User } from './types';
 import { UPLOAD_IMAGE_PATH } from './constants';
 import Image from 'next/image';
 
-interface User {
-  id: string;
-  role: string;
-  full_name: string;
-  avatar_url: string;
-}
-
 interface HeaderProps {
+  logo: string;
   user: User;
-  logo: any;
 }
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps): React.ReactElement => {
   const { user, logo } = props;
   const router = useRouter();
 
-  const avatarURL = user?.avatar_url;
+  const avatarURL = user?.avatar;
   const AVATAR_PATH =
     avatarURL?.startsWith('/avatars') || avatarURL?.startsWith('/company-logos')
       ? `${UPLOAD_IMAGE_PATH}${avatarURL}`
@@ -60,7 +52,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps): React.ReactElement =
 
                 <div className="hidden sm:block sm:ml-2">
                   <div className="flex space-x-2">
-                    {Navigation.map((item: NavigationItem) => (
+                    {Navigation.map((item: NavigationItemProps) => (
                       <Link
                         aria-current={item.pathname === router.pathname ? 'page' : false}
                         className={classNames(
@@ -81,9 +73,16 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps): React.ReactElement =
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   {/** Notifications */}
                   {user?.id ? (
-                    <MenuLoggedIn avatarURL={AVATAR_PATH} user={user} />
+                    <MenuLoggedIn avatar={AVATAR_PATH} user={user} />
                   ) : (
-                    <MenuNotLoggedIn />
+                    <Link
+                      className={
+                        'px-3 py-2 text-sm font-medium text-gray-800 transition-all duration-100 ease-linear rounded hover:bg-primary-700 hover:text-white'
+                      }
+                      href="/login"
+                    >
+                      <span>Login</span>
+                    </Link>
                   )}
                 </div>
               </div>
@@ -91,7 +90,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps): React.ReactElement =
 
             <Disclosure.Panel className="sm:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1">
-                {Navigation.map((item: NavigationItem) => (
+                {Navigation.map((item: NavigationItemProps) => (
                   <Link
                     aria-current={item.pathname === router.pathname ? 'page' : false}
                     className={classNames(

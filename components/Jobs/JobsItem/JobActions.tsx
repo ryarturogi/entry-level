@@ -113,6 +113,7 @@ const JobActions = (props: JobActionsProps): React.ReactElement => {
               ? 'text-gray-700 hover:bg-gray-400 hover:text-gray-700 bg-primary-100'
               : 'text-gray-700 hover:text-gray-700 bg-gray-300 hover:bg-primary-200 '
           }`}
+        color={isSaved ? 'primary' : 'gray'}
         onClick={() => (isSaved ? handleRemoveSavedJob(jobId) : handleSaveJob(jobId))}
         title={isSaved ? REMOVE_BUTTON_TITLE : SAVE_BUTTON_TITLE}
       >
@@ -127,6 +128,7 @@ const JobActions = (props: JobActionsProps): React.ReactElement => {
         className={`w-10 h-10 flex items-end justify-end  ${
           isSaved ? 'text-primary-700 hover:text-error-300' : 'text-gray-500 hover:text-primary-800'
         }`}
+        color={isSaved ? 'primary' : 'gray'}
         onClick={() => (isSaved ? handleRemoveSavedJob(jobId) : handleSaveJob(jobId))}
         title={isSaved ? REMOVE_BUTTON_TITLE : SAVE_BUTTON_TITLE}
       >

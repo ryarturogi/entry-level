@@ -11,13 +11,12 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps): React.Re
       <Button
         color={offset === 0 ? 'disabled' : 'primary'}
         disabled={offset === 0}
-        icon={<ArrowLeftIcon className="w-4 h-4" />}
         onClick={() => handlePageChange(offset - limit >= 0 ? offset - limit : 0)}
         rounded="lg"
         size="sm"
         styles="px-4"
       >
-        Prev
+        <ArrowLeftIcon className="w-4 h-4 mr-2" /> Prev
       </Button>
 
       <Button
@@ -27,8 +26,6 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps): React.Re
             : 'primary'
         }
         disabled={offset + limit - 1 >= totalCount || totalCount === 0 || loading || error !== null}
-        icon={<ArrowRightIcon className="w-4 h-4" />}
-        iconPosition="right"
         onClick={() =>
           handlePageChange(
             offset + limit <= totalCount ? offset + limit : Math.max(totalCount - limit, 0),
@@ -39,7 +36,7 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps): React.Re
         size="sm"
         styles="px-4"
       >
-        Next
+        Next <ArrowRightIcon className="w-4 h-4 ml-2" />
       </Button>
 
       <div className="flex items-center space-x-2">

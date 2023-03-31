@@ -3,7 +3,7 @@ import { useUser } from '@supabase/auth-helpers-react';
 import CompanyLogo from '../../UI/CompanyLogo';
 import JobActions from './JobActions';
 import JobContent from './JobContent';
-import { JobCardItemProps } from './types';
+import { Job } from './types';
 import { ROLES } from '@/constants/register';
 
 // const jobStatus = (job) => {
@@ -21,13 +21,12 @@ import { ROLES } from '@/constants/register';
 //   (job.isFeatured || job.isGuaranteed) && !job.hasCompanyColor.isActive ? '-ml-14' : 'ml-2'
 // }
 
-const JobCardItem = (props: JobCardItemProps): React.ReactElement => {
-  const { job } = props;
+const JobCardItem = (job: Job): React.ReactElement => {
   const user = useUser();
   const isCandidate = user?.user_metadata?.role === ROLES.CANDIDATE;
 
   return (
-    <div
+    <li
       className={`
         mx-auto relative flex flex-col justify-start w-full px-5 py-3.5 bg-white rounded-lg sm:rounded-xl shadow-gray-300
       `}
@@ -41,11 +40,11 @@ const JobCardItem = (props: JobCardItemProps): React.ReactElement => {
           />
         </div>
         <div className="col-span-12 lg:col-span-9">
-          <JobContent job={job} />
+          <JobContent {...job} />
           {isCandidate && <JobActions id={job.id} outlined />}
         </div>
       </div>
-    </div>
+    </li>
   );
 };
 

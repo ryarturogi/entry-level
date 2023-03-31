@@ -5,8 +5,10 @@ import Loader from 'components/UI/Loader';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
+import { useUser } from '@supabase/auth-helpers-react';
 
 const JobsByCategory = () => {
+  const user = useUser();
   const { query, push } = useRouter();
   const { category } = query;
 
@@ -34,6 +36,7 @@ const JobsByCategory = () => {
           },
         }}
         title={`${categoryCapitalize} Category`}
+        user={user}
       />
       <div className="w-full max-w-3xl space-y-5">
         {jobs && !loading && jobs.map((job) => <JobCard job={job} key={job.id} />)}

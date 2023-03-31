@@ -26,6 +26,7 @@ const SavedJobs = () => {
           },
         }}
         title="All your saved jobs"
+        user={user}
       />
       <div className="w-full max-w-3xl mx-auto">
         <JobsList error={error} jobs={savedJobs} loading={isLoading} />
