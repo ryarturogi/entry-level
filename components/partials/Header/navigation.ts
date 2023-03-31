@@ -1,6 +1,6 @@
-import { NavigationItem } from './types';
+import { NavigationItemProps } from './types';
 
-const Navigation: NavigationItem[] = [
+const Navigation: NavigationItemProps[] = [
   { pathname: '/', name: 'Find a Job' },
   // { pathname: '/careers', name: 'Careers' },
   // { pathname: '/resources', name: 'Resources' },

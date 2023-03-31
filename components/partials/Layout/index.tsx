@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from '@/components/partials/Header';
 import Footer from '@/components/partials/Footer';
-import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { useUser } from '@supabase/auth-helpers-react';
 
@@ -13,6 +12,14 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps): React.ReactElement =
   const { children } = props;
   const user = useUser();
 
+  const userData = {
+    id: user?.id,
+    email: user?.email,
+    name: user?.user_metadata?.full_name,
+    role: user?.app_metadata?.role,
+    avatar: user?.user_metadata?.avatar_url,
+  };
+
   const router = useRouter();
 
   const excludedRoutes: string[] = ['/login', '/register'];
@@ -20,17 +27,13 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps): React.ReactElement =
 
   return (
     <article>
-      <Header logo="public/logo.svg" user={user} />
+      <Header logo="/logo.svg" user={userData} />
       <main className="min-h-[calc(100vh-4rem)] px-2 pb-8 bg-gray-100 sm:px-4" role="main">
         {children}
       </main>
       {!isExcludedRoute && <Footer />}
     </article>
   );
-};
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default Layout;
