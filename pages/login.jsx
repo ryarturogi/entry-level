@@ -124,8 +124,6 @@ const Login = () => {
                   disabled={Object.keys(errors).length > 0}
                   displayType="block"
                   fullWidth
-                  icon={<ArrowRightOnRectangleIcon className="w-6 h-6 ml-1" />}
-                  iconPosition={'right'}
                   onClick={handleSubmit}
                   rounded="md"
                   size="lg"
@@ -133,7 +131,7 @@ const Login = () => {
                   title="Login"
                   type="submit"
                 >
-                  Login
+                  Login <ArrowRightOnRectangleIcon className="w-6 h-6 ml-2" />
                 </Button>
 
                 <div className="flex items-center justify-center w-full my-4 space-x-2">
@@ -201,7 +199,6 @@ const Login = () => {
                     color={Object.keys(errors).length > 0 ? 'disabled' : 'info'}
                     displayType="block"
                     fullWidth
-                    icon={<GoogleIcon className="w-5 h-5 mt-0.5" />}
                     onClick={() => {
                       setFieldValue('provider', 'google');
                       handleSubmit({ email: values.email, provider: 'google' });
@@ -220,6 +217,7 @@ const Login = () => {
                       ) : (
                         'Login with Google'
                       )}
+                      <GoogleIcon className="w-5 h-5 mt-0.5 ml-2" />
                     </div>
                   </Button>
                   <Button
@@ -227,7 +225,6 @@ const Login = () => {
                     disabled={Object.keys(errors).length > 0}
                     displayType="block"
                     fullWidth
-                    icon={<GithubIcon className="w-5 h-5 top-0.5" />}
                     onClick={() => {
                       setFieldValue('provider', 'github');
                       handleSubmit({ email: values.email, provider: 'github' });
@@ -246,6 +243,7 @@ const Login = () => {
                       ) : (
                         'Login with Github'
                       )}
+                      <GithubIcon className="w-5 h-5 top-0.5 ml-2" />
                     </div>
                   </Button>
                 </div>
