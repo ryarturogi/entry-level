@@ -18,7 +18,7 @@ const JobTags = ({ tags, theme }) => {
             className="flex items-center space-x-1 capitalize cursor-pointer hover:text-primary-700"
             onClick={() => router.push(`/jobs/tag/${tag}`)}
           >
-            <Badge>{tag.replace('-', ' ')}</Badge>
+            <Badge size="sm">{tag.replace('-', ' ')}</Badge>
           </button>
         </li>
       ))}

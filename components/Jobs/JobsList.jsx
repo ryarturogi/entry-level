@@ -52,11 +52,7 @@ const JobsList = ({ loading, error, jobs }) => {
       <ul className="grid w-full grid-cols-1 gap-5 h-fit">
         {jobs?.length > 0 &&
           jobs.map((job) => {
-            return (
-              <li className="w-full" key={job.id}>
-                <JobCardItem job={job} />
-              </li>
-            );
+            return <JobCardItem {...job} key={job.id} />;
           })}
       </ul>
     </section>

@@ -10,16 +10,24 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 import { ROLES } from '@/constants/register';
 
-const Home = (): React.ReactElement => {
+type ActionType = {
+  title: string;
+  handler: () => void;
+};
+
+type PageOptionsProps = {
+  offset: number;
+  limit: number;
+};
+
+const Home: React.FC = () => {
   const router = useRouter();
   const user = useUser();
-
-  const [action, setAction] = useState({
+  const [action, setAction] = useState<ActionType>({
     title: 'Get Started',
     handler: () => router.push('/register'),
   });
-
-  const [pageOptions, setPageOptions] = useState({
+  const [pageOptions, setPageOptions] = useState<PageOptionsProps>({
     offset: 0,
     limit: 10,
   });
@@ -29,11 +37,11 @@ const Home = (): React.ReactElement => {
     pageOptions.limit
   );
 
-  const handlePageChange = (offset) => {
+  const handlePageChange = (offset: number): void => {
     setPageOptions({ ...pageOptions, offset });
   };
 
-  const handleLimitChange = (e) => {
+  const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     setPageOptions({ ...pageOptions, limit: Number(e.target.value), offset: 0 });
   };
 
@@ -43,7 +51,7 @@ const Home = (): React.ReactElement => {
     const path = role === ROLES.COMPANY ? '/jobs/new' : '/jobs';
 
     setAction({
-      title: title,
+      title,
       handler: () => router.push(path),
     });
   }, [router, user]);
@@ -51,7 +59,7 @@ const Home = (): React.ReactElement => {
   return (
     <div className="min-h-screen mb-20">
       <Head />
-      <Hero action={action} />
+      <Hero action={action} user={user} />
 
       <section className="flex flex-col w-full gap-10 mx-auto max-w-8xl sm:grid sm:grid-cols-12">
         <section className="col-span-12 lg:col-span-8 h-fit">
