@@ -11,9 +11,9 @@ export const COLOR_MAP = {
   primary: 'primary-800',
   secondary: 'secondary-500',
   success: 'success',
-  error: 'error-200',
+  error: 'secondary-800',
   warning: 'warning',
   info: 'info',
-  light: 'gray-200',
+  light: 'gray-300',
   dark: 'gray-800',
 };
