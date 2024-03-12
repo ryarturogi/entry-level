@@ -66,10 +66,10 @@ export const Default: Story = {
     limit: 10,
     error: null,
     handlePageChange: (offset: number, limit?: number) => {
-      console.log(offset, limit);
+      return null
     },
     handleLimitChange: (event: React.ChangeEvent<HTMLSelectElement>) => {
-      console.log(event);
+      return null
     },
   },
 };
