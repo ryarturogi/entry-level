@@ -41,18 +41,6 @@ const meta: Meta = {
         type: 'text',
       },
     },
-    handlePageChange: {
-      description: 'Callback for page change',
-      defaultValue: (offset: number, limit?: number) => {
-        return null;
-      },
-    },
-    handleLimitChange: {
-      description: 'Callback for limit change',
-      defaultValue: (event: React.ChangeEvent<HTMLSelectElement>) => {
-        return null;
-      },
-    },
   },
 };
 
@@ -65,12 +53,6 @@ export const Default: Story = {
     offset: 0,
     limit: 10,
     error: null,
-    handlePageChange: (offset: number, limit?: number) => {
-      return null;
-    },
-    handleLimitChange: (event: React.ChangeEvent<HTMLSelectElement>) => {
-      return null;
-    },
   },
 };
 
