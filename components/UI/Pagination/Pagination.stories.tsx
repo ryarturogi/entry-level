@@ -44,13 +44,13 @@ const meta: Meta = {
     handlePageChange: {
       description: 'Callback for page change',
       defaultValue: (offset: number, limit?: number) => {
-        console.log(offset, limit);
+        return null;
       },
     },
     handleLimitChange: {
       description: 'Callback for limit change',
       defaultValue: (event: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(event);
+        return null;
       },
     },
   },
