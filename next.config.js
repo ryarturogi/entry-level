@@ -2,7 +2,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  pageExtensions: ['tsx','js'],
   images: {
     domains: [
       'localhost',
