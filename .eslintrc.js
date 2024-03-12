@@ -7,16 +7,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: [
-    'next/core-web-vitals',
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:import/errors',
-    'plugin:import/warnings',
-    'plugin:import/typescript',
-    'plugin:json/recommended',
-    'plugin:prettier/recommended',
-  ],
+  extends: ['next/core-web-vitals', 'eslint:recommended', 'plugin:react/recommended', 'plugin:import/errors', 'plugin:import/warnings', 'plugin:import/typescript', 'plugin:json/recommended', 'plugin:prettier/recommended', 'plugin:storybook/recommended'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
