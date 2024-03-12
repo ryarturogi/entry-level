@@ -20,6 +20,6 @@ export interface ISelectedFiltersObjProps {
 }
 
 export interface IFiltersProps {
-  onChange: React.Dispatch<React.SetStateAction<unknown>>; 
+  onChange: React.Dispatch<React.SetStateAction<unknown>>;
   filters: FiltersObjProps;
 }
