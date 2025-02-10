@@ -37,3 +37,4 @@ TODO
 
 # log files
 *.log
+*storybook.log

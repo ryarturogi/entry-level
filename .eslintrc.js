@@ -16,6 +16,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:json/recommended',
     'plugin:prettier/recommended',
+    'plugin:storybook/recommended',
   ],
   parserOptions: {
     ecmaFeatures: {

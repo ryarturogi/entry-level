@@ -1,6 +1,13 @@
-import PropTypes from 'prop-types';
+import { RadioFieldProps } from './types';
+import { COLOR_MAP } from '@/components/UI/Loader/constants';
 
-const RadioField = ({ options, optionSelected, title, onChange }) => {
+const RadioField: React.FC<RadioFieldProps> = ({
+  options,
+  optionSelected,
+  title,
+  variant = 'primary',
+  onChange,
+}: RadioFieldProps): React.ReactElement => {
   return (
     <fieldset>
       <legend className="text-base font-semibold leading-6 text-gray-900">{title}</legend>
@@ -10,7 +17,7 @@ const RadioField = ({ options, optionSelected, title, onChange }) => {
             <div className="flex items-center h-5 mr-3">
               <input
                 checked={optionSelected === type.id}
-                className="w-4 h-4 border-gray-300 cursor-pointer text-primary-600 ring-2 ring-primary-200 checked:ring-primary-600 checked:ring-1 focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 focus:ring-offset-white"
+                className={`w-4 h-4 border-gray-300 cursor-pointer text-${COLOR_MAP[variant]} ring-2 ring-${COLOR_MAP[variant]} checked:ring-${COLOR_MAP[variant]} checked:ring-1 focus:ring-2 focus:ring-${COLOR_MAP[variant]} focus:ring-offset-2 focus:ring-offset-white`}
                 id={`type-${type.id}`}
                 name="plan"
                 onChange={() => {
@@ -21,7 +28,10 @@ const RadioField = ({ options, optionSelected, title, onChange }) => {
             </div>
             <div className="flex-1 min-w-0 text-base">
               <label
-                className="font-light text-gray-700 cursor-pointer select-none"
+                // className="font-light text-gray-700 cursor-pointer select-none"
+                className={`font-light cursor-pointer select-none ${
+                  optionSelected === type.id ? `text-${COLOR_MAP[variant]}` : 'text-gray-700'
+                }`}
                 htmlFor={`type-${type.id}`}
               >
                 {type.name}
@@ -32,18 +42,6 @@ const RadioField = ({ options, optionSelected, title, onChange }) => {
       </div>
     </fieldset>
   );
-};
-
-RadioField.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-    })
-  ),
-  optionSelected: PropTypes.string,
-  title: PropTypes.string,
-  onChange: PropTypes.func,
 };
 
 export default RadioField;

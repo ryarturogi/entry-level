@@ -1,7 +1,8 @@
-import PropTypes from 'prop-types';
+import { TextareaFieldProps } from './types';
 
-const TextareaField = (props) => {
-  const { error, label, name, onBlur, onChange, required, rows, success, value } = props;
+const TextareaField: React.FC<TextareaFieldProps> = (props: TextareaFieldProps) => {
+  const { error, label, name, onBlur, onChange, required, rows, success, value, placeholder } =
+    props;
 
   return (
     <div className="w-full">
@@ -24,6 +25,7 @@ const TextareaField = (props) => {
         } ${success && 'border-primary-500'}`}
         onBlur={onBlur}
         onChange={onChange}
+        placeholder={placeholder}
         rows={rows}
         value={value}
       />
@@ -31,18 +33,6 @@ const TextareaField = (props) => {
       {error && <p className="mt-2 text-sm text-secondary-800">{error}</p>}
     </div>
   );
-};
-
-TextareaField.propTypes = {
-  label: PropTypes.string,
-  name: PropTypes.string,
-  error: PropTypes.string,
-  onBlur: PropTypes.func,
-  onChange: PropTypes.func,
-  success: PropTypes.string,
-  value: PropTypes.string,
-  required: PropTypes.bool,
-  rows: PropTypes.number,
 };
 
 export default TextareaField;
