@@ -16,7 +16,16 @@ const nextConfig = {
       'psvngtwthlprdfbaauyh.supabase.co',
     ],
   },
-  webpack(config) {
+  webpack: (config, { isServer }) => {
+    // Client-side fallback
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false, // This tells webpack to ignore the fs module on the client-side
+      };
+    }
+
+    // Existing webpack rule for SVGs
     config.module.rules.push({
       test: /\.svg$/i,
       enforce: 'pre',
@@ -26,5 +35,7 @@ const nextConfig = {
     return config;
   },
 };
+
+module.exports = nextConfig;
 
 module.exports = nextConfig;
