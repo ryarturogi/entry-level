@@ -10,7 +10,7 @@ const CompanyLogo: React.FC<CompanyLogoProps> = (props: CompanyLogoProps): React
 
   if (hasCompanyLogo) {
     const COMPANY_LOGO_PATH = companyLogo.includes('company-logos')
-      ? `${UPLOAD_IMAGE_PATH}${companyLogo}`
+      ? `${UPLOAD_IMAGE_PATH}${companyLogo}.png`
       : companyLogo;
 
     return (
@@ -23,8 +23,8 @@ const CompanyLogo: React.FC<CompanyLogoProps> = (props: CompanyLogoProps): React
   return (
     <div className={`flex items-center justify-center w-24 h-24 rounded-lg ${randomColor()}`}>
       <div className="flex items-center justify-center w-full h-full text-2xl font-semibold text-white uppercase">
-        {companySlug[0]}
-        {companySlug[1]}
+        {companySlug?.[0]}
+        {companySlug?.[1]}
       </div>
     </div>
   );
