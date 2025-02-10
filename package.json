@@ -13,7 +13,6 @@
     "eslint:fix": "eslint --fix \"**/*.+(js|jsx|ts|tsx)\"",
     "prettier": "prettier --check \"**/*.+(js|jsx|ts|tsx|json|yml|yaml|md|css)\"",
     "prettier:fix": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|yml|yaml|md|css)\"",
-    "prepare": "husky install",
     "pre-commit": "lint-staged",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
