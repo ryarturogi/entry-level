@@ -1,17 +1,19 @@
-import { useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 import Button from '@/components/UI/Button';
 import CompanyLogo from '../CompanyLogo';
 import { HeroProps } from './types';
+import heroPattern from '/public/img/hero-pattern.png';
 
 const Hero: React.FC<HeroProps> = (props: HeroProps): React.ReactElement => {
-  const { title = 'Guiding the next generation of devs!', action, logo } = props;
+  const { title = 'Guiding the next generation of devs!', action, logo, user } = props;
 
-  const user = useUser();
   const router = useRouter();
 
   return (
-    <section className="flex flex-col items-center mb-10 justify-center min-w-screen min-h-[255px] bg-hero-pattern bg-center bg-no-repeat bg-cover max-w-8xl w-full rounded-b-4xl mx-auto bg-primary-1000">
+    <section
+      className="flex flex-col items-center mb-10 justify-center min-w-screen min-h-[255px] bg-center bg-no-repeat bg-cover max-w-8xl w-full rounded-b-4xl mx-auto bg-primary-1000"
+      style={{ backgroundImage: `url(${heroPattern.src})` }}
+    >
       {logo ? (
         <div className="flex items-center justify-center w-20 h-20 mb-5 overflow-hidden bg-white rounded-full">
           <CompanyLogo companyLogo={logo} companySlug="#" hasCompanyLogo size="sm" />

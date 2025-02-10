@@ -1,4 +1,4 @@
-interface Job {
+export interface Job {
   id: string;
   createdAt: string;
   isFeatured: boolean;
@@ -14,14 +14,6 @@ interface Job {
   jobCategory: string;
   jobSalary: number;
   jobType: string;
-}
-
-export interface JobCardItemProps {
-  job: Job;
-}
-
-export interface JobContentProps {
-  job: Job;
 }
 
 export interface JobActionsProps {

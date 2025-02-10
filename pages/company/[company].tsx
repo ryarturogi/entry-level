@@ -5,10 +5,13 @@ import Loader from '@/components/UI/Loader';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import { GetServerSideProps } from 'next';
+import { useUser } from '@supabase/auth-helpers-react';
+import { JobsByCompanyProps } from './types';
 
-const JobsByCompany = ({ jobs, error }) => {
+const JobsByCompany = (props: JobsByCompanyProps) => {
+  const { jobs, error } = props;
+  const user = useUser();
   const { push, query } = useRouter();
   const { company } = query;
   const isLoading = !jobs && !error;
@@ -56,15 +59,15 @@ const JobsByCompany = ({ jobs, error }) => {
         }}
         logo={companyLogo}
         title={`${companyCapitalize} Jobs`}
+        user={user}
       />
       <ul className="w-full max-w-3xl space-y-5">
-        {error && error.message}
-        {(isLoading && !error && (
+        {error && !isLoading && (
           <li className="flex items-center justify-center w-full ">
-            <Loader />
+            <h1 className="text-xl font-semibold">{error || 'Server error occurred'}</h1>
           </li>
-        )) ||
-          (jobs ? jobs.map((job) => <JobCard job={job} key={job.id} />) : null)}
+        )}
+        {!isLoading && !error && jobs && jobs.map((job) => <JobCard job={job} key={job.id} />)}
       </ul>
     </section>
   );
@@ -91,7 +94,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     return {
       props: {
         jobs: fetchCompanyJobs || [],
-
         error: false,
       },
     };
@@ -103,21 +105,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       },
     };
   }
-};
-
-JobsByCompany.propTypes = {
-  jobs: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      jobTitle: PropTypes.string,
-      jobDescription: PropTypes.string,
-      companySlug: PropTypes.string,
-      companyLogo: PropTypes.string,
-      companyName: PropTypes.string,
-      location: PropTypes.string,
-    })
-  ).isRequired,
-  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 export default JobsByCompany;

@@ -1,17 +1,20 @@
 import { LoaderProps } from './types';
+import { COLOR_MAP, SIZE_MAP } from './constants';
 
 const Loader: React.FC<LoaderProps> = (props: LoaderProps): React.ReactElement => {
-  const { text = 'Loading...', className = '' } = props;
+  const { text = 'Loading...', size = 'md', variant = 'primary' } = props;
 
   return (
-    <div className={`flex flex-col items-center justify-center text-center space-y-4 ${className}`}>
-      <div className="loading-blocks">
-        <div className="block" />
-        <div className="block" />
-        <div className="block" />
+    <section
+      className={`relative flex flex-col justify-center items-center text-center w-fit ${SIZE_MAP[size]}`}
+    >
+      <div className={'loading-blocks'}>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <div className={`block bg-${COLOR_MAP[variant]}`} key={index} />
+        ))}
       </div>
-      <div className="loading-blocks__text">{text}</div>
-    </div>
+      <div className={`text-3xl sm:text-xl xl:text-xl text-${COLOR_MAP[variant]}`}>{text}</div>
+    </section>
   );
 };
 

@@ -4,8 +4,10 @@ import Loader from '@/components/UI/Loader';
 import useJobs from '@/hooks/useJobs';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useUser } from '@supabase/auth-helpers-react';
 
 const JobsByLocation = () => {
+  const user = useUser();
   const { query, push } = useRouter();
   const { type } = query;
   const { jobs, loading, error } = useJobs('jobTypes', type);
@@ -33,6 +35,7 @@ const JobsByLocation = () => {
           },
         }}
         title={`Jobs listing at ${typeCapitalize} `}
+        user={user}
       />
       <ul className="w-full max-w-3xl space-y-5">
         {jobs && !loading && jobs.map((job) => <JobCard job={job} key={job.id} />)}
