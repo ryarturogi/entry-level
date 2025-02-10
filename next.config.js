@@ -13,7 +13,7 @@ const nextConfig = {
       'lh3.googleusercontent.com',
       'via.placeholder.com',
       'assets.landing.jobs',
-      'claggldspplsjasuzzze.supabase.co',
+      'psvngtwthlprdfbaauyh.supabase.co',
     ],
   },
   webpack(config) {
