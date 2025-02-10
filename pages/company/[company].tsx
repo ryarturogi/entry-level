@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { useUser } from '@supabase/auth-helpers-react';
-import { JobsByCompanyProps } from './types';
+import { JobsByCompanyProps } from '@/types/jobTypes';
 
 const JobsByCompany = (props: JobsByCompanyProps) => {
   const { jobs, error } = props;
