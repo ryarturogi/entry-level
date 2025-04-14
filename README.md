@@ -1,4 +1,5 @@
 ![image](https://user-images.githubusercontent.com/8452197/223853814-a2e29af3-d321-4893-8d8d-69eb2e3f6940.png)
+
 <h1>Entry Level</h1>
 <p>Welcome to Entry Level, a job board specifically designed to help entry level developers, designers, and other professionals find remote job opportunities.</p>
 <p>This project is built using React and Next.js, and is hosted on Vercel at <a href="entry-levels.vercel.app/">entry-levels.vercel.app/</a>.</p>
@@ -18,6 +19,7 @@ npm install or yarn install
 Copy the .env-example file and renamed to .env
 Add the necesary enviroment variables
 </code></pre>
+
 <p>Then, start the development server:</p>
 <pre><code>npm run dev or yarn dev
 </code></pre>
